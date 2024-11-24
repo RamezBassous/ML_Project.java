@@ -1,0 +1,4 @@
+.titled-pane > .title {
+    -fx-background-color: #F1FAEE;
+    -fx-text-fill: black; /* Change text color if needed */
+}

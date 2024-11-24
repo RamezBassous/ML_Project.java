@@ -1,0 +1,2048 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.GaussianBlur?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Arc?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane fx:id="anchorMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="group15.Controller">
+    <children>
+        <BorderPane prefHeight="1080.0" prefWidth="1920.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <center>
+                <Pane prefHeight="1080.0" prefWidth="1280.0" style="-fx-background-color: #F1FAEE;" BorderPane.alignment="CENTER">
+                    <children>
+                        <Pane fx:id="boardPane" layoutX="87.0" layoutY="40.0" prefHeight="900.0" prefWidth="900.0" style="-fx-background-color: e0f2ea; -fx-background-radius: 50;">
+                            <children>
+                               <StackPane fx:id="indicator0" layoutX="-4.0" layoutY="-7.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator13" layoutX="673.0" layoutY="401.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="67.0" prefWidth="76.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator2" layoutX="808.0" layoutY="-7.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator3" layoutX="134.0" layoutY="127.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator4" layoutX="404.0" layoutY="127.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator5" layoutX="675.0" layoutY="127.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator6" layoutX="269.0" layoutY="263.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator7" layoutX="404.0" layoutY="263.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator8" layoutX="539.0" layoutY="264.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator21" layoutX="-2.0" layoutY="806.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator18" layoutX="134.0" layoutY="671.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator15" layoutX="269.0" layoutY="535.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator17" layoutX="539.0" layoutY="535.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator20" layoutX="674.0" layoutY="671.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator23" layoutX="808.0" layoutY="806.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator16" layoutX="404.0" layoutY="535.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator12" layoutX="540.0" layoutY="400.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator19" layoutX="403.0" layoutY="671.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator11" layoutX="269.0" layoutY="399.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator10" layoutX="134.0" layoutY="399.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator9" layoutX="-2.0" layoutY="399.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+
+                               <StackPane fx:id="indicator1" layoutX="404.0" layoutY="-5.0" prefHeight="100.0" prefWidth="100.0">
+                                  <children>
+                                     <Pane prefHeight="76.0" prefWidth="78.0">
+                                        <children>
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                           <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                        </children>
+                                     </Pane>
+                                  </children>
+                               </StackPane>
+                        <StackPane fx:id="indicator22" layoutX="402.0" layoutY="806.0" prefHeight="100.0" prefWidth="99.0">
+                           <children>
+                              <Pane prefHeight="76.0" prefWidth="78.0">
+                                 <children>
+                                    <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                    <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                 </children>
+                              </Pane>
+                           </children>
+                        </StackPane>
+                        <StackPane fx:id="indicator14" layoutX="807.0" layoutY="401.0" prefHeight="98.0" prefWidth="100.0">
+                           <children>
+                              <Pane prefHeight="67.0" prefWidth="76.0">
+                                 <children>
+                                    <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="270.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                    <Arc fill="WHITE" layoutX="50.0" layoutY="50.0" length="90.0" radiusX="27.0" radiusY="27.0" startAngle="90.0" stroke="WHITE" strokeType="INSIDE" type="ROUND" />
+                                 </children>
+                              </Pane>
+                           </children>
+                        </StackPane>
+                               <!-- Adjust lines to start from the correct positions -->
+                                <Line fx:id="horizontal1" endX="856.2388916015625" endY="44.0" startX="48.0" startY="44.0" strokeWidth="4.0" />
+                                <Line fx:id="vertical1" endX="46.0" endY="856.6199951171875" startX="46.0" startY="44.0" strokeWidth="4.0" />
+                                <Line fx:id="horizontal8" endX="857.0037841796875" endY="858.6199951171875" startX="46.0" startY="858.6199951171875" strokeWidth="4.0" />
+                                <Line fx:id="vertical8" endX="856.656005859375" endY="857.248291015625" startX="856.656005859375" startY="44.28015899658203" strokeWidth="4.0" />
+                                <Line fx:id="vertical2" endX="182.90093994140625" endY="722.2058715820312" startX="182.90093994140625" startY="180.1245880126953" strokeWidth="4.0" />
+                                <Line fx:id="vertical7" endX="723.7816162109375" endY="722.2058715820312" startX="723.7816162109375" startY="180.1245880126953" strokeWidth="4.0" />
+                                <Line fx:id="horizontal2" endX="722.5809326171875" endY="179.52427673339844" startX="182.90093994140625" startY="179.52427673339844" strokeWidth="4.0" />
+                                <Line fx:id="horizontal7" endX="182.90093994140625" endY="722.8062133789062" startX="723.1812744140625" startY="722.8062133789062" strokeWidth="4.0" />
+                                <Line fx:id="vertical3" endX="318.5712890625" endY="587.1358032226562" startX="318.5712890625" startY="315.1946716308594" strokeWidth="4.0" />
+                                <Line fx:id="vertical6" endX="588.1112060546875" endY="586.5354614257812" startX="588.1112060546875" startY="315.7363586425781" strokeWidth="4.0" />
+                                <Line fx:id="horizontal6" endX="318.5712890625" endY="587.1358032226562" startX="587.5108642578125" startY="587.1358032226562" strokeWidth="4.0" />
+                                <Line fx:id="horizontal3" endX="320.5712890625" endY="315.1946716308594" startX="587.6883544921875" startY="315.1946716308594" strokeWidth="4.0" />
+                        <Line fx:id="vertical5" endX="442.99237060546875" endY="577.3451538085938" layoutX="10.0" layoutY="10.0" startX="442.5" startY="848.0" strokeWidth="4.0" />
+                        <Line fx:id="vertical4" endX="432.5" endY="24.0" layoutX="20.0" layoutY="20.0" startX="433.1246337890625" startY="294.9163513183594" strokeWidth="4.0" />
+                        <Line fx:id="horizontal5" endX="578.3269653320312" endY="441.5622863769531" layoutX="10.0" layoutY="10.0" startX="845.772705078125" startY="441.5622863769531" strokeWidth="4.0" />
+                        <Line fx:id="horizontal4" endX="297.51397705078125" endY="431.0" layoutX="20.0" layoutY="20.0" startX="28.0" startY="431.0" strokeWidth="4.0" />
+                        <Circle layoutX="46.0" layoutY="43.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="46.0" layoutY="451.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="183.0" layoutY="451.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="183.0" layoutY="723.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="318.0" layoutY="451.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="183.0" layoutY="180.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="452.0" layoutY="44.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="453.0" layoutY="179.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="318.0" layoutY="315.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="453.0" layoutY="315.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="588.0" layoutY="316.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="453.0" layoutY="587.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="318.0" layoutY="587.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="47.0" layoutY="858.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="453.0" layoutY="723.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="453.0" layoutY="858.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="857.0" layoutY="858.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="856.0" layoutY="452.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="723.0" layoutY="452.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="589.0" layoutY="452.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="588.0" layoutY="587.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="723.0" layoutY="723.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="857.0" layoutY="45.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="724.0" layoutY="180.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Line fx:id="diagonal1" endX="308.0" endY="305.0" layoutX="10.0" layoutY="10.0" startX="36.0" startY="33.0" strokeWidth="4.0" />
+                        <Line fx:id="diagonal2" endX="568.0" endY="296.0" layoutX="20.0" layoutY="20.0" startX="837.0" startY="24.0" strokeWidth="4.0" />
+                        <Line fx:id="diagonal3" endX="289.1331787109375" endY="555.7974243164062" layoutX="30.0" layoutY="30.0" startX="18.0" startY="828.0" strokeWidth="4.0" />
+                        <Line fx:id="diagonal4" endX="588.0" endY="587.0" startX="856.2237548828125" startY="858.1569213867188" strokeWidth="4.0" />
+                        <Text fx:id="index0" layoutX="87.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index2" layoutX="800.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index1" layoutX="500.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" wrappingWidth="221.599609375" />
+                        <Text fx:id="index5" layoutX="760.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index4" layoutX="482.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index3" layoutX="232.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index6" layoutX="350.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index7" layoutX="490.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0" text="7" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index8" layoutX="622.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index12" layoutX="622.0" layoutY="505.0" strokeType="OUTSIDE" strokeWidth="0.0" text="12" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index13" layoutX="762.0" layoutY="505.0" strokeType="OUTSIDE" strokeWidth="0.0" text="13" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index14" layoutX="812.0" layoutY="505.0" strokeType="OUTSIDE" strokeWidth="0.0" text="14" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index11" layoutX="342.0" layoutY="505.0" strokeType="OUTSIDE" strokeWidth="0.0" text="11" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index10" layoutX="212.0" layoutY="505.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index9" layoutX="82.0" layoutY="505.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index21" layoutX="92.0" layoutY="845.0" strokeType="OUTSIDE" strokeWidth="0.0" text="21" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index18" layoutX="212.0" layoutY="765.0" strokeType="OUTSIDE" strokeWidth="0.0" text="18" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index19" layoutX="492.0" layoutY="765.0" strokeType="OUTSIDE" strokeWidth="0.0" text="19" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index20" layoutX="692.0" layoutY="765.0" strokeType="OUTSIDE" strokeWidth="0.0" text="20" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index23" layoutX="782.0" layoutY="845.0" strokeType="OUTSIDE" strokeWidth="0.0" text="23" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index22" layoutX="500.0" layoutY="845.0" strokeType="OUTSIDE" strokeWidth="0.0" text="22" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index16" layoutX="500.0" layoutY="615.0" strokeType="OUTSIDE" strokeWidth="0.0" text="16" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index17" layoutX="642.0" layoutY="615.0" strokeType="OUTSIDE" strokeWidth="0.0" text="17" wrappingWidth="221.03466796875" />
+                        <Text fx:id="index15" layoutX="360.0" layoutY="613.0" strokeType="OUTSIDE" strokeWidth="0.0" text="15" wrappingWidth="221.03466796875" />
+                        <Pane layoutX="-193.0" layoutY="-193.0" prefHeight="1286.0" prefWidth="1287.0" scaleX="0.7" scaleY="0.7">
+                           <children>
+                              <StackPane fx:id="pieceB0" layoutX="16.0" layoutY="12.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB9" layoutX="15.0" layoutY="594.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB3" layoutX="211.0" layoutY="205.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB14" layoutX="1173.0" layoutY="594.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB2" layoutX="1174.0" layoutY="11.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB13" layoutX="983.0" layoutY="594.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB10" layoutX="211.0" layoutY="594.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB11" layoutX="405.0" layoutY="592.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB5" layoutX="983.0" layoutY="204.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB6" layoutX="405.0" layoutY="399.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB4" layoutX="596.0" layoutY="205.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB1" layoutX="596.0" layoutY="12.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB7" layoutX="597.0" layoutY="399.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB8" layoutX="790.0" layoutY="399.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB12" layoutX="790.0" layoutY="594.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB23" layoutX="1173.0" layoutY="1175.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB20" layoutX="983.0" layoutY="981.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB17" layoutX="789.0" layoutY="786.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB16" layoutX="597.0" layoutY="786.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB19" layoutX="596.0" layoutY="981.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB22" layoutX="596.0" layoutY="1176.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB21" layoutX="15.0" layoutY="1176.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB18" layoutX="210.0" layoutY="979.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceB15" layoutX="405.0" layoutY="786.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="-193.0" layoutY="-193.0" prefHeight="1286.0" prefWidth="1287.0" scaleX="0.7" scaleY="0.7">
+                           <children>
+                              <StackPane fx:id="pieceR0" layoutX="16.0" layoutY="12.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR9" layoutX="15.0" layoutY="594.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR3" layoutX="211.0" layoutY="205.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR14" layoutX="1173.0" layoutY="594.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR2" layoutX="1174.0" layoutY="11.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR13" layoutX="983.0" layoutY="594.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR10" layoutX="211.0" layoutY="594.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR11" layoutX="405.0" layoutY="592.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR5" layoutX="983.0" layoutY="204.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR6" layoutX="405.0" layoutY="399.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR4" layoutX="596.0" layoutY="205.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR1" layoutX="596.0" layoutY="12.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR7" layoutX="597.0" layoutY="399.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR8" layoutX="790.0" layoutY="399.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR12" layoutX="790.0" layoutY="594.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR23" layoutX="1173.0" layoutY="1175.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR20" layoutX="983.0" layoutY="981.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR17" layoutX="789.0" layoutY="786.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR16" layoutX="597.0" layoutY="786.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR19" layoutX="596.0" layoutY="981.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR22" layoutX="596.0" layoutY="1176.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR21" layoutX="15.0" layoutY="1176.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR18" layoutX="210.0" layoutY="979.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="pieceR15" layoutX="405.0" layoutY="786.0" prefHeight="100.0" prefWidth="100.0">
+                                 <children>
+                                    <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                                       <effect>
+                                          <DropShadow height="15.0" radius="7.0" width="15.0" />
+                                       </effect>
+                                    </Circle>
+                                    <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="-4.0" layoutY="-6.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow0" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL0" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone0" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="-4.0" layoutY="402.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow9" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL9" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone9" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="133.0" layoutY="402.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow10" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL10" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone10" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="133.0" layoutY="129.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow3" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL3" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone3" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="402.0" layoutY="129.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow4" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL4" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone4" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="402.0" layoutY="-6.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow1" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL1" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone1" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="807.0" layoutY="-6.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow2" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL2" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone2" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="674.0" layoutY="129.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow5" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL5" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone5" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="268.0" layoutY="265.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow6" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL6" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone6" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="403.0" layoutY="265.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow7" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL7" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone7" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="538.0" layoutY="266.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow8" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL8" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone8" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="538.0" layoutY="402.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow12" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL12" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone12" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="673.0" layoutY="402.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow13" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL13" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone13" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="806.0" layoutY="402.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow14" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL14" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone14" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="806.0" layoutY="809.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow23" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL23" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone23" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="402.0" layoutY="809.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow22" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL22" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone22" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="402.0" layoutY="673.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow19" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL19" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone19" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="673.0" layoutY="673.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow20" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL20" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone20" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="538.0" layoutY="536.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow17" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL17" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone17" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="403.0" layoutY="536.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow16" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL16" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone16" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="268.0" layoutY="536.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow15" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL15" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone15" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="268.0" layoutY="401.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow11" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL11" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone11" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="132.0" layoutY="671.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow18" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL18" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone18" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="-5.0" layoutY="809.0" prefHeight="100.0" prefWidth="100.0">
+                           <children>
+                              <Circle fx:id="shadow21" layoutX="50.0" layoutY="50.0" opacity="0.15" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                              <Circle fx:id="ringL21" fill="#1d355700" layoutX="50.0" layoutY="49.0" radius="38.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="4.0" />
+                              <Circle fx:id="zone21" layoutX="50.0" layoutY="50.0" opacity="0.0" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <GaussianBlur />
+                                 </effect>
+                              </Circle>
+                           </children>
+                        </Pane>
+                        <Text fill="#d8ece6" layoutX="408.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="K E N">
+                           <font>
+                              <Font name="System Bold" size="40.0" />
+                           </font>
+                        </Text>
+                        <Text fill="#d8ece6" layoutX="403.0" layoutY="500.0" strokeType="OUTSIDE" strokeWidth="0.0" text="15">
+                           <font>
+                              <Font name="Helvetica Bold" size="88.0" />
+                           </font>
+                        </Text>
+                            </children>
+                     <effect>
+                        <DropShadow height="23.0" radius="11.0" width="23.0" />
+                     </effect>
+                        </Pane>
+                  <StackPane fx:id="onHandPieceRExtra0" layoutX="997.0" layoutY="63.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect>
+                        </Circle>
+                        <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="onHandPieceExtra0" layoutX="-25.0" layoutY="53.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                     <effect>
+                        <DropShadow height="50.0" radius="24.5" width="50.0" />
+                     </effect>
+                  </StackPane>
+                  <StackPane fx:id="onHandPieceExtra1" layoutX="-55.0" layoutY="153.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                     <effect>
+                        <DropShadow height="50.0" radius="24.5" width="50.0" />
+                     </effect>
+                  </StackPane>
+                        <StackPane fx:id="onHandPiece0" layoutX="-45.0" layoutY="203.0" prefHeight="100.0" prefWidth="100.0">
+                            <children>
+                                <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect>
+                        </Circle>
+                                <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                            </children>
+                        </StackPane>
+                  <StackPane fx:id="onHandPieceRExtra1" layoutX="1030.0" layoutY="153.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect>
+                        </Circle>
+                        <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="onHandPiece1" layoutX="-35.0" layoutY="263.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect>
+                        </Circle>
+                        <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="onHandPiece2" layoutX="-28.0" layoutY="323.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect>
+                        </Circle>
+                        <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="onHandPiece3" layoutX="-25.0" layoutY="383.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect>
+                        </Circle>
+                        <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="onHandPiece4" layoutX="-25.0" layoutY="443.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect>
+                        </Circle>
+                        <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="onHandPiece5" layoutX="-25.0" layoutY="503.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect>
+                        </Circle>
+                        <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="onHandPiece6" layoutX="-28.0" layoutY="563.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect>
+                        </Circle>
+                        <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="onHandPiece7" layoutX="-35.0" layoutY="623.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect>
+                        </Circle>
+                        <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="onHandPiece8" layoutX="-45.0" layoutY="683.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                     <effect>
+                        <DropShadow height="50.0" radius="24.5" width="50.0" />
+                     </effect>
+                  </StackPane>
+                  <StackPane fx:id="onHandPieceR0" layoutX="1017.0" layoutY="203.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect></Circle>
+                        <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="onHandPieceR1" layoutX="1007.0" layoutY="263.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect></Circle>
+                        <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="onHandPieceR2" layoutX="1000.0" layoutY="323.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect></Circle>
+                        <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="onHandPieceR3" layoutX="997.0" layoutY="383.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect></Circle>
+                        <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="onHandPieceR4" layoutX="997.0" layoutY="443.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect></Circle>
+                        <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="onHandPieceR5" layoutX="997.0" layoutY="503.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect></Circle>
+                        <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="onHandPieceR6" layoutX="1000.0" layoutY="563.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect></Circle>
+                        <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="onHandPieceR7" layoutX="1007.0" layoutY="623.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect></Circle>
+                        <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="onHandPieceR8" layoutX="1017.0" layoutY="683.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect></Circle>
+                        <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="onHandPieceExtra2" layoutX="-55.0" layoutY="737.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#1d3557" radius="42.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#457b9d" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#1d3557" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                     <effect>
+                        <DropShadow height="50.0" radius="24.5" width="50.0" />
+                     </effect>
+                  </StackPane>
+                  <StackPane fx:id="onHandPieceRExtra2" layoutX="1037.0" layoutY="733.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Circle fill="#660033" radius="42.0" stroke="BLACK" strokeType="INSIDE">
+                           <effect>
+                              <DropShadow height="50.0" radius="24.5" width="50.0" />
+                           </effect>
+                        </Circle>
+                        <Circle fill="#e63946" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#660033" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </StackPane>
+                  <Pane fx:id="WinPopUpBlue" layoutX="310.0" layoutY="312.0" prefHeight="359.0" prefWidth="457.0" style="-fx-background-radius: 40; -fx-background-color: #457b9d; -fx-border-color: #1d3557; -fx-border-radius: 38; -fx-border-width: 5;">
+                     <children>
+                        <Pane fx:id="bluePlayerWinsBox" layoutX="30.0" layoutY="33.0" prefHeight="184.0" prefWidth="396.0" style="-fx-background-color: #F1FAEE; -fx-border-color: #1d3557; -fx-border-radius: 27; -fx-border-width: 5; -fx-background-radius: 30;">
+                           <children>
+                              <Text fx:id="gameNumText1" layoutX="22.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BLUE PLAYER WINS!" textAlignment="CENTER" wrappingWidth="373.65625">
+                                 <font>
+                                    <Font name="Courier New Bold" size="50.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.2581261992454529" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Pane>
+                        <ToggleButton fx:id="newGameBlueWins" layoutX="148.0" layoutY="261.0" mnemonicParsing="false" onAction="#newGameClicked" prefHeight="44.0" prefWidth="162.0" style="-fx-background-color: #F1FAEE;" text="NEW GAME">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                           <font>
+                              <Font name="Courier New Bold" size="24.0" />
+                           </font>
+                        </ToggleButton>
+                     </children>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Pane>
+                  <Pane fx:id="WinPopUpRed" layoutX="310.0" layoutY="312.0" prefHeight="359.0" prefWidth="457.0" style="-fx-background-radius: 40; -fx-background-color: e63946; -fx-border-color: #660033; -fx-border-radius: 38; -fx-border-width: 5;">
+                     <children>
+                        <Pane fx:id="redPlayerWinsBox" layoutX="30.0" layoutY="33.0" prefHeight="184.0" prefWidth="396.0" style="-fx-background-color: #F1FAEE; -fx-background-radius: 30; -fx-border-color: #660033; -fx-border-width: 5; -fx-border-radius: 27;">
+                           <children>
+                              <Text fx:id="gameNumText11" layoutX="22.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RED PLAYER WINS!" textAlignment="CENTER" wrappingWidth="373.65625">
+                                 <font>
+                                    <Font name="Courier New Bold" size="50.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.2581261992454529" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Pane>
+                        <ToggleButton fx:id="newGameRedWins" layoutX="148.0" layoutY="261.0" mnemonicParsing="false" onAction="#newGameClicked" prefHeight="44.0" prefWidth="162.0" style="-fx-background-color: #F1FAEE;" text="NEW GAME">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                           <font>
+                              <Font name="Courier New Bold" size="24.0" />
+                           </font>
+                        </ToggleButton>
+                     </children>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Pane>
+                  <Pane fx:id="DrawPopUp" layoutX="310.0" layoutY="312.0" prefHeight="359.0" prefWidth="457.0" style="-fx-background-radius: 40; -fx-background-color: c8d6da; -fx-border-color: black; -fx-border-radius: 38; -fx-border-width: 5;">
+                     <children>
+                        <Pane fx:id="drawBox" layoutX="30.0" layoutY="32.0" prefHeight="184.0" prefWidth="396.0" style="-fx-background-color: #F1FAEE; -fx-background-radius: 30; -fx-border-color: black; -fx-border-width: 5; -fx-border-radius: 27;">
+                           <children>
+                              <Text fx:id="gameNumText111" layoutX="33.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IT'S A DRAW!" textAlignment="CENTER" wrappingWidth="338.65625">
+                                 <font>
+                                    <Font name="Courier New Bold" size="50.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.2581261992454529" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Pane>
+                        <ToggleButton fx:id="newGameDraw" layoutX="148.0" layoutY="261.0" mnemonicParsing="false" onAction="#newGameClicked" prefHeight="44.0" prefWidth="162.0" style="-fx-background-color: #F1FAEE;" text="NEW GAME">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                           <font>
+                              <Font name="Courier New Bold" size="24.0" />
+                           </font>
+                        </ToggleButton>
+                     </children>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Pane>
+                    </children>
+                </Pane>
+            </center>
+            <left>
+                <Pane prefHeight="1080.0" prefWidth="320.0" style="-fx-background-color: A8DADC;" BorderPane.alignment="CENTER">
+               <children>
+                  <ToggleButton fx:id="switchVersion" layoutX="91.0" layoutY="341.0" mnemonicParsing="false" onAction="#switchVersionAction" prefHeight="36.0" prefWidth="139.0" style="-fx-background-color: #F1FAEE;" text="Switch Version">
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.27000001072883606" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                     <font>
+                        <Font name="Courier New Bold" size="13.0" />
+                     </font></ToggleButton>
+                  <Pane layoutX="307.0" layoutY="-2.0" prefHeight="1080.0" prefWidth="14.0" style="-fx-background-color: #72a6b9;">
+                     <effect>
+                        <Bloom />
+                     </effect>
+                  </Pane>
+                  <ToggleButton fx:id="showIndex" layoutX="91.0" layoutY="391.0" mnemonicParsing="false" onAction="#showIndexAction" prefHeight="36.0" prefWidth="139.0" style="-fx-background-color: #F1FAEE;" text="Toggle Index">
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.26195028424263" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                     <font>
+                        <Font name="Courier New Bold" size="13.0" />
+                     </font></ToggleButton>
+                  <ToggleButton fx:id="TestIndicator" layoutX="91.0" layoutY="441.0" mnemonicParsing="false" onAction="#TestIndicatorAction" prefHeight="36.0" prefWidth="139.0" style="-fx-background-color: #F1FAEE;" text="Test Position">
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.26577436923980713" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                     <font>
+                        <Font name="Courier New Bold" size="13.0" />
+                     </font></ToggleButton>
+                  <Pane fx:id="GameMenu" layoutX="28.0" layoutY="28.0" prefHeight="251.0" prefWidth="251.0" style="-fx-background-radius: 40; -fx-background-color: e0f2ea;">
+                     <children>
+                        <Arc fill="#660033" layoutX="204.0" layoutY="47.0" length="60.0" radiusX="20.0" radiusY="20.0" rotate="-105.0" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                        <Arc fill="#1d3557" layoutX="34.0" layoutY="50.0" length="60.0" radiusX="20.0" radiusY="20.0" rotate="75.0" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                        <Circle fx:id="MenuBigLeftArrow" fill="#447a9c80" layoutX="39.0" layoutY="39.0" radius="23.0" stroke="#1d3557" strokeType="INSIDE" strokeWidth="3.0">
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.19694072008132935" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Circle>
+                        <Circle fx:id="MenuBigRightArrow" fill="#e3394a80" layoutX="209.0" layoutY="39.0" radius="23.0" stroke="#660033" strokeType="INSIDE" strokeWidth="3.0">
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.20076481997966766" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Circle>
+                        <Pane layoutX="72.0" layoutY="14.0" prefHeight="50.0" prefWidth="104.0" style="-fx-background-color: #F1FAEE; -fx-background-radius: 30;">
+                           <children>
+                              <Text fx:id="gameNumText" layoutX="16.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GAME1">
+                                 <font>
+                                    <Font name="Courier New Bold" size="24.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.2581261992454529" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Pane>
+                        <Pane layoutX="14.0" layoutY="81.0" prefHeight="41.0" prefWidth="221.0" style="-fx-background-color: #F1FAEE; -fx-background-radius: 25;">
+                           <children>
+                              <Text fx:id="local2pText" layoutX="65.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LOCAL 2P" wrappingWidth="106.00406646728516">
+                                 <font>
+                                    <Font name="Courier New Bold" size="20.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="easyBotText" layoutX="65.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EASY BOT" wrappingWidth="106.00406646728516">
+                                 <font>
+                                    <Font name="Courier New Bold" size="20.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.26195028424263" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Pane>
+                        <Arc fx:id="MenuSmallLeftArrow0" fill="#1d3557" layoutX="23.0" layoutY="112.0" length="60.0" opacity="0.4" radiusX="20.0" radiusY="20.0" rotate="75.0" scaleX="0.7" scaleY="0.7" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                        <Arc fx:id="MenuSmallRightArrow0" fill="#660033" layoutX="215.0" layoutY="109.0" length="60.0" opacity="0.4" radiusX="20.0" radiusY="20.0" rotate="-105.0" scaleX="0.7" scaleY="0.7" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                        <Pane layoutX="85.0" layoutY="128.0" prefHeight="19.0" prefWidth="81.0" style="-fx-background-color: #F1FAEE; -fx-background-radius: 25;">
+                           <effect>
+                              <DropShadow height="10.0" radius="4.5" width="10.0">
+                                 <color>
+                                    <Color opacity="0.2581261992454529" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                           <children>
+                              <Line endX="54.0" endY="1.52587890625E-5" layoutX="19.0" layoutY="10.0" startX="-8.0" startY="1.52587890625E-5" strokeWidth="2.0" />
+                           </children>
+                        </Pane>
+                        <Circle fill="#000000b2" layoutX="95.0" layoutY="138.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.20076481997966766" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Circle>
+                        <Circle fill="#000000b2" layoutX="110.0" layoutY="138.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.20076481997966766" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Circle>
+                        <Circle fill="#000000b2" layoutX="125.0" layoutY="138.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.20076481997966766" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Circle>
+                        <Circle fill="#000000b2" layoutX="140.0" layoutY="138.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.20076481997966766" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Circle>
+                        <Circle fill="#000000b2" layoutX="155.0" layoutY="138.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.20076481997966766" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Circle>
+                        <Pane layoutX="14.0" layoutY="159.0" prefHeight="41.0" prefWidth="221.0" style="-fx-background-color: #F1FAEE; -fx-background-radius: 25;">
+                           <children>
+                              <Text fx:id="pieceNumText" layoutX="65.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9 PIECES">
+                                 <font>
+                                    <Font name="Courier New Bold" size="20.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.26195028424263" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Pane>
+                        <Pane layoutX="109.0" layoutY="206.0" prefHeight="20.0" prefWidth="36.0" style="-fx-background-color: #F1FAEE; -fx-background-radius: 25;">
+                           <effect>
+                              <DropShadow height="10.0" radius="4.5" width="10.0">
+                                 <color>
+                                    <Color opacity="0.2581261992454529" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Pane>
+                        <Circle fill="#000000b2" layoutX="119.0" layoutY="216.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.20076481997966766" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Circle>
+                        <Circle fill="#000000b2" layoutX="135.0" layoutY="216.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.20076481997966766" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Circle>
+                        <Arc fx:id="MenuSmallLeftArrow1" fill="#1d3557" layoutX="24.0" layoutY="191.0" length="60.0" opacity="0.4" radiusX="20.0" radiusY="20.0" rotate="75.0" scaleX="0.7" scaleY="0.7" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                        <Arc fx:id="MenuSmallRightArrow1" fill="#660033" layoutX="215.0" layoutY="188.0" length="60.0" opacity="0.4" radiusX="20.0" radiusY="20.0" rotate="-105.0" scaleX="0.7" scaleY="0.7" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                        <Line endX="105.05842590332031" endY="196.49769592285156" layoutX="26.0" layoutY="20.0" startX="90.27183532714844" startY="196.49769592285156" strokeWidth="2.0" />
+                        <Circle fx:id="tinyCircle0" fill="#4c8aadcd" layoutX="95.0" layoutY="138.0" radius="10.0" stroke="#1d3557" strokeType="INSIDE" strokeWidth="3.0">
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.19694072008132935" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Circle>
+                        <Circle fx:id="tinyCircle1" fill="#4c8aadcd" layoutX="119.0" layoutY="216.0" radius="10.0" stroke="#1d3557" strokeType="INSIDE" strokeWidth="3.0">
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.19694072008132935" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Circle>
+                     </children>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Pane>
+                  <Button fx:id="UndoB" layoutX="93.0" layoutY="504.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="62.0" style="-fx-background-color: #F1FAEE;" text="Undo">
+                     <font>
+                        <Font name="Courier New Bold" size="13.0" />
+                     </font>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.27000001072883606" />
+                           </color>
+                        </DropShadow>
+                     </effect></Button>
+                  <Button fx:id="RedoB" layoutX="166.0" layoutY="504.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="62.0" style="-fx-background-color: #F1FAEE;" text="Redo">
+                     <font>
+                        <Font name="Courier New Bold" size="13.0" />
+                     </font>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.27000001072883606" />
+                           </color>
+                        </DropShadow>
+                     </effect></Button>
+                  <Button fx:id="ZoomIn" layoutX="93.0" layoutY="554.0" mnemonicParsing="false" onAction="#zoomIn" prefHeight="33.0" prefWidth="62.0" style="-fx-background-color: #F1FAEE;" text="+">
+                     <font>
+                        <Font name="Courier New Bold" size="13.0" />
+                     </font>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.27000001072883606" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Button>
+                  <Button fx:id="ZoomOut" layoutX="166.0" layoutY="554.0" mnemonicParsing="false" onAction="#zoomOut" prefHeight="33.0" prefWidth="62.0" style="-fx-background-color: #F1FAEE;" text="-">
+                     <font>
+                        <Font name="Courier New Bold" size="13.0" />
+                     </font>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.27000001072883606" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Button>
+               </children>
+               <effect>
+                  <DropShadow />
+               </effect></Pane>
+            </left>
+            <right>
+                <Pane prefHeight="1080.0" prefWidth="320.0" style="-fx-background-color: A8DADC;" BorderPane.alignment="CENTER">
+               <effect>
+                  <DropShadow />
+               </effect>
+               <children>
+                  <Pane prefHeight="1080.0" prefWidth="14.0" style="-fx-background-color: #72a6b9;">
+                     <effect>
+                        <Bloom />
+                     </effect>
+                  </Pane>
+                  <Pane layoutX="38.0" layoutY="28.0" prefHeight="26.0" prefWidth="253.0" style="-fx-background-color: A8DADC;">
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.20999999344348907" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Pane>
+                  <TitledPane fx:id="manual" animated="false" expanded="false" layoutX="38.0" layoutY="28.0" stylesheets="@styles.css" text="MANUAL">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="900.0" prefWidth="251.0">
+                           <children>
+                              <Pane layoutX="-16.0" layoutY="-1.0" prefHeight="902.0" prefWidth="278.0" style="-fx-background-color: #A8DADC;">
+                                 <children>
+                                    <Pane layoutY="-25.0" prefHeight="26.0" prefWidth="269.0" style="-fx-background-color: e0f2ea;">
+                                       <effect>
+                                          <DropShadow>
+                                             <color>
+                                                <Color opacity="0.20999999344348907" />
+                                             </color>
+                                          </DropShadow>
+                                       </effect>
+                                    </Pane>
+                                    <Pane layoutX="22.0" layoutY="16.0" prefHeight="877.0" prefWidth="239.0" style="-fx-background-radius: 40; -fx-background-color: e0f2ea;">
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                       <children>
+                                          <Pane layoutX="6.0" layoutY="9.0" prefHeight="858.0" prefWidth="222.0">
+                                             <children>
+                                                <TextFlow layoutX="9.0" layoutY="9.0" prefHeight="458.0" prefWidth="205.0">
+                                                   <children>
+                                                      <Label text="Welcome to Nine Men's Morris!" textAlignment="CENTER" wrapText="true">
+                                                         <font>
+                                                            <Font name="Courier New Bold Italic" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="10.0" layoutY="10.0" prefHeight="38.0" prefWidth="204.0" text="• Aim: Form mills (three pieces in a row) " wrapText="true">
+                                                         <font>
+                                                            <Font name="Courier New Bold" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="10.0" layoutY="25.0" prefHeight="53.0" prefWidth="204.0" text="• Once you form a mill, you may take one of your opponent's pieces" wrapText="true">
+                                                         <font>
+                                                            <Font name="Courier New Bold" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="10.0" layoutY="169.0" prefHeight="53.0" prefWidth="204.0" text="• But you cannot take a piece that is already in a mill " wrapText="true">
+                                                         <font>
+                                                            <Font name="Courier New Bold" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label prefHeight="42.0" prefWidth="204.0" text="• You win by reducing your opponent to only 2 pieces " wrapText="true">
+                                                         <font>
+                                                            <Font name="Courier New Bold" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="10.0" layoutY="63.0" prefHeight="34.0" prefWidth="204.0" text="Placement Phase:" textAlignment="CENTER" wrapText="true">
+                                                         <font>
+                                                            <Font name="Courier New Bold" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="10.0" layoutY="116.0" prefHeight="39.0" prefWidth="204.0" text="• Players take turns placing a piece into an empty slot " wrapText="true">
+                                                         <font>
+                                                            <Font name="Courier New Bold" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="10.0" layoutY="222.0" prefHeight="31.0" prefWidth="204.0" text="Movement Phase:" textAlignment="CENTER" wrapText="true">
+                                                         <font>
+                                                            <Font name="Courier New Bold" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="10.0" layoutY="256.0" prefHeight="31.0" prefWidth="204.0" text="• All the pieces have been placed" wrapText="true">
+                                                         <font>
+                                                            <Font name="Courier New Bold" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="10.0" layoutY="287.0" prefHeight="63.0" prefWidth="204.0" text="• Players take turns moving one of their pieces to an adjacent slot " wrapText="true">
+                                                         <font>
+                                                            <Font name="Courier New Bold" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="10.0" layoutY="318.0" prefHeight="32.0" prefWidth="204.0" text="Flying Phase:" textAlignment="CENTER" wrapText="true">
+                                                         <font>
+                                                            <Font name="Courier New Bold" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label prefHeight="36.0" prefWidth="204.0" text="• A player has only 3 pieces left" wrapText="true">
+                                                         <font>
+                                                            <Font name="Courier New Bold" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="10.0" layoutY="413.0" prefHeight="36.0" prefWidth="204.0" text="• They can move to any empty slot on the board now" wrapText="true">
+                                                         <font>
+                                                            <Font name="Courier New Bold" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </TextFlow>
+                                                <TextFlow layoutX="11.0" layoutY="601.0" prefHeight="219.0" prefWidth="200.0">
+                                                   <children>
+                                                      <Label prefHeight="30.0" prefWidth="204.0" text="Twelve Men's Morris " wrapText="true">
+                                                         <font>
+                                                            <Font name="Courier New Bold Italic" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label prefHeight="39.0" prefWidth="204.0" text="• Similar to Nine Men's Morris" wrapText="true">
+                                                         <font>
+                                                            <Font name="Courier New Bold" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label prefHeight="40.0" prefWidth="204.0" text="• Players have more pieces (twelve) " wrapText="true">
+                                                         <font>
+                                                            <Font name="Courier New Bold" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label prefHeight="41.0" prefWidth="204.0" text="• You can form mills across the diagonal lines" wrapText="true">
+                                                         <font>
+                                                            <Font name="Courier New Bold" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </TextFlow>
+                                             </children>
+                                          </Pane>
+                                       </children>
+                                    </Pane>
+                                 </children></Pane>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                     <font>
+                        <Font name="Courier New Bold" size="13.0" />
+                     </font>
+                  </TitledPane>
+               </children></Pane>
+            </right>
+        </BorderPane>
+    </children>
+</AnchorPane>
