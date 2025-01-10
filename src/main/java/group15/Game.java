@@ -35,13 +35,14 @@ public class Game {
     public int selectedPiece = -1;
 
     // Undo and redo stacks for storing board states
-    private Stack<Player[]> undoStack = new Stack<>();
-    private Stack<Player[]> redoStack = new Stack<>();
+    private Stack<Move> undoStack = new Stack<>();
+    private Stack<Move> redoStack = new Stack<>();
 
     // Draw conditions
     private Map<String, Integer> boardHistory = new HashMap<>();
     public int moveWithoutCapture = 0;
     public boolean drawAgreed = false;
+    public boolean canUndo = false; // Tracks if undo is allowed for the latest move
 
     // Initialize the game, reset board positions
     public Game() {
@@ -51,35 +52,78 @@ public class Game {
         bot = new EasyBot();
     }
 
-    // Method to set the listener
+
     public void setGameEventListener(GameEventListener listener) {
         this.listener = listener;
     }
 
-    // Method to save current state for undo
+
     public void saveStateForUndo() {
-        undoStack.push(Arrays.copyOf(boardPositions, boardPositions.length));  // Deep copy of board state
-        redoStack.clear();  // Clear redo stack since this is a new action
+        Player[] boardStateCopy = Arrays.copyOf(boardPositions, boardPositions.length);
+        undoStack.push(new Move(selectedPiece, currentPlayer, boardStateCopy, moveCountBlue, moveCountRed, phase));
+        redoStack.clear();
+        canUndo = true;
     }
 
-    // Undo last move
     public boolean undo() {
-        if (!undoStack.isEmpty()) {
-            redoStack.push(Arrays.copyOf(boardPositions, boardPositions.length));  // Save current state to redo stack
-            boardPositions = undoStack.pop();  // Restore previous state
+        if (canUndo && !undoStack.isEmpty()) {
+            Move lastMove = undoStack.pop();
+            redoStack.push(new Move(selectedPiece, currentPlayer, Arrays.copyOf(boardPositions, boardPositions.length), moveCountBlue, moveCountRed, phase));
+
+
+            boardPositions = Arrays.copyOf(lastMove.boardState, lastMove.boardState.length);
+            currentPlayer = lastMove.currentPlayer;
+            moveCountBlue = lastMove.moveCountBlue;
+            moveCountRed = lastMove.moveCountRed;
+            phase = lastMove.phase;
+
+            selectedPiece = -1;
+            canUndo = false;
             return true;
         }
         return false;
     }
 
-    // Redo last undone move
+
     public boolean redo() {
         if (!redoStack.isEmpty()) {
-            undoStack.push(Arrays.copyOf(boardPositions, boardPositions.length));  // Save current state to undo stack
-            boardPositions = redoStack.pop();  // Restore state from redo stack
+            Move lastMove = redoStack.pop();
+            undoStack.push(new Move(selectedPiece, currentPlayer, Arrays.copyOf(boardPositions, boardPositions.length), moveCountBlue, moveCountRed, phase));
+
+
+            boardPositions = Arrays.copyOf(lastMove.boardState, lastMove.boardState.length);
+            currentPlayer = lastMove.currentPlayer;
+            moveCountBlue = lastMove.moveCountBlue;
+            moveCountRed = lastMove.moveCountRed;
+            phase = lastMove.phase;
+
+            selectedPiece = -1;
+            canUndo = true;
             return true;
         }
         return false;
+    }
+    public Stack<Move> getRedoStack() {
+        return redoStack;
+    }
+
+    // Represents a move for undo/redo
+    private static class Move {
+        int position;
+        Player currentPlayer;
+        Player[] boardState;
+        int moveCountBlue;
+        int moveCountRed;
+        int phase;
+
+        Move(int position, Player currentPlayer, Player[] boardState, int moveCountBlue, int moveCountRed, int phase) {
+            this.position = position;
+            this.currentPlayer = currentPlayer;
+            this.boardState = boardState;
+            this.moveCountBlue = moveCountBlue;
+            this.moveCountRed = moveCountRed;
+            this.phase = phase;
+        }
     }
 
     // Get valid moves for a piece at a position (returns empty neighbors or all empty spots during flying phase)
@@ -320,25 +364,25 @@ public class Game {
     }
 
     private final Map<String, Supplier<Boolean>> drawDetectors = Map.of(
-      "Threefold Repetition", () -> boardHistory.get(currentBoard()) >= 3,
-      "Insufficient Material", () -> {
-          int bluePieces = getPieceCount(Player.BLUE);
-          int redPieces = getPieceCount(Player.RED);
-          System.out.println("BLUE" + bluePieces + "RED" + redPieces);
-          return bluePieces == 3 && redPieces == 3;
-      },
-      "50-Move Rule", () -> moveWithoutCapture >= 50,
-      "No Legal Moves", () -> {
-          boolean blueHasValidMoves = hasValidMoves(Player.BLUE);
-          boolean redHasValidMoves = hasValidMoves(Player.RED);
-          return !blueHasValidMoves && !redHasValidMoves;
-      },
-      "Agreement of Both Players", () -> drawAgreed,
-      "Repetition in Endgame with Limited Pieces", () -> {
-          int bluePieces = getPieceCount(Player.BLUE);
-          int redPieces = getPieceCount(Player.RED);
-          return bluePieces == 3 && redPieces == 3 && boardHistory.getOrDefault(currentBoard(), 0) >= 3;
-      }
+            "Threefold Repetition", () -> boardHistory.get(currentBoard()) >= 3,
+            "Insufficient Material", () -> {
+                int bluePieces = getPieceCount(Player.BLUE);
+                int redPieces = getPieceCount(Player.RED);
+                System.out.println("BLUE" + bluePieces + "RED" + redPieces);
+                return bluePieces == 3 && redPieces == 3;
+            },
+            "50-Move Rule", () -> moveWithoutCapture >= 50,
+            "No Legal Moves", () -> {
+                boolean blueHasValidMoves = hasValidMoves(Player.BLUE);
+                boolean redHasValidMoves = hasValidMoves(Player.RED);
+                return !blueHasValidMoves && !redHasValidMoves;
+            },
+            "Agreement of Both Players", () -> drawAgreed,
+            "Repetition in Endgame with Limited Pieces", () -> {
+                int bluePieces = getPieceCount(Player.BLUE);
+                int redPieces = getPieceCount(Player.RED);
+                return bluePieces == 3 && redPieces == 3 && boardHistory.getOrDefault(currentBoard(), 0) >= 3;
+            }
     );
 
     public void checkDrawConditions() {
@@ -354,17 +398,17 @@ public class Game {
             }
         }
     }
-    
+
     // Helper method to reset the counter for the 50-move rule when a mill is formed
     public void resetMoveWithoutCapture() {
         moveWithoutCapture = 0;
     }
-    
+
     // Helper method to increment the counter for the 50-move rule when no mill is formed
     public void incrementMoveWithoutCapture() {
         moveWithoutCapture++;
     }
-    
+
     // Helper method for players to agree on a draw
     public void agreeToDraw() {
         drawAgreed = true;
@@ -382,7 +426,7 @@ public class Game {
         }
         return false;  // No valid moves available
     }
-    
+
 
     // Switch between players
     private void switchPlayer() {

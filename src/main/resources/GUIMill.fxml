@@ -25,6 +25,16 @@
             <center>
                 <Pane prefHeight="1080.0" prefWidth="1280.0" style="-fx-background-color: #F1FAEE;" BorderPane.alignment="CENTER">
                     <children>
+                  <Pane fx:id="turnIndicatorGlowBlue" layoutX="66.0" layoutY="20.0" opacity="0.7" prefHeight="941.0" prefWidth="939.0" style="-fx-background-color: #457b9d; -fx-background-radius: 70;">
+                     <effect>
+                        <GaussianBlur radius="50.0" />
+                     </effect>
+                  </Pane>
+                  <Pane fx:id="turnIndicatorGlowRed" layoutX="66.0" layoutY="20.0" opacity="0.7" prefHeight="941.0" prefWidth="939.0" style="-fx-background-color: e63946; -fx-background-radius: 70;">
+                     <effect>
+                        <GaussianBlur radius="50.0" />
+                     </effect>
+                  </Pane>
                         <Pane fx:id="boardPane" layoutX="87.0" layoutY="40.0" prefHeight="900.0" prefWidth="900.0" style="-fx-background-color: e0f2ea; -fx-background-radius: 50;">
                             <children>
                                <StackPane fx:id="indicator0" layoutX="-4.0" layoutY="-7.0" prefHeight="100.0" prefWidth="100.0">
@@ -1618,7 +1628,7 @@
             <left>
                 <Pane prefHeight="1080.0" prefWidth="320.0" style="-fx-background-color: A8DADC;" BorderPane.alignment="CENTER">
                <children>
-                  <ToggleButton fx:id="switchVersion" layoutX="91.0" layoutY="341.0" mnemonicParsing="false" onAction="#switchVersionAction" prefHeight="36.0" prefWidth="139.0" style="-fx-background-color: #F1FAEE;" text="Switch Version">
+                  <ToggleButton fx:id="switchVersion" disable="true" layoutX="91.0" layoutY="291.0" mnemonicParsing="false" onAction="#switchVersionAction" opacity="0.0" prefHeight="36.0" prefWidth="139.0" style="-fx-background-color: #F1FAEE;" text="Switch Version">
                      <effect>
                         <DropShadow>
                            <color>
@@ -1634,7 +1644,7 @@
                         <Bloom />
                      </effect>
                   </Pane>
-                  <ToggleButton fx:id="showIndex" layoutX="91.0" layoutY="391.0" mnemonicParsing="false" onAction="#showIndexAction" prefHeight="36.0" prefWidth="139.0" style="-fx-background-color: #F1FAEE;" text="Toggle Index">
+                  <ToggleButton fx:id="showIndex" layoutX="91.0" layoutY="341.0" mnemonicParsing="false" onAction="#showIndexAction" prefHeight="36.0" prefWidth="139.0" style="-fx-background-color: #F1FAEE;" text="Toggle Index">
                      <effect>
                         <DropShadow>
                            <color>
@@ -1645,7 +1655,7 @@
                      <font>
                         <Font name="Courier New Bold" size="13.0" />
                      </font></ToggleButton>
-                  <ToggleButton fx:id="TestIndicator" layoutX="91.0" layoutY="441.0" mnemonicParsing="false" onAction="#TestIndicatorAction" prefHeight="36.0" prefWidth="139.0" style="-fx-background-color: #F1FAEE;" text="Test Position">
+                  <ToggleButton fx:id="TestIndicator" layoutX="91.0" layoutY="391.0" mnemonicParsing="false" onAction="#TestIndicatorAction" prefHeight="36.0" prefWidth="139.0" style="-fx-background-color: #F1FAEE;" text="Test Position">
                      <effect>
                         <DropShadow>
                            <color>
@@ -1717,7 +1727,7 @@
                         </Pane>
                         <Arc fx:id="MenuSmallLeftArrow0" fill="#1d3557" layoutX="23.0" layoutY="112.0" length="60.0" opacity="0.4" radiusX="20.0" radiusY="20.0" rotate="75.0" scaleX="0.7" scaleY="0.7" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
                         <Arc fx:id="MenuSmallRightArrow0" fill="#660033" layoutX="215.0" layoutY="109.0" length="60.0" opacity="0.4" radiusX="20.0" radiusY="20.0" rotate="-105.0" scaleX="0.7" scaleY="0.7" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
-                        <Pane layoutX="85.0" layoutY="128.0" prefHeight="19.0" prefWidth="81.0" style="-fx-background-color: #F1FAEE; -fx-background-radius: 25;">
+                        <Pane layoutX="95.0" layoutY="128.0" prefHeight="19.0" prefWidth="65.0" style="-fx-background-color: #F1FAEE; -fx-background-radius: 25;">
                            <effect>
                               <DropShadow height="10.0" radius="4.5" width="10.0">
                                  <color>
@@ -1726,10 +1736,10 @@
                               </DropShadow>
                            </effect>
                            <children>
-                              <Line endX="54.0" endY="1.52587890625E-5" layoutX="19.0" layoutY="10.0" startX="-8.0" startY="1.52587890625E-5" strokeWidth="2.0" />
+                              <Line endX="35.8873291015625" endY="1.52587890625E-5" layoutX="19.0" layoutY="10.0" startX="-8.0" startY="1.52587890625E-5" strokeWidth="2.0" />
                            </children>
                         </Pane>
-                        <Circle fill="#000000b2" layoutX="95.0" layoutY="138.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
+                        <Circle fill="#000000b2" layoutX="105.0" layoutY="138.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
                            <effect>
                               <DropShadow>
                                  <color>
@@ -1738,7 +1748,7 @@
                               </DropShadow>
                            </effect>
                         </Circle>
-                        <Circle fill="#000000b2" layoutX="110.0" layoutY="138.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
+                        <Circle fill="#000000b2" layoutX="120.0" layoutY="138.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
                            <effect>
                               <DropShadow>
                                  <color>
@@ -1747,7 +1757,7 @@
                               </DropShadow>
                            </effect>
                         </Circle>
-                        <Circle fill="#000000b2" layoutX="125.0" layoutY="138.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
+                        <Circle fill="#000000b2" layoutX="135.0" layoutY="138.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
                            <effect>
                               <DropShadow>
                                  <color>
@@ -1756,16 +1766,7 @@
                               </DropShadow>
                            </effect>
                         </Circle>
-                        <Circle fill="#000000b2" layoutX="140.0" layoutY="138.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
-                           <effect>
-                              <DropShadow>
-                                 <color>
-                                    <Color opacity="0.20076481997966766" />
-                                 </color>
-                              </DropShadow>
-                           </effect>
-                        </Circle>
-                        <Circle fill="#000000b2" layoutX="155.0" layoutY="138.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
+                        <Circle fill="#000000b2" layoutX="150.0" layoutY="138.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
                            <effect>
                               <DropShadow>
                                  <color>
@@ -1790,7 +1791,7 @@
                               </DropShadow>
                            </effect>
                         </Pane>
-                        <Pane layoutX="109.0" layoutY="206.0" prefHeight="20.0" prefWidth="36.0" style="-fx-background-color: #F1FAEE; -fx-background-radius: 25;">
+                        <Pane layoutX="111.0" layoutY="206.0" prefHeight="20.0" prefWidth="36.0" style="-fx-background-color: #F1FAEE; -fx-background-radius: 25;">
                            <effect>
                               <DropShadow height="10.0" radius="4.5" width="10.0">
                                  <color>
@@ -1799,7 +1800,7 @@
                               </DropShadow>
                            </effect>
                         </Pane>
-                        <Circle fill="#000000b2" layoutX="119.0" layoutY="216.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
+                        <Circle fill="#000000b2" layoutX="121.0" layoutY="216.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
                            <effect>
                               <DropShadow>
                                  <color>
@@ -1808,7 +1809,7 @@
                               </DropShadow>
                            </effect>
                         </Circle>
-                        <Circle fill="#000000b2" layoutX="135.0" layoutY="216.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
+                        <Circle fill="#000000b2" layoutX="136.0" layoutY="216.0" radius="4.0" stroke="#660033" strokeType="INSIDE" strokeWidth="0.0">
                            <effect>
                               <DropShadow>
                                  <color>
@@ -1819,8 +1820,8 @@
                         </Circle>
                         <Arc fx:id="MenuSmallLeftArrow1" fill="#1d3557" layoutX="24.0" layoutY="191.0" length="60.0" opacity="0.4" radiusX="20.0" radiusY="20.0" rotate="75.0" scaleX="0.7" scaleY="0.7" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
                         <Arc fx:id="MenuSmallRightArrow1" fill="#660033" layoutX="215.0" layoutY="188.0" length="60.0" opacity="0.4" radiusX="20.0" radiusY="20.0" rotate="-105.0" scaleX="0.7" scaleY="0.7" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
-                        <Line endX="105.05842590332031" endY="196.49769592285156" layoutX="26.0" layoutY="20.0" startX="90.27183532714844" startY="196.49769592285156" strokeWidth="2.0" />
-                        <Circle fx:id="tinyCircle0" fill="#4c8aadcd" layoutX="95.0" layoutY="138.0" radius="10.0" stroke="#1d3557" strokeType="INSIDE" strokeWidth="3.0">
+                        <Line endX="105.05842590332031" endY="196.49769592285156" layoutX="30.0" layoutY="19.0" startX="90.27183532714844" startY="196.49769592285156" strokeWidth="2.0" />
+                        <Circle fx:id="tinyCircle0" fill="#4c8aadcd" layoutX="105.0" layoutY="138.0" radius="10.0" stroke="#1d3557" strokeType="INSIDE" strokeWidth="3.0">
                            <effect>
                               <DropShadow>
                                  <color>
@@ -1829,7 +1830,7 @@
                               </DropShadow>
                            </effect>
                         </Circle>
-                        <Circle fx:id="tinyCircle1" fill="#4c8aadcd" layoutX="119.0" layoutY="216.0" radius="10.0" stroke="#1d3557" strokeType="INSIDE" strokeWidth="3.0">
+                        <Circle fx:id="tinyCircle1" fill="#4c8aadcd" layoutX="121.0" layoutY="216.0" radius="10.0" stroke="#1d3557" strokeType="INSIDE" strokeWidth="3.0">
                            <effect>
                               <DropShadow>
                                  <color>
@@ -1843,7 +1844,7 @@
                         <DropShadow />
                      </effect>
                   </Pane>
-                  <Button fx:id="UndoB" layoutX="93.0" layoutY="504.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="62.0" style="-fx-background-color: #F1FAEE;" text="Undo">
+                  <Button fx:id="UndoB" layoutX="93.0" layoutY="444.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="62.0" style="-fx-background-color: #F1FAEE;" text="Undo">
                      <font>
                         <Font name="Courier New Bold" size="13.0" />
                      </font>
@@ -1854,7 +1855,7 @@
                            </color>
                         </DropShadow>
                      </effect></Button>
-                  <Button fx:id="RedoB" layoutX="166.0" layoutY="504.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="62.0" style="-fx-background-color: #F1FAEE;" text="Redo">
+                  <Button fx:id="RedoB" layoutX="166.0" layoutY="444.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="62.0" style="-fx-background-color: #F1FAEE;" text="Redo">
                      <font>
                         <Font name="Courier New Bold" size="13.0" />
                      </font>
@@ -1865,7 +1866,7 @@
                            </color>
                         </DropShadow>
                      </effect></Button>
-                  <Button fx:id="ZoomIn" layoutX="93.0" layoutY="554.0" mnemonicParsing="false" onAction="#zoomIn" prefHeight="33.0" prefWidth="62.0" style="-fx-background-color: #F1FAEE;" text="+">
+                  <Button fx:id="ZoomIn" layoutX="93.0" layoutY="494.0" mnemonicParsing="false" onAction="#zoomIn" prefHeight="33.0" prefWidth="62.0" style="-fx-background-color: #F1FAEE;" text="+">
                      <font>
                         <Font name="Courier New Bold" size="13.0" />
                      </font>
@@ -1877,7 +1878,7 @@
                         </DropShadow>
                      </effect>
                   </Button>
-                  <Button fx:id="ZoomOut" layoutX="166.0" layoutY="554.0" mnemonicParsing="false" onAction="#zoomOut" prefHeight="33.0" prefWidth="62.0" style="-fx-background-color: #F1FAEE;" text="-">
+                  <Button fx:id="ZoomOut" layoutX="166.0" layoutY="494.0" mnemonicParsing="false" onAction="#zoomOut" prefHeight="33.0" prefWidth="62.0" style="-fx-background-color: #F1FAEE;" text="-">
                      <font>
                         <Font name="Courier New Bold" size="13.0" />
                      </font>

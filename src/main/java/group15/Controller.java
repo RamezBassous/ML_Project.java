@@ -32,12 +32,13 @@ public class Controller {
     private static final String BLUE_COLOR = "-fx-stroke: #457b9d;";
     private static final String RED_COLOR = "-fx-stroke: #e63946;";
     private static final String BLACK_COLOR = "-fx-stroke: black;";
+
     // MENU OBJECTS IMPORTS
     @FXML
     private AnchorPane anchorMain;
 
     @FXML
-    private Pane GameMenu, DrawPopUp, WinPopUpBlue, WinPopUpRed, bluePlayerWinsBox, redPlayerWinsBox, drawBox;
+    private Pane GameMenu, DrawPopUp, WinPopUpBlue, WinPopUpRed, bluePlayerWinsBox, redPlayerWinsBox, drawBox, turnIndicatorGlowBlue, turnIndicatorGlowRed;
 
     @FXML
     private Circle MenuBigLeftArrow, MenuBigRightArrow, tinyCircle0, tinyCircle1;
@@ -121,6 +122,10 @@ public class Controller {
     @FXML
     private TitledPane manual;
 
+    private int currentGameModeIndex = 0; // Index to track the current mode
+    private int currentBotMode = 0; // Tracks which bot mode is active (0 = first bot, 1 = second bot, 2 = third bot)
+
+
     // Define scaling factors
     private static final double SCALE_FACTOR = 1.1;
     private Stage primaryStage; // Holds reference to the main stage
@@ -128,6 +133,7 @@ public class Controller {
 
     @FXML
     public void initialize() {
+
         gameManager = new GameManager(3, new GameEventListener() {
             @Override
             public void onGameWon(String winner) {
@@ -174,6 +180,8 @@ public class Controller {
         // Add listeners for Undo and Redo buttons
         UndoB.setOnAction(this::handleUndoAction);
         RedoB.setOnAction(this::handleRedoAction);
+
+        updateGameMode();
     }
 
     //Initializes UI elements by setting initial visibility and states.
@@ -198,6 +206,12 @@ public class Controller {
         indicators.forEach(indicator -> indicator.setVisible(false));
 
         //Setup Interactive UI Elements
+
+        // Set initial visibility
+        turnIndicatorGlowBlue.setVisible(true); // Blue player starts
+        turnIndicatorGlowRed.setVisible(false);
+        setupPaneAnimation(turnIndicatorGlowBlue);
+        setupPaneAnimation(turnIndicatorGlowRed);
 
         // Setup interactions for Blue on-hand pieces
         for (StackPane onHandBluePiece : onHandBluePieces) {
@@ -259,6 +273,12 @@ public class Controller {
         }
     }
 
+    private void updateUndoRedoButtons() {
+        UndoB.setDisable(!currentGame.canUndo);
+        RedoB.setDisable(currentGame.getRedoStack().isEmpty());
+    }
+
+
     @FXML
     void handleUndoAction(ActionEvent event) {
         if (currentGame.undo()) {
@@ -286,7 +306,27 @@ public class Controller {
             ring.setVisible(true);
             scaleTransition.playFromStart();  // Animate the ring
         }
+    }
 
+    // Set up growing/shrinking animation for the specified pane
+    private void setupPaneAnimation(Pane targetPane) {
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.9), targetPane);
+        scaleTransition.setByX(0.03); // Grow by 3%
+        scaleTransition.setByY(0.03); // Grow by 3%
+        scaleTransition.setAutoReverse(true);
+        scaleTransition.setCycleCount(ScaleTransition.INDEFINITE);
+        scaleTransition.play(); // Start animation
+    }
+
+    // Method to toggle visibility between blue and red turn indicators
+    private void toggleTurnIndicator() {
+        if (currentGame.getCurrentPlayer() == Player.BLUE) {
+            turnIndicatorGlowBlue.setVisible(true);
+            turnIndicatorGlowRed.setVisible(false);
+        } else if (currentGame.getCurrentPlayer() == Player.RED) {
+            turnIndicatorGlowBlue.setVisible(false);
+            turnIndicatorGlowRed.setVisible(true);
+        }
     }
 
     // call only when phase = -1 || -2
@@ -327,21 +367,43 @@ public class Controller {
         scaleTransition.setCycleCount(ScaleTransition.INDEFINITE); // Repeat indefinitely
 
         // Show shadow or ring when the mouse enters the zone
-    zone.setOnMouseEntered(event -> {
-        // Show the shadow if the corresponding position on the board is empty (for both phases)
-        if (currentGame.getBoardPositions()[position] == null) {
-            shadow.setVisible(true);
-            ring.setVisible(false);  // Hide ring if shadow is shown
-            scaleTransition.stop();  // Stop any ring animation
-        } else {
-            // Show the ring for the current player's pieces during the moving and flying phases
-            if (currentGame.getPhase() >= 1 && currentGame.getBoardPositions()[position] == currentGame.getCurrentPlayer()) {
-                ring.setVisible(true);
-                shadow.setVisible(false);  // Don't show shadow if ring is shown
-                scaleTransition.playFromStart(); // Start the animation
-            } else handleOpponentPieceRemoval(scaleTransition, ring, position);
-        }
-    });
+        zone.setOnMouseEntered(event -> {
+            // Get the current phase and player information
+            int currentPhase = currentGame.getPhase();
+            Player currentPlayer = currentGame.getCurrentPlayer();
+            Player pieceOwner = currentGame.getBoardPositions()[position];
+
+            // Reset visibility for shadow and ring
+            shadow.setVisible(false);
+            ring.setVisible(false);
+
+            // Check for deletion phase (-1 or -2)
+            if (currentPhase == -1 && pieceOwner == Player.RED) {
+                // Red piece deletion phase
+                if (!currentGame.formsMill(position, Player.RED)) {
+                    ring.setStyle(RED_COLOR);
+                    ring.setVisible(true);
+                    scaleTransition.playFromStart();
+                }
+            } else if (currentPhase == -2 && pieceOwner == Player.BLUE) {
+                // Blue piece deletion phase
+                if (!currentGame.formsMill(position, Player.BLUE)) {
+                    ring.setStyle(BLUE_COLOR);
+                    ring.setVisible(true);
+                    scaleTransition.playFromStart();
+                }
+            } else if (currentPhase >= 0 && pieceOwner == null) {
+                // Show shadow for empty zones in non-deletion phases
+                shadow.setVisible(true);
+            }
+
+            // Stop the ring animation if it's not visible
+            if (!ring.isVisible()) {
+                scaleTransition.stop();
+                ring.setScaleX(1.0);
+                ring.setScaleY(1.0);
+            }
+        });
 
     // Hide shadow and ring when the mouse exits the zone
     zone.setOnMouseExited(event -> {
@@ -371,7 +433,43 @@ public class Controller {
             scaleTransition.playFromStart();  // Animate the ring
         } else {
             // Hide the ring if it's part of a mill
-            ring.setVisible(false);
+            ring.setVisible(false);zone.setOnMouseEntered(event -> {
+                // Get the current phase and player information
+                int currentPhase = currentGame.getPhase();
+                Player currentPlayer = currentGame.getCurrentPlayer();
+                Player pieceOwner = currentGame.getBoardPositions()[position];
+
+                // Reset visibility for shadow and ring
+                shadow.setVisible(false);
+                ring.setVisible(false);
+
+                // Check for deletion phase (-1 or -2)
+                if (currentPhase == -1 && pieceOwner == Player.RED) {
+                    // Red piece deletion phase
+                    if (!currentGame.formsMill(position, Player.RED)) {
+                        ring.setStyle(RED_COLOR);
+                        ring.setVisible(true);
+                        scaleTransition.playFromStart();
+                    }
+                } else if (currentPhase == -2 && pieceOwner == Player.BLUE) {
+                    // Blue piece deletion phase
+                    if (!currentGame.formsMill(position, Player.BLUE)) {
+                        ring.setStyle(BLUE_COLOR);
+                        ring.setVisible(true);
+                        scaleTransition.playFromStart();
+                    }
+                } else if (currentPhase >= 0 && pieceOwner == null) {
+                    // Show shadow for empty zones in non-deletion phases
+                    shadow.setVisible(true);
+                }
+
+                // Stop the ring animation if it's not visible
+                if (!ring.isVisible()) {
+                    scaleTransition.stop();
+                    ring.setScaleX(1.0);
+                    ring.setScaleY(1.0);
+                }
+            });
         }
     } else if (currentGame.getPhase() == -2 && currentGame.getBoardPositions()[position] == Player.BLUE) {
         // Check if the blue piece can be deleted (not part of a mill)
@@ -620,24 +718,15 @@ public class Controller {
         gameNumText.setText("GAME" + (gameManager.getCurrentGameIndex() + 1));
         pieceNumText.setText((currentGame.isIn12MenMorrisVersion() ? "12 " : "9 ") + "PIECES");
         if (currentGame.isIn12MenMorrisVersion()) {
-            tinyCircle1.setLayoutX(135);
+            tinyCircle1.setLayoutX(137);
         } else {
-            tinyCircle1.setLayoutX(119);
-        }
-
-        // Update Game mode menu bar
-        if(Objects.equals(currentGame.gameMode, "LOCAL 2 PLAYER")){
-            easyBotText.setVisible(false);
-            local2pText.setVisible(true);
-            tinyCircle0.setLayoutX(95);
-        }else{
-            easyBotText.setVisible(true);
-            local2pText.setVisible(false);
-            tinyCircle0.setLayoutX(110);
+            tinyCircle1.setLayoutX(121);
         }
 
         updateLineColors();
         updateOnHandPieces();
+        toggleTurnIndicator();
+        updateUndoRedoButtons();
     }
 
 
@@ -813,8 +902,7 @@ public class Controller {
         });
     }
 
-
-    private void updateBotBasedOnGameMode() {
+    private void updateBotBasedOnGameMode() { // Adding new bots will happen here (use currentBotMode=0 for easy 1 for mid and 2 for hard)
         if (currentGame.gameMode.equals("PLAYER VS BOT")) {
             if (bot == null) {
                 bot = new EasyBot();
@@ -824,23 +912,56 @@ public class Controller {
         }
     }
 
+
+    // Method to update the game mode and UI based on the current index
+    private void updateGameMode() {
+        switch (currentGameModeIndex) {
+            case 0: // LOCAL 2 PLAYER
+                currentGame.gameMode = "LOCAL 2 PLAYER";
+                easyBotText.setVisible(false);
+                local2pText.setVisible(true);
+                tinyCircle0.setLayoutX(105);
+                break;
+            case 1: // PLAYER VS BOT - Easy
+                currentGame.gameMode = "PLAYER VS BOT";
+                currentBotMode = 0; // Easy Bot
+                easyBotText.setText("Easy Bot");
+                easyBotText.setVisible(true);
+                local2pText.setVisible(false);
+                tinyCircle0.setLayoutX(120);
+                break;
+            case 2: // PLAYER VS BOT - Mid
+                currentGame.gameMode = "PLAYER VS BOT";
+                currentBotMode = 1; // Mid Bot
+                easyBotText.setText("Mid Bot");
+                easyBotText.setVisible(true);
+                local2pText.setVisible(false);
+                tinyCircle0.setLayoutX(135);
+                break;
+            case 3: // PLAYER VS BOT - Hard
+                currentGame.gameMode = "PLAYER VS BOT";
+                currentBotMode = 2; // Hard Bot
+                easyBotText.setText("Hard Bot");
+                easyBotText.setVisible(true);
+                local2pText.setVisible(false);
+                tinyCircle0.setLayoutX(150);
+                break;
+        }
+        updateBotBasedOnGameMode(); // Update the bot behavior if applicable
+    }
+
+
     private void setupSmallArrowAnimations() {
-        // Small left arrow 0 behavior (similar to big left arrow)
+        // Small left arrow 0 behavior (cycles backward through all game modes)
         MenuSmallLeftArrow0.setOnMouseClicked(event -> {
-            currentGame.gameMode = "LOCAL 2 PLAYER";
-            easyBotText.setVisible(false);
-            local2pText.setVisible(true);
-            tinyCircle0.setLayoutX(95);
-            updateBotBasedOnGameMode();
+            currentGameModeIndex = (currentGameModeIndex - 1 + 4) % 4; // Circular decrement for game modes
+            updateGameMode();
         });
 
-        // Small right arrow 0 behavior (similar to big right arrow)
+        // Small right arrow 0 behavior (cycles forward through all game modes)
         MenuSmallRightArrow0.setOnMouseClicked(event -> {
-            currentGame.gameMode = "PLAYER VS BOT";
-            easyBotText.setVisible(true);
-            local2pText.setVisible(false);
-            tinyCircle0.setLayoutX(110);
-            updateBotBasedOnGameMode();
+            currentGameModeIndex = (currentGameModeIndex + 1) % 4; // Circular increment for game modes
+            updateGameMode();
         });
 
         // Small left arrow 1 toggles version using the wrapper
