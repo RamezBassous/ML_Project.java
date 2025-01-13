@@ -369,7 +369,9 @@ public class Game {
                 int bluePieces = getPieceCount(Player.BLUE);
                 int redPieces = getPieceCount(Player.RED);
                 System.out.println("BLUE" + bluePieces + "RED" + redPieces);
-                return bluePieces == 3 && redPieces == 3;
+                boolean bothPlayersPlacedAllPieces= isIn12MenMorrisVersion() ?
+                  moveCountBlue == 12 && moveCountRed == 12 : moveCountBlue == 9 && moveCountRed == 9;
+                return bluePieces == 3 && redPieces == 3 && bothPlayersPlacedAllPieces;
             },
             "50-Move Rule", () -> moveWithoutCapture >= 50,
             "No Legal Moves", () -> {
