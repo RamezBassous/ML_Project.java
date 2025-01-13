@@ -27,7 +27,6 @@ public class RandomBot implements Bot {
             gameOri.boardPositions[i] = (game.boardPositions[i] != null) ? game.boardPositions[i].getIndex() : 0;
         }
         gameOri.gameMode = game.gameMode;
-        gameOri.in12MenMorrisVersion = game.in12MenMorrisVersion;
         gameOri.phase = game.phase;
         gameOri.moveCountBlue = game.placedPiecesBlue;
         gameOri.moveCountRed = game.placedPiecesRed;

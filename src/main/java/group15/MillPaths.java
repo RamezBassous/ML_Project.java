@@ -1,6 +1,6 @@
 package group15;
 
-public class MillPaths {
+class MillPaths {
 
   private static final int[][][] NINE_MEN_MILL_PATHS = {
     {{0, 1, 2}, {0, 9, 21}},     // Position 0

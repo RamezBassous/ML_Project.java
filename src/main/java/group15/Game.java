@@ -14,12 +14,14 @@ public class Game {
     // Game board positions: null = empty
     public Player[] boardPositions = new Player[24];
 
+    public GameBoard getBoardGraph() {
+        return gameBoard;
+    }
+
     // The boardGraph storing vertices and edges (G(V,E) as we know it)
-    private Map<Integer, List<Integer>> boardGraph;  // see initializeBoardGraph() for adjacency list
+    private GameBoard gameBoard;  // see initializeBoardGraph() for adjacency list
 
     public String gameMode = "LOCAL 2 PLAYER"; // for now only mode
-
-    public boolean in12MenMorrisVersion = false;
 
     public int phase = 0; // 0 = placing phase, 1 = moving phase, 2 = flying phase
 
@@ -47,7 +49,7 @@ public class Game {
     // Initialize the game, reset board positions
     public Game() {
         resetBoard();
-        boardGraph = BoardGraphFactory.get(in12MenMorrisVersion);
+        gameBoard = GameBoardFactory.get(false);
         phase = 0;  // Start in the placing phase
         bot = new EasyBot();
     }
@@ -139,26 +141,18 @@ public class Game {
             }
         } else {
             // Regular moving phase, only allow adjacent moves
-            if (boardGraph.containsKey(position)) {
-                for (Integer neighbor : boardGraph.get(position)) {
-                    if (boardPositions[neighbor] == null) { // If the neighbor position is empty
-                        validMoves.add(neighbor);
-                    }
+            for (Integer neighbor : gameBoard.getNeighbors(position)) {
+                if (boardPositions[neighbor] == null) { // If the neighbor position is empty
+                    validMoves.add(neighbor);
                 }
             }
         }
         return validMoves;
     }
 
-    // Check if a move forms a mill (checks along the path for a mill)
-
-    public int[][][] getMillPaths() {
-        return MillPaths.get(in12MenMorrisVersion);
-    }
-
     public boolean formsMill(int position, Player player) {
         // Iterate through each mill path that includes this position
-        for (int[] path : getMillPaths()[position]) {
+        for (int[] path : gameBoard.getMillPaths()[position]) {
             // Check if all positions in this mill path are occupied by the same player
             if (boardPositions[path[0]] == player && boardPositions[path[1]] == player && boardPositions[path[2]] == player) {
                 return true; // Mill formed
@@ -215,7 +209,7 @@ public class Game {
             }
 
             // Check if both players have placed all pieces (9 for 9 Men’s Morris, 12 for 12 Men’s Morris)
-            int requiredPieces = in12MenMorrisVersion ? 12 : 9;
+            int requiredPieces = gameBoard.getRequiredPieces();
             if (placedPiecesBlue == requiredPieces && placedPiecesRed == requiredPieces) {
                 phase = 1; // Transition to the moving phase
                 System.out.println("Transitioning to the moving phase!");
@@ -299,7 +293,7 @@ public class Game {
                 phase = 0;
 
                 // Check if both players have placed all pieces (9 for 9 Men’s Morris, 12 for 12 Men’s Morris)
-                int requiredPieces = in12MenMorrisVersion ? 12 : 9;
+                int requiredPieces = gameBoard.getRequiredPieces();
                 if (placedPiecesBlue == requiredPieces && placedPiecesRed == requiredPieces) {
                     phase = 1; // Transition to the moving phase
                     System.out.println("Transitioning to the moving phase!");
@@ -454,13 +448,12 @@ public class Game {
 
     // Getter for in12MenMorrisVersion
     public boolean isIn12MenMorrisVersion() {
-        return in12MenMorrisVersion;
+        return gameBoard.isIn12MenVer();
     }
 
     // Setter for in12MenMorrisVersion
     public void setIn12MenMorrisVersion(boolean in12MenMorrisVersion) {
-        this.in12MenMorrisVersion = in12MenMorrisVersion;
-        this.boardGraph = BoardGraphFactory.get(in12MenMorrisVersion);
+        this.gameBoard = GameBoardFactory.get(in12MenMorrisVersion);
     }
 
     // Getter for currentPlayer
@@ -511,7 +504,7 @@ public class Game {
 
     public boolean isInFlyingPhase() {
         int placedPieces = currentPlayer == Player.BLUE ? placedPiecesBlue : placedPiecesRed;
-        int initialPieceCount = isIn12MenMorrisVersion() ? 12 : 9;
+        int initialPieceCount = gameBoard.getRequiredPieces();
         boolean playerUsedAllPieces = initialPieceCount == placedPieces;
         int piecesOnBoard = getPiecesOnBoardCount(currentPlayer);
 

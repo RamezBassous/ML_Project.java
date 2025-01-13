@@ -3,10 +3,7 @@ package group.bot;
 import group15.Game;
 import group15.Player;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import group15.MillPaths;
 
 public class AlphaBetaBot implements Bot {
     private int move_to = -1;
@@ -133,7 +130,7 @@ public class AlphaBetaBot implements Bot {
     }
 
     private boolean placePiece_iSterminal(GameState state) {
-        return state.moveCountBlue == state.requiredPieces && state.moveCountRed == state.requiredPieces;
+        return state.moveCountBlue == state.gameBoard.getRequiredPieces() && state.moveCountRed == state.gameBoard.getRequiredPieces();
     }
 
     public boolean hasNeighbour(GameState state, int position) {
@@ -154,7 +151,7 @@ public class AlphaBetaBot implements Bot {
     public int getHeuristicScore(GameState state, Player player) {
         Player other_player = player == Player.RED ? Player.BLUE : Player.RED;
         int score = 0;
-        int [][] paths = get(state.in12MenMorrisVersion);
+        int [][] paths = get(state.gameBoard.isIn12MenVer());
         for (int[] path : paths) {
             if (state.boardPositions[path[0]] == player && state.boardPositions[path[1]] == player && state.boardPositions[path[2]] == player) {
                 score += 1000;
@@ -383,7 +380,7 @@ public class AlphaBetaBot implements Bot {
     public int movePiece_getHeuristicScore(GameState state, Player player) {
         Player other_player = player == Player.RED ? Player.BLUE : Player.RED;
         int score = 0;
-        int [][] paths = get(state.in12MenMorrisVersion);
+        int [][] paths = get(state.gameBoard.isIn12MenVer());
         for (int[] path : paths) {
             if (state.boardPositions[path[0]] == player && state.boardPositions[path[1]] == player && state.boardPositions[path[2]] == player) {
                 score += 1000;
@@ -453,7 +450,7 @@ public class AlphaBetaBot implements Bot {
         Player player = state.currentPlayer;
         List<int []> actions = state.selectActions(player);
         //Player other_player = player == Player.RED ? Player.BLUE : Player.RED;
-        int [][] paths = get(state.in12MenMorrisVersion);
+        int [][] paths = get(state.gameBoard.isIn12MenVer());
         for (int[] path : paths) {
             for (int[] move : actions) {
                 if ((state.boardPositions[path[0]] == player && state.boardPositions[path[1]] == player && path[2] == move[1] && path[0] != move[0] && path[1] != move[0])
@@ -480,7 +477,7 @@ public class AlphaBetaBot implements Bot {
         Player player = state.currentPlayer;
         List<int []> actions = state.selectActions(player);
         //Player other_player = player == Player.RED ? Player.BLUE : Player.RED;
-        int [][] paths = get(state.in12MenMorrisVersion);
+        int [][] paths = get(state.gameBoard.isIn12MenVer());
         for (int[] path : paths) {
             if (state.boardPositions[path[0]] == player && state.boardPositions[path[1]] == player && state.boardPositions[path[2]] == player) {
                 for (int[] move : actions) {

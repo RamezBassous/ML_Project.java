@@ -91,7 +91,7 @@ public class GameSituation extends GameOri {
             }
 
             // Check if both players have placed all pieces (9 for 9 Men’s Morris, 12 for 12 Men’s Morris)
-            int requiredPieces = in12MenMorrisVersion ? 12 : 9;
+            int requiredPieces = getBoardGraph().getRequiredPieces();
 
             if (moveCountBlue+ deletedCountBlue == requiredPieces &&
                     moveCountRed + deletedCountRed == requiredPieces) {
@@ -208,7 +208,7 @@ public class GameSituation extends GameOri {
                 phase = 0;
 
                 // Check if both players have placed all pieces (9 for 9 Men’s Morris, 12 for 12 Men’s Morris)
-                int requiredPieces = in12MenMorrisVersion ? 12 : 9;
+                int requiredPieces = getBoardGraph().getRequiredPieces();
                 if (moveCountBlue + deletedCountBlue == requiredPieces && moveCountRed + deletedCountRed == requiredPieces) {
                     phase = 1; // Transition to the moving phase
                     //System.out.println("Transitioning to the moving phase!");
@@ -230,7 +230,7 @@ public class GameSituation extends GameOri {
                 phase = 0;
 
                 // Check if both players have placed all pieces (9 for 9 Men’s Morris, 12 for 12 Men’s Morris)
-                int requiredPieces = in12MenMorrisVersion ? 12 : 9;
+                int requiredPieces = getBoardGraph().getRequiredPieces();
                 if (moveCountBlue + deletedCountBlue == requiredPieces &&
                         moveCountRed + deletedCountRed == requiredPieces) {
                     phase = 1; // Transition to the moving phase
@@ -256,7 +256,7 @@ public class GameSituation extends GameOri {
         int redPieceCount = getPieceCount(2);  // Red player is 2
 
         // Condition 1: A player has less than 3 pieces (loss condition)
-        int requiredPieces = in12MenMorrisVersion ? 12 : 9;
+        int requiredPieces = getBoardGraph().getRequiredPieces();
         //add moveCountBlue/moveCountRed == requiredPieces check
         if (moveCountBlue + deletedCountBlue == requiredPieces && bluePieceCount < 3) {
             System.out.println("Red wins! Blue has less than 3 pieces.");
@@ -307,7 +307,7 @@ public class GameSituation extends GameOri {
         int redPieces = getPieceCount(2);
         System.out.println("BLUE "+ bluePieces + "RED " + redPieces);
 
-        int requiredPieces = in12MenMorrisVersion ? 12 : 9;
+        int requiredPieces = getBoardGraph().getRequiredPieces();
         //add moveCountBlue/moveCountRed == requiredPieces check
         if (moveCountBlue + deletedCountBlue == requiredPieces &&  bluePieces == 3 &&
                 moveCountRed +deletedCountRed == requiredPieces &&  redPieces == 3) {

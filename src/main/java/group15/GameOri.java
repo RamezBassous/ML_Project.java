@@ -9,12 +9,14 @@ public class GameOri {
     // Game board positions: 0 = empty, 1 = blue, 2 = red
     public int[] boardPositions = new int[24];
 
+    public GameBoard getBoardGraph() {
+        return gameBoard;
+    }
+
     // The boardGraph storing vertices and edges (G(V,E) as we know it)
-    private Map<Integer, List<Integer>> boardGraph;  // see initializeBoardGraph() for adjacency list
+    private GameBoard gameBoard;  // see initializeBoardGraph() for adjacency list
 
     public String gameMode = "LOCAL 2 PLAYER"; // for now only mode
-
-    public boolean in12MenMorrisVersion = false;
 
     public int phase = 0; // 0 = placing phase, 1 = moving phase, 2 = flying phase
 
@@ -41,7 +43,7 @@ public class GameOri {
     // Initialize the game, reset board positions
     public GameOri() {
         resetBoard();
-        boardGraph = BoardGraphFactory.get(in12MenMorrisVersion);
+        gameBoard = GameBoardFactory.get(false);
         phase = 0;  // Start in the placing phase
     }
 
@@ -90,11 +92,9 @@ public class GameOri {
             }
         } else {
             // Regular moving phase, only allow adjacent moves
-            if (boardGraph.containsKey(position)) {
-                for (Integer neighbor : boardGraph.get(position)) {
-                    if (boardPositions[neighbor] == 0) { // If the neighbor position is empty
-                        validMoves.add(neighbor);
-                    }
+            for (Integer neighbor : gameBoard.getNeighbors(position)) {
+                if (boardPositions[neighbor] == 0) { // If the neighbor position is empty
+                    validMoves.add(neighbor);
                 }
             }
         }
@@ -103,13 +103,9 @@ public class GameOri {
 
     // Check if a move forms a mill (checks along the path for a mill)
 
-    public int[][][] getMillPaths() {
-        return MillPaths.get(in12MenMorrisVersion);
-    }
-
-    public boolean formsMill(int position, int player) {
+   public boolean formsMill(int position, int player) {
         // Iterate through each mill path that includes this position
-        for (int[] path : getMillPaths()[position]) {
+        for (int[] path : gameBoard.getMillPaths()[position]) {
             // Check if all positions in this mill path are occupied by the same player
             if (boardPositions[path[0]] == player && boardPositions[path[1]] == player && boardPositions[path[2]] == player) {
                 return true; // Mill formed
@@ -148,7 +144,7 @@ public class GameOri {
             }
 
             // Check if both players have placed all pieces (9 for 9 Men’s Morris, 12 for 12 Men’s Morris)
-            int requiredPieces = in12MenMorrisVersion ? 12 : 9;
+            int requiredPieces = gameBoard.getRequiredPieces();
             if (moveCountBlue == requiredPieces && moveCountRed == requiredPieces) {
                 phase = 1; // Transition to the moving phase
                 System.out.println("Transitioning to the moving phase!");
@@ -238,7 +234,7 @@ public class GameOri {
                 phase = 0;
 
                 // Check if both players have placed all pieces (9 for 9 Men’s Morris, 12 for 12 Men’s Morris)
-                int requiredPieces = in12MenMorrisVersion ? 12 : 9;
+                int requiredPieces = gameBoard.getRequiredPieces();
                 if (moveCountBlue == requiredPieces && moveCountRed == requiredPieces) {
                     phase = 1; // Transition to the moving phase
                     System.out.println("Transitioning to the moving phase!");
@@ -258,14 +254,14 @@ public class GameOri {
                 phase = 0;
 
                 // Check if both players have placed all pieces (9 for 9 Men’s Morris, 12 for 12 Men’s Morris)
-                int requiredPieces = in12MenMorrisVersion ? 12 : 9;
+                int requiredPieces = gameBoard.getRequiredPieces();
                 if (moveCountBlue == requiredPieces && moveCountRed == requiredPieces) {
                     phase = 1; // Transition to the moving phase
                     System.out.println("Transitioning to the moving phase!");
                 }
                 return true;
             }
-    
+
             return false;
         }
     
@@ -419,16 +415,6 @@ public class GameOri {
     // Setter for boardPositions
     public void setBoardPositions(int[] boardPositions) {
         this.boardPositions = boardPositions;
-    }
-
-    // Getter for in12MenMorrisVersion
-    public boolean isIn12MenMorrisVersion() {
-        return in12MenMorrisVersion;
-    }
-
-    // Setter for in12MenMorrisVersion
-    public void setIn12MenMorrisVersion(boolean in12MenMorrisVersion) {
-        this.in12MenMorrisVersion = in12MenMorrisVersion;
     }
 
     // Getter for currentPlayer

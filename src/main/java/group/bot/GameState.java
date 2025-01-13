@@ -3,50 +3,41 @@ package group.bot;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
-import group15.BoardGraphFactory;
+import group15.GameBoard;
 import group15.Game;
 import group15.Player;
 
 public class GameState {
-    public boolean in12MenMorrisVersion;
-    public int requiredPieces;
     public Player[] boardPositions = new Player[24];
     public Player currentPlayer;
     public int moveCountBlue = 0;
     public int moveCountRed = 0;
-    public Map<Integer, List<Integer>> boardGraph;
+    public GameBoard gameBoard;
 
     public GameState(Game game) {
-        in12MenMorrisVersion = game.in12MenMorrisVersion;
-        requiredPieces = game.in12MenMorrisVersion ? 12 : 9;
+        gameBoard = game.getBoardGraph();
         boardPositions = Arrays.copyOf(game.boardPositions, game.boardPositions.length);
         currentPlayer = game.getCurrentPlayer();
         moveCountBlue = game.placedPiecesBlue;
         moveCountRed = game.placedPiecesRed;
-        boardGraph = BoardGraphFactory.get(in12MenMorrisVersion);
     }
 
     public GameState(GameState state, int position, Player player) {
-        in12MenMorrisVersion = state.in12MenMorrisVersion;
-        requiredPieces = state.requiredPieces;
         boardPositions = Arrays.copyOf(state.boardPositions, state.boardPositions.length);
         boardPositions[position] = player;
         currentPlayer = state.currentPlayer;
         moveCountBlue = state.moveCountBlue;
         moveCountRed = state.moveCountRed;
-        boardGraph = BoardGraphFactory.get(in12MenMorrisVersion);
+        gameBoard = state.gameBoard;
     }
 
     public GameState(GameState state) {
-        in12MenMorrisVersion = state.in12MenMorrisVersion;
-        requiredPieces = state.requiredPieces;
         boardPositions = Arrays.copyOf(state.boardPositions, state.boardPositions.length);
         currentPlayer = state.currentPlayer;
         moveCountBlue = state.moveCountBlue;
         moveCountRed = state.moveCountRed;
-        boardGraph = BoardGraphFactory.get(in12MenMorrisVersion);
+        gameBoard = state.gameBoard;
     }
 
     public List<Integer> actions() {
@@ -79,15 +70,13 @@ public class GameState {
         return result;
     }
 
-    public List<int []> selectActions(Player player) {
-        List<int []> result = new ArrayList<>();
+    public List<int[]> selectActions(Player player) {
+        List<int[]> result = new ArrayList<>();
         for (int position = 0; position < 24; position++) {
             if (boardPositions[position] == player) {
-                if (boardGraph.containsKey(position)) {
-                    for (Integer neighbor : boardGraph.get(position)) {
-                        if (boardPositions[neighbor] == null) { // If the neighbor position is empty
-                            result.add(new int[]{position, neighbor});
-                        }
+                for (Integer neighbor : gameBoard.getNeighbors(position)) {
+                    if (boardPositions[neighbor] == null) { // If the neighbor position is empty
+                        result.add(new int[]{position, neighbor});
                     }
                 }
             }

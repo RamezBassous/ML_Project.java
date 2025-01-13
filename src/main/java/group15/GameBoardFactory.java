@@ -6,9 +6,9 @@ import java.util.Map;
 
 import static java.util.Arrays.asList;
 
-public class BoardGraphFactory {
+public class GameBoardFactory {
 
-  public static Map<Integer, List<Integer>> get(boolean in12Version) {
+  public static GameBoard get(boolean in12Version) {
     Map<Integer, List<Integer>> boardGraph = new HashMap<>();
     // add to vertex i a list of its Neighbors index's
 
@@ -52,6 +52,6 @@ public class BoardGraphFactory {
       boardGraph.put(21, asList(22, 9));
       boardGraph.put(23, asList(22, 14));
     }
-    return boardGraph;
+    return new GameBoard(in12Version, boardGraph);
   }
 }
