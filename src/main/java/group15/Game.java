@@ -460,6 +460,7 @@ public class Game {
     // Setter for in12MenMorrisVersion
     public void setIn12MenMorrisVersion(boolean in12MenMorrisVersion) {
         this.in12MenMorrisVersion = in12MenMorrisVersion;
+        this.boardGraph = BoardGraphFactory.get(in12MenMorrisVersion);
     }
 
     // Getter for currentPlayer

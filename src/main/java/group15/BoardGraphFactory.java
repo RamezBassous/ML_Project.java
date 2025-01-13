@@ -25,7 +25,7 @@ public class BoardGraphFactory {
     boardGraph.put(19, asList(16, 18, 20, 22));
     boardGraph.put(22, asList(21, 19, 23));
 
-    if (!in12Version) {
+    if (in12Version) {
       boardGraph.put(0, asList(1, 9, 3));
       boardGraph.put(2, asList(1, 14, 5));
       boardGraph.put(3, asList(4, 10, 0, 6));
