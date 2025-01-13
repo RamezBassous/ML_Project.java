@@ -4,7 +4,6 @@ import group15.Game;
 import group15.Player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -30,8 +29,8 @@ public class EasyBot implements Bot {
         gameOri.gameMode = game.gameMode;
         gameOri.in12MenMorrisVersion = game.in12MenMorrisVersion;
         gameOri.phase = game.phase;
-        gameOri.moveCountBlue = game.moveCountBlue;
-        gameOri.moveCountRed = game.moveCountRed;
+        gameOri.moveCountBlue = game.placedPiecesBlue;
+        gameOri.moveCountRed = game.placedPiecesRed;
         gameOri.currentPlayer = (game.currentPlayer == Player.BLUE) ? 1: 2;
         gameOri.selectedPiece = game.selectedPiece;
         gameOri.moveWithoutCapture = game.moveWithoutCapture;

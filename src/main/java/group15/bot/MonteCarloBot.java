@@ -162,7 +162,7 @@ public class MonteCarloBot implements Bot {
      */
     private boolean isTerminalState(Game game) {
 
-        return (game.getMoveCountBlue() + game.getMoveCountRed() >= 18)
+        return (game.getPlacedPiecesBlue() + game.getPlacedPiecesRed() >= 18)
                 && (game.getPhase() == 1 || game.getPhase() == 2)
                 && (
                 !hasAnyValidMove(game, Player.BLUE) ||
@@ -476,8 +476,8 @@ public class MonteCarloBot implements Bot {
         copy.setIn12MenMorrisVersion(original.isIn12MenMorrisVersion());
         copy.setPhase(original.getPhase());
         copy.setCurrentPlayer(original.getCurrentPlayer());
-        copy.setMoveCountBlue(original.getMoveCountBlue());
-        copy.setMoveCountRed(original.getMoveCountRed());
+        copy.setPlacedPiecesBlue(original.getPlacedPiecesBlue());
+        copy.setPlacedPiecesRed(original.getPlacedPiecesRed());
         copy.setSelectedPiece(original.getSelectedPiece());
 
         // Copy the board positions

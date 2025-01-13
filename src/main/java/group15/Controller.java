@@ -22,7 +22,6 @@ import javafx.scene.shape.Arc;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import group15.bot.Bot;
 import group15.bot.EasyBot;
@@ -793,8 +792,8 @@ public class Controller {
         }
 
         // Get the current move counts from the Game class
-        int moveCountBlue = currentGame.getMoveCountBlue();
-        int moveCountRed = currentGame.getMoveCountRed();
+        int moveCountBlue = currentGame.getPlacedPiecesBlue();
+        int moveCountRed = currentGame.getPlacedPiecesRed();
 
         // Update the visibility of blue pieces based on move count
         for (int i = 0; i < onHandBluePieces.length; i++) {

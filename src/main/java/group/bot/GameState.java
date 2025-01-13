@@ -1,8 +1,5 @@
 package group.bot;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,8 +23,8 @@ public class GameState {
         requiredPieces = game.in12MenMorrisVersion ? 12 : 9;
         boardPositions = Arrays.copyOf(game.boardPositions, game.boardPositions.length);
         currentPlayer = game.getCurrentPlayer();
-        moveCountBlue = game.moveCountBlue;
-        moveCountRed = game.moveCountRed;
+        moveCountBlue = game.placedPiecesBlue;
+        moveCountRed = game.placedPiecesRed;
         boardGraph = BoardGraphFactory.get(in12MenMorrisVersion);
     }
 

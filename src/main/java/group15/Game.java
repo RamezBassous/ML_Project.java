@@ -2,7 +2,6 @@ package group15;
 import java.util.*;
 import java.util.function.Supplier;
 
-import group15.BoardGraphFactory;
 import group15.bot.Bot;
 import group15.bot.EasyBot;
 
@@ -24,9 +23,9 @@ public class Game {
 
     public int phase = 0; // 0 = placing phase, 1 = moving phase, 2 = flying phase
 
-    public int moveCountBlue = 0;
+    public int placedPiecesBlue = 0;
 
-    public int moveCountRed = 0;
+    public int placedPiecesRed = 0;
 
     // Keeps track of the current player: 1 for blue, 2 for red
     public Player currentPlayer = Player.BLUE;
@@ -61,7 +60,7 @@ public class Game {
 
     public void saveStateForUndo() {
         Player[] boardStateCopy = Arrays.copyOf(boardPositions, boardPositions.length);
-        undoStack.push(new Move(selectedPiece, currentPlayer, boardStateCopy, moveCountBlue, moveCountRed, phase));
+        undoStack.push(new Move(selectedPiece, currentPlayer, boardStateCopy, placedPiecesBlue, placedPiecesRed, phase));
         redoStack.clear();
         canUndo = true;
     }
@@ -69,13 +68,13 @@ public class Game {
     public boolean undo() {
         if (canUndo && !undoStack.isEmpty()) {
             Move lastMove = undoStack.pop();
-            redoStack.push(new Move(selectedPiece, currentPlayer, Arrays.copyOf(boardPositions, boardPositions.length), moveCountBlue, moveCountRed, phase));
+            redoStack.push(new Move(selectedPiece, currentPlayer, Arrays.copyOf(boardPositions, boardPositions.length), placedPiecesBlue, placedPiecesRed, phase));
 
 
             boardPositions = Arrays.copyOf(lastMove.boardState, lastMove.boardState.length);
             currentPlayer = lastMove.currentPlayer;
-            moveCountBlue = lastMove.moveCountBlue;
-            moveCountRed = lastMove.moveCountRed;
+            placedPiecesBlue = lastMove.moveCountBlue;
+            placedPiecesRed = lastMove.moveCountRed;
             phase = lastMove.phase;
 
             selectedPiece = -1;
@@ -89,13 +88,13 @@ public class Game {
     public boolean redo() {
         if (!redoStack.isEmpty()) {
             Move lastMove = redoStack.pop();
-            undoStack.push(new Move(selectedPiece, currentPlayer, Arrays.copyOf(boardPositions, boardPositions.length), moveCountBlue, moveCountRed, phase));
+            undoStack.push(new Move(selectedPiece, currentPlayer, Arrays.copyOf(boardPositions, boardPositions.length), placedPiecesBlue, placedPiecesRed, phase));
 
 
             boardPositions = Arrays.copyOf(lastMove.boardState, lastMove.boardState.length);
             currentPlayer = lastMove.currentPlayer;
-            moveCountBlue = lastMove.moveCountBlue;
-            moveCountRed = lastMove.moveCountRed;
+            placedPiecesBlue = lastMove.moveCountBlue;
+            placedPiecesRed = lastMove.moveCountRed;
             phase = lastMove.phase;
 
             selectedPiece = -1;
@@ -131,8 +130,7 @@ public class Game {
     public List<Integer> getValidMoves(int position) {
         List<Integer> validMoves = new ArrayList<>();
 
-        // Check if the game is in the flying phase and the current player has 3 or fewer pieces
-        if (phase == 2 && getPieceCount(currentPlayer) <= 3) {
+        if (isInFlyingPhase()) {
             // If in the flying phase, allow the player to move to any empty position
             for (int i = 0; i < boardPositions.length; i++) {
                 if (boardPositions[i] == null) {
@@ -204,9 +202,9 @@ public class Game {
 
             // Increment move count during the placing phase
             if (currentPlayer == Player.BLUE) {
-                moveCountBlue++;
+                placedPiecesBlue++;
             } else {
-                moveCountRed++;
+                placedPiecesRed++;
             }
 
             // Check if a mill is formed
@@ -218,7 +216,7 @@ public class Game {
 
             // Check if both players have placed all pieces (9 for 9 Men’s Morris, 12 for 12 Men’s Morris)
             int requiredPieces = in12MenMorrisVersion ? 12 : 9;
-            if (moveCountBlue == requiredPieces && moveCountRed == requiredPieces) {
+            if (placedPiecesBlue == requiredPieces && placedPiecesRed == requiredPieces) {
                 phase = 1; // Transition to the moving phase
                 System.out.println("Transitioning to the moving phase!");
             }
@@ -230,7 +228,7 @@ public class Game {
             // Moving or flying phase logic
 
             // Check if current player needs to enter the flying phase
-            if (getPieceCount(currentPlayer) <= 3) {
+            if (getPiecesOnBoardCount(currentPlayer) <= 3) {
                 phase = 2; // Enter the flying phase
                 System.out.println("Player " + currentPlayer + " is in the flying phase!");
             }
@@ -272,10 +270,10 @@ public class Game {
                     System.out.println("Mill formed by Player " + currentPlayer + " at position " + position);
 
                     // Check if Game is won by the move
-                    if (getPieceCount(Player.BLUE) <= 3 && currentPlayer == Player.RED) {
+                    if (getPiecesOnBoardCount(Player.BLUE) <= 3 && currentPlayer == Player.RED) {
                         if (listener != null) listener.onGameWon("Red"); // Notify the controller
 
-                    } else if (getPieceCount(Player.RED) <= 3 && currentPlayer == Player.BLUE) {
+                    } else if (getPiecesOnBoardCount(Player.RED) <= 3 && currentPlayer == Player.BLUE) {
                         if (listener != null) listener.onGameWon("Blue"); // Notify the controller
                     }
 
@@ -302,7 +300,7 @@ public class Game {
 
                 // Check if both players have placed all pieces (9 for 9 Men’s Morris, 12 for 12 Men’s Morris)
                 int requiredPieces = in12MenMorrisVersion ? 12 : 9;
-                if (moveCountBlue == requiredPieces && moveCountRed == requiredPieces) {
+                if (placedPiecesBlue == requiredPieces && placedPiecesRed == requiredPieces) {
                     phase = 1; // Transition to the moving phase
                     System.out.println("Transitioning to the moving phase!");
                 }
@@ -313,7 +311,6 @@ public class Game {
             }
 
             return false;
-
         }
 
         return false;
@@ -321,7 +318,7 @@ public class Game {
 
 
     // Helper method to get the number of pieces of a player on the board
-    private int getPieceCount(Player player) {
+    private int getPiecesOnBoardCount(Player player) {
         int count = 0;
         for (Player pos : boardPositions) {
             if (pos == player) {
@@ -332,8 +329,8 @@ public class Game {
     }
 
     public void checkWinLoss() {
-        int bluePieceCount = getPieceCount(Player.BLUE); // Blue player is 1
-        int redPieceCount = getPieceCount(Player.RED);  // Red player is 2
+        int bluePieceCount = getPiecesOnBoardCount(Player.BLUE); // Blue player is 1
+        int redPieceCount = getPiecesOnBoardCount(Player.RED);  // Red player is 2
 
         // Condition 1: A player has less than 3 pieces (loss condition)
         if (bluePieceCount < 3) {
@@ -367,11 +364,11 @@ public class Game {
     private final Map<String, Supplier<Boolean>> drawDetectors = Map.of(
             "Threefold Repetition", () -> boardHistory.get(currentBoard()) >= 3,
             "Insufficient Material", () -> {
-                int bluePieces = getPieceCount(Player.BLUE);
-                int redPieces = getPieceCount(Player.RED);
+                int bluePieces = getPiecesOnBoardCount(Player.BLUE);
+                int redPieces = getPiecesOnBoardCount(Player.RED);
                 System.out.println("BLUE" + bluePieces + "RED" + redPieces);
                 boolean bothPlayersPlacedAllPieces= isIn12MenMorrisVersion() ?
-                  moveCountBlue == 12 && moveCountRed == 12 : moveCountBlue == 9 && moveCountRed == 9;
+                  placedPiecesBlue == 12 && placedPiecesRed == 12 : placedPiecesBlue == 9 && placedPiecesRed == 9;
                 return bluePieces == 3 && redPieces == 3 && bothPlayersPlacedAllPieces;
             },
             "50-Move Rule", () -> moveWithoutCapture >= 50,
@@ -382,8 +379,8 @@ public class Game {
             },
             "Agreement of Both Players", () -> drawAgreed,
             "Repetition in Endgame with Limited Pieces", () -> {
-                int bluePieces = getPieceCount(Player.BLUE);
-                int redPieces = getPieceCount(Player.RED);
+                int bluePieces = getPiecesOnBoardCount(Player.BLUE);
+                int redPieces = getPiecesOnBoardCount(Player.RED);
                 return bluePieces == 3 && redPieces == 3 && boardHistory.getOrDefault(currentBoard(), 0) >= 3;
             }
     );
@@ -438,8 +435,8 @@ public class Game {
 
     public void resetGame() {
         resetBoard();               // Reset all board positions
-        moveCountBlue = 0;          // Reset blue move count
-        moveCountRed = 0;           // Reset red move count
+        placedPiecesBlue = 0;          // Reset blue move count
+        placedPiecesRed = 0;           // Reset red move count
         phase = 0;                  // Reset phase to placing
         currentPlayer = Player.BLUE;          // Reset to player 1's turn
         // Optionally, reinitialize any game-specific logic or data
@@ -475,20 +472,20 @@ public class Game {
         this.currentPlayer = currentPlayer;
     }
 
-    public int getMoveCountBlue() {
-        return moveCountBlue;
+    public int getPlacedPiecesBlue() {
+        return placedPiecesBlue;
     }
 
-    public void setMoveCountBlue(int moveCountBlue) {
-        this.moveCountBlue = moveCountBlue;
+    public void setPlacedPiecesBlue(int placedPiecesBlue) {
+        this.placedPiecesBlue = placedPiecesBlue;
     }
 
-    public int getMoveCountRed() {
-        return moveCountRed;
+    public int getPlacedPiecesRed() {
+        return placedPiecesRed;
     }
 
-    public void setMoveCountRed(int moveCountRed) {
-        this.moveCountRed = moveCountRed;
+    public void setPlacedPiecesRed(int placedPiecesRed) {
+        this.placedPiecesRed = placedPiecesRed;
     }
 
     public int getPhase() {
@@ -505,5 +502,18 @@ public class Game {
 
     public void setSelectedPiece(int i) {
         selectedPiece = i;
+    }
+
+    public boolean isInDeletePhase() {
+        return getPhase() == -1 || getPhase() == -2;
+    }
+
+    public boolean isInFlyingPhase() {
+        int placedPieces = currentPlayer == Player.BLUE ? placedPiecesBlue : placedPiecesRed;
+        int initialPieceCount = isIn12MenMorrisVersion() ? 12 : 9;
+        boolean playerUsedAllPieces = initialPieceCount == placedPieces;
+        int piecesOnBoard = getPiecesOnBoardCount(currentPlayer);
+
+        return playerUsedAllPieces && piecesOnBoard == 3;
     }
 }
