@@ -42,6 +42,7 @@ public class Game {
     private Map<String, Integer> boardHistory = new HashMap<>();
     public int moveWithoutCapture = 0;
     public boolean drawAgreed = false;
+
     public boolean canUndo = false; // Tracks if undo is allowed for the latest move
 
     // Initialize the game, reset board positions
