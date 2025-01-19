@@ -52,7 +52,7 @@ public class EasyBot implements Bot {
 
         for (int i = 0; i < boardPositions.length; i++) {
             if (boardPositions[i] == currentPlayer) {
-                List<Integer> validMoves = game.getValidMoves(i);
+                List<Integer> validMoves = game.getValidMoves();
                 if (!validMoves.isEmpty()) {
                     movablePieces.add(i);
                 }
@@ -76,7 +76,7 @@ public class EasyBot implements Bot {
      */
     @Override
     public int determineMove(Game game, int selectedPiece) {
-        List<Integer> validMoves = game.getValidMoves(selectedPiece);
+        List<Integer> validMoves = game.getValidMoves();
         if (validMoves.isEmpty()) {
             return -1; // No valid moves
         }

@@ -196,7 +196,7 @@ public class GameSituation extends GameOri {
             // Move piece logic
 
 
-            System.out.println("Player " + currentPlayer + " moved piece from " + selectedPiece + " to " + positionTo);
+            //System.out.println("Player " + currentPlayer + " moved piece from " + selectedPiece + " to " + positionTo);
             boardPositions[selectedPiece] = 0;
             boardPositions[positionTo] = currentPlayer;
 

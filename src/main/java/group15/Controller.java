@@ -3,9 +3,10 @@ package group15;
 import group15.bot.AlphaBetaBot;
 import group15.bot.MonteCarloBot;
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyFrame;
+import group15.bot.MeatBot;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -324,29 +325,6 @@ public class Controller {
     }
 
     /**
-     * Handles the removal of an opponent's piece, applying visual animations
-     * and ensuring the piece can be legally removed.
-     *
-     * @param scaleTransition The scale animation applied to the removal indicator.
-     * @param ring            The ring element used to highlight the piece.
-     * @param position        The board position of the piece to be removed.
-     */
-    private void handleOpponentPieceRemoval(ScaleTransition scaleTransition, Circle ring, int position) {
-        Player playerInPosition = currentGame.getBoardPositions()[position];
-        Player opponentPlayer = currentGame.getCurrentPlayer().opponent();
-
-        if (playerInPosition != opponentPlayer) {
-            return;
-        }
-
-        if (!currentGame.formsMill(position, opponentPlayer) || currentGame.allPiecesAreInMills(opponentPlayer)) {
-            ring.setStyle(opponentPlayer == Player.RED ? RED_COLOR : BLUE_COLOR);
-            ring.setVisible(true);
-            scaleTransition.playFromStart();  // Animate the ring
-        }
-    }
-
-    /**
      * Sets up a growing and shrinking animation for the specified pane.
      *
      * @param targetPane The pane to which the animation will be applied.
@@ -387,22 +365,6 @@ public class Controller {
 
       // Show deletion indicators before handling click
       showDeletionIndicators(opponentPlayer);
-
-      // Hide all indicators first
-      hideAllIndicators(); // This line ensures that indicators are reset on click
-
-      if (playerInPosition == opponentPlayer) {
-        if (!currentGame.formsMill(position, opponentPlayer) || currentGame.allPiecesAreInMills(opponentPlayer)) {
-          currentGame.saveStateForUndo();
-          if (currentGame.makeMove(position)) {
-            updateBoardUI();
-            updateLineColors();
-            ring.setVisible(false);
-          }
-        } else {
-          System.out.println("Cannot remove a piece in a mill. Choose another piece.");
-        }
-      }
     }
 
     /**
@@ -554,172 +516,15 @@ public class Controller {
         ring.setVisible(false);
     }
 
-
         /**
          * Handles mouse click events for game board zones.
          * Performs actions based on the current game phase, such as placing, moving, or deleting pieces.
          */
         zone.setOnMouseClicked(event -> {
-            int currentPhase = currentGame.getPhase();
-            Player[] boardPositions = currentGame.getBoardPositions();
-            Player currentPlayer = currentGame.getCurrentPlayer();
-
-            if (currentPhase == 1 || currentPhase == 2) {
-                // Moving phase or flying phase logic
-                if (boardPositions[position] == currentPlayer) {
-                    currentGame.saveStateForUndo();
-                    if (currentGame.makeMove(position)) {
-                        List<Integer> validMoves = currentGame.getValidMoves(position);
-                        showValidMoveIndicators(validMoves);  // Visual indicator for valid moves
-                    }
-                } else if (boardPositions[position] == null && currentGame.getSelectedPiece() != -1) {
-                    int oldPosition = currentGame.getSelectedPiece();
-
-                    // Handle regular move and flying phase moves
-                    if (currentGame.makeMove(position)) {
-                        hideAllIndicators();
-                        updateBoardUI();
-                        updateLineColors();
-
-                        // After the player's move, check if it's the bot's turn
-                        if (currentGame.gameMode.equals("PLAYER VS BOT") && currentGame.getCurrentPlayer() == Player.RED) {
-                            makeBotMove();
-                        }
-                    }
-                }
-            } else if (currentPhase == 0) {
-                // Placing phase logic
-                if (boardPositions[position] == null) {
-                    currentGame.saveStateForUndo();
-                    if (currentGame.makeMove(position)) {
-                        updateBoardUI();
-                        updateOnHandPieces();
-                        updateLineColors();
-
-                        // After the player's move, check if it's the bot's turn
-                        if (currentGame.gameMode.equals("PLAYER VS BOT") && currentGame.getCurrentPlayer() == Player.RED) {
-                            makeBotMove();
-                        }
-                    }
-                }
-            } else if (currentPhase == -1 || currentPhase == -2) {
-                updateBoardUIOnPieceRemoval(ring, position);
-
-                // After the player deletes a piece, check if it's the bot's turn
-                if (currentGame.gameMode.equals("PLAYER VS BOT") && currentGame.getCurrentPlayer() == Player.RED) {
-                    makeBotMove();
-                }
-            }
+            currentGame.getStrategy().handleMouseClickEvent(position);
+            currentGame.isOver();
+            updateBoardUI();
         });
-    }
-
-    private Bot bot = new MonteCarloBot();
-
-    /**
-     * Handles the logic for the bot's move during the game.
-     * This method is called during the bot's turn and performs actions
-     * based on the current phase of the game, including placing, moving, or flying pieces.
-     * If the bot completes its turn, it may also trigger piece deletion if necessary.
-     */
-    private void makeBotMove() {
-        if (bot == null) {
-            return; // Bot is not active in the current game mode
-        }
-
-        Timeline botMoveDelay = new Timeline(new KeyFrame(Duration.seconds(0.5), e -> {
-            int phase = currentGame.getPhase();
-
-            if (phase == 0) {
-                // Placing phase
-                int botPlacement = bot.placePiece(currentGame);
-                if (botPlacement != -1) {
-                    currentGame.saveStateForUndo();
-                    if (currentGame.makeMove(botPlacement)) {
-                        updateBoardUI();
-                        updateOnHandPieces();
-                        updateLineColors();
-
-                        // After the bot's move, check if it needs to delete a piece
-                        if (currentGame.getPhase() == -2) { // Bot is RED player
-                            makeBotDeleteMove();
-                        } else {
-                            // If it's still the bot's turn, make another move
-                            if (currentGame.getCurrentPlayer() == Player.RED && currentGame.gameMode.equals("PLAYER VS BOT")) {
-                                makeBotMove();
-                            }
-                        }
-                    }
-                } else {
-                    System.out.println("Bot has no valid positions to place a piece.");
-                }
-            } else if (phase == 1 || phase == 2) {
-                // Moving or Flying phase
-                int selectedPiece = bot.selectPiece(currentGame);
-                if (selectedPiece != -1) {
-                    // Simulate selecting the piece
-                    currentGame.saveStateForUndo();
-                    if (currentGame.makeMove(selectedPiece)) {
-                        // Now determine where to move it
-                        int destination = bot.determineMove(currentGame, selectedPiece);
-                        if (destination != -1) {
-                            currentGame.saveStateForUndo();
-                            if (currentGame.makeMove(destination)) {
-                                updateBoardUI();
-                                updateLineColors();
-
-                                // After the bot's move, check if it needs to delete a piece
-                                if (currentGame.getPhase() == -2) { // Bot is RED player
-                                    makeBotDeleteMove();
-                                } else {
-                                    // If it's still the bot's turn, make another move
-                                    if (currentGame.getCurrentPlayer() == Player.RED && currentGame.gameMode.equals("PLAYER VS BOT")) {
-                                        makeBotMove();
-                                    }
-                                }
-                            }
-                        } else {
-                            System.out.println("Bot has no valid moves from selected piece.");
-                            // Reset the selected piece
-                            currentGame.setSelectedPiece(-1);
-                        }
-                    }
-                } else {
-                    System.out.println("Bot has no movable pieces.");
-                }
-            }
-        }));
-        botMoveDelay.play();
-    }
-
-    /**
-     * Executes the bot's move for deleting a piece during the deletion phase.
-     * Checks if the bot is active and determines which piece to delete.
-     * Ensures the board and game state are updated after the deletion.
-     */
-    private void makeBotDeleteMove() {
-        if (bot == null) {
-            return; // Bot is not active in the current game mode
-        }
-
-        Timeline botDeleteDelay = new Timeline(new KeyFrame(Duration.seconds(0.5), e -> {
-            int positionToDelete = bot.determinePieceToDelete(currentGame);
-            if (positionToDelete != -1) {
-                currentGame.saveStateForUndo();
-                if (currentGame.makeMove(positionToDelete)) {
-                    updateBoardUI();
-                    updateOnHandPieces();
-                    updateLineColors();
-
-                    // After deleting, check if the bot needs to make another move
-                    if (currentGame.getCurrentPlayer() == Player.RED && currentGame.gameMode.equals("PLAYER VS BOT")) {
-                        makeBotMove();
-                    }
-                }
-            } else {
-                System.out.println("Bot has no valid pieces to delete.");
-            }
-        }));
-        botDeleteDelay.play();
     }
 
     /**
@@ -760,18 +565,6 @@ public class Controller {
         }
     }
 
-    /**
-     * Hides all indicators on the game board.
-     * Used after a move or action is completed to clear the board's visual state.
-     */
-    private void hideAllIndicators() {
-        indicators.forEach(indicator -> indicator.setVisible(false));
-    }
-
-    /**
-     * Updates the game board's visual state based on the current game.
-     * Refreshes piece visibility, diagonal line visibility, indicators, and game text information.
-     */
     private void updateBoardUI() {
         // Update the current game reference to the new game instance
         currentGame = gameManager.getCurrentGame();
@@ -805,14 +598,7 @@ public class Controller {
             indicator.setVisible(false);
         }
 
-        // If a piece is selected, display indicators for valid moves
-        int selectedPiece = currentGame.getSelectedPiece();
-        if (selectedPiece != -1) {
-            List<Integer> validMoves = currentGame.getValidMoves(selectedPiece);
-            for (Integer move : validMoves) {
-                indicators.get(move).setVisible(true);  // Assume each move indicator corresponds to a board position
-            }
-        }
+        showValidMovesIndicators();
 
         // Update the game number text based on the current game index
         gameNumText.setText("GAME" + (gameManager.getCurrentGameIndex() + 1));
@@ -827,6 +613,14 @@ public class Controller {
         updateOnHandPieces();
         toggleTurnIndicator();
         updateUndoRedoButtons();
+    }
+
+
+    private void showValidMovesIndicators() {
+        List<Integer> validMoves = currentGame.getValidMoves();
+        for (Integer move : validMoves) {
+            indicators.get(move).setVisible(true);  // Assume each move indicator corresponds to a board position
+        }
     }
 
     /**
@@ -1035,11 +829,9 @@ public class Controller {
      */
     private void updateBotBasedOnGameMode() { // Adding new bots will happen here (use currentBotMode=0 for easy 1 for mid and 2 for hard)
         if (currentGame.gameMode.equals("PLAYER VS BOT")) {
-            if (bot == null) {
-                bot = new MonteCarloBot();
+            if (currentGame.red instanceof MeatBot) {
+                currentGame.red = new MonteCarloBot();
             }
-        } else {
-            bot = null; // Disable the bot in other modes
         }
     }
 
@@ -1357,6 +1149,10 @@ public class Controller {
         // Toggle the version in the current game instance
         boolean newVersion = !currentGame.isIn12MenMorrisVersion();
         currentGame.setIn12MenMorrisVersion(newVersion);
+
+        WinPopUpRed.setVisible(false);
+        WinPopUpBlue.setVisible(false);
+        DrawPopUp.setVisible(false);
 
         // Reset the game but keep the version field intact
         currentGame.resetGame();

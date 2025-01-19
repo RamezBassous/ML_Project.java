@@ -4,14 +4,13 @@ import java.util.function.Supplier;
 
 import group15.bot.Bot;
 import group15.bot.EasyBot;
+import group15.bot.MeatBot;
 
 /**
  * The Game class handles the core logic of the Nine/Twelve Men's Morris game, including managing the game board, 
  * game phases, player actions, undo/redo functionality, and draw/win conditions.
  */
 public class Game {
-
-    public Bot bot;
 
     public GameEventListener listener; // For letting the controller know who won
 
@@ -23,7 +22,7 @@ public class Game {
     }
 
     // The boardGraph storing vertices and edges (G(V,E) as we know it)
-    private GameBoard gameBoard;  // see initializeBoardGraph() for adjacency list
+    public GameBoard gameBoard;  // see initializeBoardGraph() for adjacency list
 
     public String gameMode = "LOCAL 2 PLAYER"; // for now only mode
 
@@ -35,6 +34,10 @@ public class Game {
 
     // Keeps track of the current player: 1 for blue, 2 for red
     public Player currentPlayer = Player.BLUE;
+//    public Bot red = new EasyBot();
+//    public Bot blue = new EasyBot();
+    public Bot red = new MeatBot(Player.RED);
+    public Bot blue = new MeatBot(Player.BLUE);
 
     // Track the selected piece during the moving phase
     public int selectedPiece = -1;
@@ -47,22 +50,34 @@ public class Game {
     private Map<String, Integer> boardHistory = new HashMap<>();
     public int moveWithoutCapture = 0;
     public boolean drawAgreed = false;
+    public boolean gameOver = false;
 
     public boolean canUndo = false; // Tracks if undo is allowed for the latest move
 
     /**
      * Constructs the game and initializes the board, sets the initial phase, and initializes the bot.
      */
+    public int clickedPosition = -1;
+
     public Game() {
         resetBoard();
         gameBoard = GameBoardFactory.get(false);
         phase = 0;  // Start in the placing phase
-        bot = new EasyBot();
+    }
+
+    public GameStrategy getStrategy() {
+        if (blue instanceof MeatBot && red instanceof MeatBot) {
+            return new HumanVsHumanStrategy(this);
+        } else if (blue instanceof MeatBot && !(red instanceof MeatBot)) {
+            return new HumanVsBotStrategy(this);
+        } else {
+            return new BotVsBotStrategy(this);
+        }
     }
 
     /**
      * Sets the listener for game events (e.g., win, draw).
-     * 
+     *
      * @param listener The listener to notify of game events.
      */
     public void setGameEventListener(GameEventListener listener) {
@@ -73,6 +88,7 @@ public class Game {
      * Saves the current game state for undo functionality.
      */
     public void saveStateForUndo() {
+        boardHistory.put(currentBoard(), boardHistory.getOrDefault(currentBoard(), 0) + 1);
         Player[] boardStateCopy = Arrays.copyOf(boardPositions, boardPositions.length);
         undoStack.push(new Move(selectedPiece, currentPlayer, boardStateCopy, placedPiecesBlue, placedPiecesRed, phase));
         redoStack.clear();
@@ -135,6 +151,22 @@ public class Game {
         return redoStack;
     }
 
+    public void putPiece(int placedPiece) {
+        boardPositions[placedPiece] = currentPlayer;
+        debug("placed piece at position " + placedPiece);
+
+        if (currentPlayer == Player.BLUE) {
+            placedPiecesBlue++;
+        } else {
+            placedPiecesRed++;
+        }
+    }
+
+    private void debug(String msg){
+        System.out.println(phase + ": " + currentPlayer + ": " +
+          selectedPiece + ": " + msg);
+    }
+
     // Represents a move for undo/redo
     private static class Move {
         int position;
@@ -157,28 +189,95 @@ public class Game {
     /**
      * Gets the valid moves for a given position on the board.
      * 
-     * @param position The position of the piece to move.
      * @return A list of valid move positions.
      */
-    public List<Integer> getValidMoves(int position) {
-        List<Integer> validMoves = new ArrayList<>();
+    public List<Integer> getValidMoves() {
+        if (phase == 0) {
+            return getEmptyPositions();
+        }
+        if (isInDeletePhase()) {
+            return getRemovableOpponentPositions();
+        }
+        else {
+          return selectedPiece == -1 ? getCurrentPlayerPiecesThatCanMove() :
+            join(getCurrentPlayerPiecesThatCanMove(), getPossibleMovesForSelectedPiece());
+        }
+    }
 
+    private List<Integer> getPossibleMovesForSelectedPiece() {
         if (isInFlyingPhase()) {
-            // If in the flying phase, allow the player to move to any empty position
-            for (int i = 0; i < boardPositions.length; i++) {
-                if (boardPositions[i] == null) {
-                    validMoves.add(i);
-                }
-            }
-        } else {
-            // Regular moving phase, only allow adjacent moves
-            for (Integer neighbor : gameBoard.getNeighbors(position)) {
-                if (boardPositions[neighbor] == null) { // If the neighbor position is empty
-                    validMoves.add(neighbor);
-                }
+            return getEmptyPositions();
+        }
+        // Regular moving phase, only allow adjacent moves
+        List<Integer> result = new ArrayList<>();
+        for (Integer neighbor : gameBoard.getNeighbors(selectedPiece)) {
+            if (boardPositions[neighbor] == null) { // If the neighbor position is empty
+                result.add(neighbor);
             }
         }
-        return validMoves;
+        return result;
+    }
+
+    private List<Integer> join(List<Integer> list1, List<Integer> list2) {
+        List<Integer> result = new ArrayList<>();
+        result.addAll(list1);
+        result.addAll(list2);
+        return result;
+    }
+
+    private List<Integer> getCurrentPlayerPiecesThatCanMove() {
+        if (isInFlyingPhase()) {
+            return getCurrentPlayerPieces();
+        }
+        List<Integer> currentPlayerPieces = new ArrayList<>();
+        for (int i = 0; i < boardPositions.length; i++) {
+            if (boardPositions[i] == currentPlayer && hasEmptyNeighbor(i)) {
+                currentPlayerPieces.add(i);
+            }
+        }
+        return currentPlayerPieces;
+    }
+
+    private List<Integer> getCurrentPlayerPieces() {
+        List<Integer> currentPlayerPieces = new ArrayList<>();
+        for (int i = 0; i < boardPositions.length; i++) {
+            if (boardPositions[i] == currentPlayer) {
+                currentPlayerPieces.add(i);
+            }
+        }
+        return currentPlayerPieces;
+    }
+
+    private boolean hasEmptyNeighbor(int position){
+        List<Integer> neighbors = gameBoard.getNeighbors(position);
+        for (Integer neighbor : neighbors) {
+            if(boardPositions[neighbor] == null){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private List<Integer> getRemovableOpponentPositions() {
+        List<Integer> result = new ArrayList<>();
+        Player opponent = currentPlayer.opponent();
+        boolean allAreInMills = allPiecesAreInMills(opponent);
+        for (int i = 0; i < boardPositions.length; i++) {
+            if (boardPositions[i] == opponent && (allAreInMills || !formsMill(i, opponent))) {
+                result.add(i);
+            }
+        }
+        return result;
+    }
+
+    private List<Integer> getEmptyPositions() {
+        List<Integer> emptyPositions = new ArrayList<>();
+        for (int i = 0; i < boardPositions.length; i++) {
+            if (boardPositions[i] == null) {
+                emptyPositions.add(i);
+            }
+        }
+        return emptyPositions;
     }
 
     /**
@@ -206,7 +305,7 @@ public class Game {
      * @return true if all pieces are in mills, false otherwise.
      */
     public boolean allPiecesAreInMills(Player player) {
-        for (int position = 1; position <= 16; position++) {
+        for (int position = 0; position < boardPositions.length; position++) {
             if (boardPositions[position] == player && !formsMill(position, player)) {
                 return false;
             }
@@ -225,135 +324,75 @@ public class Game {
      * Makes a move at a given position, handling different game phases and rules.
      * 
      * @param position The position to move to.
-     * @return true if the move was successful, false otherwise.
      */
-    public boolean makeMove(int position) {
-        System.out.println("PHASE: " + phase);
-        if (position < 0 || position >= 24) {
-            System.out.println("Invalid position: " + position);  // Print for invalid position
-            return false; // Invalid move
+    public void makeMove(int position) {
+        if (!getValidMoves().contains(position)) { // Should be removed If bots are OK with it
+            System.out.println("Invalid move!");
+            return;
         }
-
-        if (phase == 0) { // Placing phase logic
-            if (boardPositions[position] != null) {
-                System.out.println("Position " + position + " is already occupied.");  // Print for occupied position
-                return false; // Position is already occupied
-            }
-            boardPositions[position] = currentPlayer;
-
-            System.out.println("Player " + currentPlayer + " placed piece at position " + position);
-
-            // Increment move count during the placing phase
-            if (currentPlayer == Player.BLUE) {
-                placedPiecesBlue++;
-            } else {
-                placedPiecesRed++;
-            }
-
-            // Check if a mill is formed
-            if (formsMill(position, currentPlayer)) {
-                System.out.println("Mill formed by Player " + currentPlayer + " at position " + position);
-                phase = -currentPlayer.getIndex(); // Enter delete phase for right player
-                return true;
-            }
-
-            // Check if both players have placed all pieces (9 for 9 Men’s Morris, 12 for 12 Men’s Morris)
-            int requiredPieces = gameBoard.getRequiredPieces();
-            if (placedPiecesBlue == requiredPieces && placedPiecesRed == requiredPieces) {
-                phase = 1; // Transition to the moving phase
-                System.out.println("Transitioning to the moving phase!");
-            }
-
-            switchPlayer();
-            return true;
-
-        } else if (phase == 1 || phase == 2) { // Moving or flying phase logic
-            // Check if current player needs to enter the flying phase
-            if (getPiecesOnBoardCount(currentPlayer) <= 3) {
-                phase = 2; // Enter the flying phase
-                System.out.println("Player " + currentPlayer + " is in the flying phase!");
-            }
-
+        System.out.println("PHASE: " + phase);
+        if (phase == 0) {
+            saveStateForUndo();
+            putPiece(position);
+            checkIfMillOrSwitchPlayer(position);
+        } else if (phase == 1 || phase == 2) {
+            // Moving or flying phase logic
             if (selectedPiece == -1) {
                 // No piece selected, select a piece
-                if (boardPositions[position] != currentPlayer) {
-                    System.out.println("Invalid selection. Player " + currentPlayer + " cannot select opponent's piece at position " + position);
-                    return false;
-                }
-
-                selectedPiece = position;
-                System.out.println("Player " + currentPlayer + " selected piece at position " + position);
-
-                return true;
-
+                selectPiece(position);
             } else {
                 // If the player selects the same player's piece again, allow reselection
                 if (boardPositions[position] == currentPlayer) {
-                    selectedPiece = position;
-                    System.out.println("Player " + currentPlayer + " reselected piece at position " + position);
-                    return true;
-                }
-
-                // Move the selected piece to a new position
-                List<Integer> validMoves = getValidMoves(selectedPiece);
-                if (!validMoves.contains(position)) {
-                    System.out.println("Invalid move. Position " + position + " is not a valid move for piece at position " + selectedPiece);
-                    return false;
-                }
-
-                // Move piece logic
-                System.out.println("Player " + currentPlayer + " moved piece from " + selectedPiece + " to " + position);
-                boardPositions[selectedPiece] = null;
-                boardPositions[position] = currentPlayer;
-
-                // Check if a mill is formed
-                if (formsMill(position, currentPlayer)) {
-                    System.out.println("Mill formed by Player " + currentPlayer + " at position " + position);
-
-                    // Check if Game is won by the move
-                    if (getPiecesOnBoardCount(Player.BLUE) <= 3 && currentPlayer == Player.RED) {
-                        if (listener != null) listener.onGameWon("Red"); // Notify the controller
-
-                    } else if (getPiecesOnBoardCount(Player.RED) <= 3 && currentPlayer == Player.BLUE) {
-                        if (listener != null) listener.onGameWon("Blue"); // Notify the controller
-                    }
-
-                    phase = -currentPlayer.getIndex(); // Enter delete phase for right player
+                    selectPiece(position);
                 } else {
-                    switchPlayer();
+                    saveStateForUndo();
+                    moveSelectedPiece(position);
+                    checkIfMillOrSwitchPlayer(position);
+                    selectedPiece = -1; // Reset selection after move
                 }
-
-                selectedPiece = -1;  // Reset selection after move
-
-                // Only check win/loss and draw conditions in the moving and flying phases
-                checkWinLoss();
-                checkDrawConditions();
-                return true;
             }
-
-        } else if (phase == -2 || phase == -1) { // Delete phase logic
-            if (boardPositions[position] == currentPlayer.opponent()) {
-                boardPositions[position] = null;
-                System.out.println("Deleted piece " + position + " by Player " + currentPlayer);
-
-                phase = 0;
-
-                // Check if both players have placed all pieces (9 for 9 Men’s Morris, 12 for 12 Men’s Morris)
-                int requiredPieces = gameBoard.getRequiredPieces();
-                if (placedPiecesBlue == requiredPieces && placedPiecesRed == requiredPieces) {
-                    phase = 1; // Transition to the moving phase
-                    System.out.println("Transitioning to the moving phase!");
-                }
-
-                switchPlayer();
-                checkDrawConditions();
-                return true;
-            }
-
-            return false;
+        } else if (isInDeletePhase()) {
+            // Delete phase logic
+            saveStateForUndo();
+            deletePiece(position);
+            switchPlayer();
+            phase = getPlacingOrMovingPhase();
         }
+    }
 
-        return false;
+    private void checkIfMillOrSwitchPlayer(int position) {
+        if (formsMill(position, currentPlayer)) {
+            debug("formed mill at position " + position);
+            phase = -currentPlayer.getIndex(); // Enter delete phase for right player
+        } else {
+            switchPlayer();
+        }
+    }
+
+    private int getPlacingOrMovingPhase() {
+        // Check if both players have placed all pieces (9 for 9 Men’s Morris, 12 for 12 Men’s Morris)
+        int requiredPieces = gameBoard.getRequiredPieces();
+        if (placedPiecesBlue == requiredPieces && placedPiecesRed == requiredPieces) {
+            return currentPlayer == Player.BLUE ? 1 : 2; // Transition to the moving phase
+        } else {
+            return 0; // Go back to placing phase
+        }
+    }
+
+    private void deletePiece(int position) {
+        boardPositions[position] = null;
+        debug("Deleted piece " + position);
+    }
+
+    private void moveSelectedPiece(int position) {
+        debug("moved piece from " + selectedPiece + " to " + position);
+        boardPositions[selectedPiece] = null;
+        boardPositions[position] = currentPlayer;
+    }
+
+    private void selectPiece(int position) {
+        selectedPiece = position;
+        debug("selected piece at position " + position);
     }
 
     /**
@@ -376,18 +415,24 @@ public class Game {
      * Checks the win/loss conditions based on the number of pieces and available moves.
      * Notifies the listener if a win/loss is detected.
      */
-    public void checkWinLoss() {
+    private void checkWinLoss() {
+        if (phase <= 0) {
+            return;
+        }
+
         int bluePieceCount = getPiecesOnBoardCount(Player.BLUE); // Blue player is 1
         int redPieceCount = getPiecesOnBoardCount(Player.RED);  // Red player is 2
 
-        // Condition 1: A player has less than 3 pieces (loss condition)
+        // Condition 1: A player has less than 3 pieces
         if (bluePieceCount < 3) {
             System.out.println("Red wins! Blue has less than 3 pieces.");
             if (listener != null) listener.onGameWon("Red"); // Notify the controller
+            gameOver = true;
             return;
         } else if (redPieceCount < 3) {
             System.out.println("Blue wins! Red has less than 3 pieces.");
             if (listener != null) listener.onGameWon("Blue"); // Notify the controller
+            gameOver = true;
             return;
         }
 
@@ -398,9 +443,11 @@ public class Game {
         if (!blueHasValidMoves) {
             System.out.println("Red wins! Blue cannot make any valid moves.");
             if (listener != null) listener.onGameWon("Red"); // Notify the controller
+            gameOver = true;
         } else if (!redHasValidMoves) {
             System.out.println("Blue wins! Red cannot make any valid moves.");
             if (listener != null) listener.onGameWon("Blue"); // Notify the controller
+            gameOver = true;
         }
     }
 
@@ -417,7 +464,7 @@ public class Game {
      * A map that holds different draw conditions and their corresponding validation logic.
      */
     private final Map<String, Supplier<Boolean>> drawDetectors = Map.of(
-            "Threefold Repetition", () -> boardHistory.get(currentBoard()) >= 3,
+            "Threefold Repetition", () -> phase > 0 && boardHistory.getOrDefault(currentBoard(), 0) >= 3,
             "Insufficient Material", () -> {
                 int bluePieces = getPiecesOnBoardCount(Player.BLUE);
                 int redPieces = getPiecesOnBoardCount(Player.RED);
@@ -428,6 +475,9 @@ public class Game {
             },
             "50-Move Rule", () -> moveWithoutCapture >= 50,
             "No Legal Moves", () -> {
+                if (phase <= 0) {
+                    return false;
+                }
                 boolean blueHasValidMoves = hasValidMoves(Player.BLUE);
                 boolean redHasValidMoves = hasValidMoves(Player.RED);
                 return !blueHasValidMoves && !redHasValidMoves;
@@ -444,14 +494,13 @@ public class Game {
      * Checks for any draw conditions, notifying the controller if a draw is detected.
      */
     public void checkDrawConditions() {
-        boardHistory.put(currentBoard(), boardHistory.getOrDefault(currentBoard(), 0) + 1);
-
         for (Map.Entry<String, Supplier<Boolean>> entry : drawDetectors.entrySet()) {
             String predicateDesc = entry.getKey();
             Supplier<Boolean> drawDetector = entry.getValue();
             if (drawDetector.get()) {
                 System.out.println("Draw by " + predicateDesc + "!");
                 if (listener != null) listener.onGameDraw();  // Notify the controller on a draw
+                gameOver = true;
                 return;
             }
         }
@@ -487,7 +536,7 @@ public class Game {
     private boolean hasValidMoves(Player player) {
         for (int i = 0; i < boardPositions.length; i++) {
             if (boardPositions[i] == player) {
-                List<Integer> validMoves = getValidMoves(i);
+                List<Integer> validMoves = getValidMoves();
                 if (!validMoves.isEmpty()) {
                     return true;  // Player has at least one valid move
                 }
@@ -499,8 +548,15 @@ public class Game {
     /**
      * Switches the current player to the opponent.
      */
-    private void switchPlayer() {
+    public void switchPlayer() {
         currentPlayer = currentPlayer.opponent();
+        int currentPlayerPlacedPieces = currentPlayer == Player.BLUE ? getPlacedPiecesBlue() : getPlacedPiecesRed();
+        if (gameBoard.getRequiredPieces() != currentPlayerPlacedPieces) {
+            phase = 0;
+        } else {
+            phase = currentPlayer == Player.BLUE ? 1 : 2;
+        }
+        selectedPiece = -1;
     }
 
     /**
@@ -512,6 +568,7 @@ public class Game {
         placedPiecesRed = 0;           // Reset red move count
         phase = 0;                  // Reset phase to placing
         currentPlayer = Player.BLUE;          // Reset to player 1's turn
+        gameOver = false;
         // Optionally, reinitialize any game-specific logic or data
     }
 
@@ -663,4 +720,21 @@ public class Game {
 
         return playerUsedAllPieces && piecesOnBoard == 3;
     }
+
+    public boolean isOver() {
+        if (gameOver) {
+            return true;
+        }
+        checkWinLoss();
+        if (gameOver) {
+            return true;
+        }
+        checkDrawConditions();
+        return gameOver;
+    }
+
+    public Bot getCurrentBot() {
+        return currentPlayer == Player.BLUE ? blue : red;
+    }
+
 }

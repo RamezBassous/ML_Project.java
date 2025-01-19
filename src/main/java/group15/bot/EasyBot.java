@@ -23,7 +23,7 @@ public class EasyBot implements Bot {
     private Random random = new Random();
     private List<EvaluationResult> evaluations;
 
-    
+
     private GameOri copyGame(Game game) {
         GameOri gameOri = new GameOri();
         //gameOri.boardPositions = Arrays.copyOf(game.boardPositions, game.boardPositions.length);
@@ -94,6 +94,9 @@ public class EasyBot implements Bot {
                 }
             }
 
+            if (bestPosition == -1) {
+                throw new IllegalStateException("No best position found");
+            }
             return bestPosition;
 
         } catch (IOException e) {
@@ -176,12 +179,19 @@ public class EasyBot implements Bot {
             double maxEvaluation = Double.NEGATIVE_INFINITY; // Initialize to a very low value
             int bestPosition = -1; // Default to -1 if no valid positions are found
             for (EvaluationResult result : evaluations) {
+                if(!game.getValidMoves().contains(result.position1)) {
+                    System.out.println("Cannot select piece: " + result.position1);
+                    continue;
+                }
                 if (result.getEvaluation() > maxEvaluation) {
                     maxEvaluation = result.getEvaluation(); // Update the maximum evaluation
                     bestPosition = result.position1; // Update the best position
                 }
             }
 
+            if (bestPosition == -1) {
+                throw new IllegalStateException("No best position found");
+            }
             return bestPosition;
 
         } catch (IOException e) {
@@ -214,9 +224,9 @@ public class EasyBot implements Bot {
 
     /**
     * Determines the best move for a selected piece based on a neural network evaluation.
-    * This method evaluates all possible target positions for the given piece and selects 
+    * This method evaluates all possible target positions for the given piece and selects
     * the move that maximizes the evaluation score computed by the neural network.
-    
+
     * @param game           The current state of the game.
     * @param selectedPiece  The position of the piece selected by the player.
     * @return               The best target position for the selected piece, or -1 if no valid moves are found.
@@ -273,6 +283,9 @@ public class EasyBot implements Bot {
                 }
             }
 
+            if (bestPosition == -1) {
+                throw new IllegalStateException("No best position found"); // TODO: Bot does consider all moves that are invalid, but not the ones that are valid, therefore cannot find any valid moves
+            }
             return bestPosition;
 
         } catch (IOException e) {
@@ -293,7 +306,7 @@ public class EasyBot implements Bot {
 
     /**
      * Determines the best piece to delete from the opponent's pieces based on a neural network evaluation.
-     * This method evaluates all possible positions of the opponent's pieces and selects the piece 
+     * This method evaluates all possible positions of the opponent's pieces and selects the piece
      * whose removal maximizes the evaluation score computed by the neural network.
      *
      * @param game  The current state of the game.
@@ -308,9 +321,9 @@ public class EasyBot implements Bot {
         // Get the first .txt file in the nets directory
         try (Stream<Path> files = Files.list(netsDir)) {
             Path netFile = files
-                    .filter(file -> file.toString().endsWith(".txt")) // Select only .txt files
-                    .findFirst()  // Find the first matching file
-                    .orElseThrow(() -> new IOException("No .txt file found in nets directory"));
+              .filter(file -> file.toString().endsWith(".txt")) // Select only .txt files
+              .findFirst()  // Find the first matching file
+              .orElseThrow(() -> new IOException("No .txt file found in nets directory"));
 
             // Print the filename
             System.out.println("Loading network from file: " + netFile.getFileName());
@@ -335,22 +348,27 @@ public class EasyBot implements Bot {
                 }
             }
 
+
             // Find the position with the maximum evaluation using a simple loop
             double maxEvaluation = Double.NEGATIVE_INFINITY; // Initialize to a very low value
             int bestPosition = -1; // Default to -1 if no valid positions are found
             for (EvaluationResult result : evaluations) {
+                if (!game.getValidMoves().contains(result.position1)) {
+                    System.out.println("Cannot delete piece: " + result.position1);
+                    continue;
+                }
                 if (result.getEvaluation() > maxEvaluation) {
                     maxEvaluation = result.getEvaluation(); // Update the maximum evaluation
                     bestPosition = result.position1; // Update the best position
                 }
             }
-
+            if (bestPosition == -1) {
+                throw new IllegalStateException("No best position found");
+            }
             return bestPosition;
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
 
 /*    @Override
     public int determinePieceToDelete(Game game) {
@@ -379,4 +397,5 @@ public class EasyBot implements Bot {
         // Choose a random deletable position
         return deletablePositions.get(random.nextInt(deletablePositions.size()));
     }*/
+    }
 }
