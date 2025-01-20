@@ -1,5 +1,7 @@
 package group15;
 
+import group15.bot.AlphaBetaBot;
+import group15.bot.MonteCarloBot;
 import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
@@ -26,6 +28,12 @@ import java.util.List;
 import group15.bot.Bot;
 import group15.bot.EasyBot;
 
+
+/**
+ * Controller class responsible for managing the user interface and handling interactions 
+ * for the Nine Men's Morris game. It connects the FXML components with the game logic 
+ * and provides methods to update the UI based on game events and user actions.
+ */
 public class Controller {
 
     private static final String BLUE_COLOR = "-fx-stroke: #457b9d;";
@@ -130,6 +138,10 @@ public class Controller {
     private Stage primaryStage; // Holds reference to the main stage
 
 
+    /**
+     * Initializes the game and sets up the UI components and event listeners.
+     * This method is called automatically when the FXML file is loaded.
+     */
     @FXML
     public void initialize() {
 
@@ -183,7 +195,9 @@ public class Controller {
         updateGameMode();
     }
 
-    //Initializes UI elements by setting initial visibility and states.
+    /**
+     * Initializes the user interface by hiding unnecessary elements and configuring interactions.
+     */
     private void initializeUI() {
 
         // Hiding UI Elements
@@ -251,6 +265,9 @@ public class Controller {
         setupMenuInteraction(drawBox);
     }
 
+    /**
+     * Sets listeners for game events such as winning or drawing.
+     */
     private void setGameEventListeners() {
         // Assigning listener for each game instance
         for (Game game : gameManager.getGames()) {
@@ -272,12 +289,20 @@ public class Controller {
         }
     }
 
+    /**
+     * Updates the state of the undo and redo buttons based on the current game state.
+     */
     private void updateUndoRedoButtons() {
         UndoB.setDisable(!currentGame.canUndo);
         RedoB.setDisable(currentGame.getRedoStack().isEmpty());
     }
 
-
+    /**
+     * Handles the Undo button click event. Attempts to undo the last move.
+     * If successful, updates the board UI to reflect the undone move.
+     *
+     * @param event The action event triggered by the Undo button.
+     */
     @FXML
     void handleUndoAction(ActionEvent event) {
         if (currentGame.undo()) {
@@ -285,6 +310,12 @@ public class Controller {
         }
     }
 
+    /**
+     * Handles the Redo button click event. Attempts to redo the last undone move.
+     * If successful, updates the board UI to reflect the redone move.
+     *
+     * @param event The action event triggered by the Redo button.
+     */
     @FXML
     void handleRedoAction(ActionEvent event) {
         if (currentGame.redo()) {
@@ -292,6 +323,14 @@ public class Controller {
         }
     }
 
+    /**
+     * Handles the removal of an opponent's piece, applying visual animations
+     * and ensuring the piece can be legally removed.
+     *
+     * @param scaleTransition The scale animation applied to the removal indicator.
+     * @param ring            The ring element used to highlight the piece.
+     * @param position        The board position of the piece to be removed.
+     */
     private void handleOpponentPieceRemoval(ScaleTransition scaleTransition, Circle ring, int position) {
         Player playerInPosition = currentGame.getBoardPositions()[position];
         Player opponentPlayer = currentGame.getCurrentPlayer().opponent();
@@ -307,7 +346,11 @@ public class Controller {
         }
     }
 
-    // Set up growing/shrinking animation for the specified pane
+    /**
+     * Sets up a growing and shrinking animation for the specified pane.
+     *
+     * @param targetPane The pane to which the animation will be applied.
+     */
     private void setupPaneAnimation(Pane targetPane) {
         ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.9), targetPane);
         scaleTransition.setByX(0.03); // Grow by 3%
@@ -317,7 +360,9 @@ public class Controller {
         scaleTransition.play(); // Start animation
     }
 
-    // Method to toggle visibility between blue and red turn indicators
+    /**
+     * Toggles the visibility of the turn indicators to show the current player's turn.
+     */
     private void toggleTurnIndicator() {
         if (currentGame.getCurrentPlayer() == Player.BLUE) {
             turnIndicatorGlowBlue.setVisible(true);
@@ -328,7 +373,14 @@ public class Controller {
         }
     }
 
-    // call only when phase = -1 || -2
+    /**
+     * Updates the board UI and handles the removal of a piece during the deletion phase.
+     * Ensures that the removal adheres to the game's rules.
+     * Call only when phase = -1 || -2
+     *
+     * @param ring     The ring element used to highlight the piece.
+     * @param position The board position of the piece to be removed.
+     */
     private void updateBoardUIOnPieceRemoval(Circle ring, int position) {
       Player playerInPosition = currentGame.getBoardPositions()[position];
       Player opponentPlayer = currentGame.getCurrentPlayer().opponent();
@@ -353,6 +405,17 @@ public class Controller {
       }
     }
 
+    /**
+     * Sets up interaction behaviors for a board zone, including highlighting,
+     * animation, and user actions based on the current game phase.
+     *
+     * @param zone         The circle element representing the board zone.
+     * @param shadow       The shadow element for visual feedback.
+     * @param ring         The ring element used to highlight a piece.
+     * @param playerPiece  The stack pane representing the player's piece.
+     * @param enemyPiece   The stack pane representing the opponent's piece.
+     * @param position     The position on the board associated with the zone.
+     */
     private void setupZoneInteraction(Circle zone, Circle shadow, Circle ring, StackPane playerPiece, StackPane enemyPiece, int position) {
         // Set initial visibility of shadow and ring to false
         shadow.setVisible(false);
@@ -404,7 +467,10 @@ public class Controller {
             }
         });
 
-    // Hide shadow and ring when the mouse exits the zone
+    /**
+     * Sets up the mouse exited event for a game board zone.
+     * Resets all visual effects such as shadows and rings when the mouse leaves the zone.
+     */
     zone.setOnMouseExited(event -> {
         shadow.setVisible(false);
         ring.setVisible(false);
@@ -414,7 +480,10 @@ public class Controller {
         ring.setStyle("-fx-stroke: white;"); // Reset the stroke color
     });
 
-    // Ensure the animation is stopped when the ring is hidden
+    /**
+     * Ensures the animation is stopped when the ring is hidden.
+     * Resets the scale and appearance of the ring to its default state.
+     */
     ring.visibleProperty().addListener((observable, oldValue, newValue) -> {
         if (!newValue) {
             scaleTransition.stop();
@@ -486,6 +555,10 @@ public class Controller {
     }
 
 
+        /**
+         * Handles mouse click events for game board zones.
+         * Performs actions based on the current game phase, such as placing, moving, or deleting pieces.
+         */
         zone.setOnMouseClicked(event -> {
             int currentPhase = currentGame.getPhase();
             Player[] boardPositions = currentGame.getBoardPositions();
@@ -540,8 +613,14 @@ public class Controller {
         });
     }
 
-    private Bot bot = new EasyBot();
+    private Bot bot = new MonteCarloBot();
 
+    /**
+     * Handles the logic for the bot's move during the game.
+     * This method is called during the bot's turn and performs actions
+     * based on the current phase of the game, including placing, moving, or flying pieces.
+     * If the bot completes its turn, it may also trigger piece deletion if necessary.
+     */
     private void makeBotMove() {
         if (bot == null) {
             return; // Bot is not active in the current game mode
@@ -612,6 +691,11 @@ public class Controller {
         botMoveDelay.play();
     }
 
+    /**
+     * Executes the bot's move for deleting a piece during the deletion phase.
+     * Checks if the bot is active and determines which piece to delete.
+     * Ensures the board and game state are updated after the deletion.
+     */
     private void makeBotDeleteMove() {
         if (bot == null) {
             return; // Bot is not active in the current game mode
@@ -638,7 +722,12 @@ public class Controller {
         botDeleteDelay.play();
     }
 
-    // Function to show indicators corresponding to valid move positions
+    /**
+     * Displays indicators for valid move positions on the board.
+     * Hides all existing indicators first, then shows indicators at valid move positions.
+     *
+     * @param validMoves A list of valid positions for a move.
+     */
     private void showValidMoveIndicators(List<Integer> validMoves) {
         // Hide all indicators first
         indicators.forEach(indicator -> indicator.setVisible(false));
@@ -649,6 +738,12 @@ public class Controller {
         }
     }
 
+    /**
+     * Displays indicators for pieces that can be deleted during the deletion phase.
+     * Highlights opponent pieces that are not part of a mill.
+     *
+     * @param opponentPlayer The opponent player whose pieces are being checked.
+     */
     private void showDeletionIndicators(Player opponentPlayer) {
         // Hide all indicators first to reset the board state
         indicators.forEach(indicator -> indicator.setVisible(false));
@@ -665,12 +760,18 @@ public class Controller {
         }
     }
 
-    // Function to hide all indicators after a move is made
+    /**
+     * Hides all indicators on the game board.
+     * Used after a move or action is completed to clear the board's visual state.
+     */
     private void hideAllIndicators() {
         indicators.forEach(indicator -> indicator.setVisible(false));
     }
 
-
+    /**
+     * Updates the game board's visual state based on the current game.
+     * Refreshes piece visibility, diagonal line visibility, indicators, and game text information.
+     */
     private void updateBoardUI() {
         // Update the current game reference to the new game instance
         currentGame = gameManager.getCurrentGame();
@@ -728,7 +829,10 @@ public class Controller {
         updateUndoRedoButtons();
     }
 
-
+    /**
+     * Updates the colors of the lines on the board based on the game state.
+     * Checks for completed lines (mills) and updates their color to match the player.
+     */
     private void updateLineColors() {
         Player[] boardPositions = currentGame.getBoardPositions();
 
@@ -759,6 +863,12 @@ public class Controller {
         checkLine(vertical8, boardPositions[2], boardPositions[14], boardPositions[23]);
     }
 
+    /**
+     * Updates the style of a line to reflect the color of a mill if all positions are occupied by the same player.
+     *
+     * @param line      The line to be updated.
+     * @param positions The positions in the line to check.
+     */
     private void checkLine(Line line, Player... positions) {
         if (positions[0] == Player.BLUE && positions[1] == Player.BLUE && positions[2] == Player.BLUE) {
             line.setStyle(BLUE_COLOR);
@@ -769,7 +879,10 @@ public class Controller {
         }
     }
 
-
+    /**
+     * Updates the visibility of on-hand pieces based on the current game version
+     * and the number of pieces each player has placed on the board.
+     */
     private void updateOnHandPieces() {
         StackPane[] onHandBluePieces;
         StackPane[] onHandRedPieces;
@@ -806,9 +919,11 @@ public class Controller {
         }
     }
 
-
-
-    // Interactive pieces (held on hand) logic
+    /**
+     * Sets up mouse interaction for on-hand pieces to create a scaling effect when hovered.
+     *
+     * @param onHandPiece The StackPane representing the on-hand piece.
+     */
     private void setupOnHandPieceInteraction(StackPane onHandPiece) {
         // Scale up when mouse enters
         ScaleTransition scaleUp = new ScaleTransition(Duration.seconds(0.2), onHandPiece);
@@ -854,6 +969,10 @@ public class Controller {
         });
     }
 
+    /**
+     * Sets up rotation animations for indicators when they are made visible.
+     * Resets all animations and rotations when indicators become visible.
+     */
     private void setupIndicatorAnimations() {
         for (StackPane indicator : indicators) {
             RotateTransition rt = new RotateTransition(Duration.seconds(2), indicator);
@@ -874,6 +993,10 @@ public class Controller {
         }
     }
 
+    /**
+     * Resets animations for all indicators by stopping and clearing their rotation.
+     * Ensures all indicators are in a consistent state before starting new animations.
+     */
     private void resetAllAnimations() {
         for (StackPane indicator : indicators) {
             if (indicator.isVisible()) {
@@ -890,6 +1013,10 @@ public class Controller {
         }
     }
 
+    /**
+     * Configures arrow button interactions to switch between games in the game manager.
+     * Updates the board UI after switching games.
+     */
     private void setupMenuArrows() {
         MenuBigLeftArrow.setOnMouseClicked(event -> {
             gameManager.switchToPreviousGame();
@@ -901,18 +1028,26 @@ public class Controller {
         });
     }
 
+    /**
+     * Updates the bot based on the current game mode. If the game mode is "PLAYER VS BOT",
+     * it initializes the bot with the corresponding difficulty level based on the currentBotMode.
+     * Otherwise, it disables the bot.
+     */
     private void updateBotBasedOnGameMode() { // Adding new bots will happen here (use currentBotMode=0 for easy 1 for mid and 2 for hard)
         if (currentGame.gameMode.equals("PLAYER VS BOT")) {
             if (bot == null) {
-                bot = new EasyBot();
+                bot = new MonteCarloBot();
             }
         } else {
             bot = null; // Disable the bot in other modes
         }
     }
 
-
-    // Method to update the game mode and UI based on the current index
+    /**
+     * Updates the game mode and the UI components based on the current game mode index.
+     * This method handles the display of the game mode and the updates to UI elements such as
+     * the game mode text and layout positions.
+     */
     private void updateGameMode() {
         switch (currentGameModeIndex) {
             case 0: // LOCAL 2 PLAYER
@@ -949,7 +1084,10 @@ public class Controller {
         updateBotBasedOnGameMode(); // Update the bot behavior if applicable
     }
 
-
+    /**
+     * Sets up the small arrow animations for cycling through the game modes. The left and right arrows
+     * allow the user to cycle through the available game modes, and hover animations are added to the arrows.
+     */
     private void setupSmallArrowAnimations() {
         // Small left arrow 0 behavior (cycles backward through all game modes)
         MenuSmallLeftArrow0.setOnMouseClicked(event -> {
@@ -976,13 +1114,23 @@ public class Controller {
         setupArrowHoverAnimation(MenuSmallRightArrow1);
     }
 
-
+    /**
+     * Handles the mouse click event for switching the version. It simulates the ActionEvent
+     * by calling the switchVersionAction method.
+     * 
+     * @param event The mouse event that triggered the method call.
+     */
     private void handleMouseClickForSwitchVersion(MouseEvent event) {
         // Call the switchVersionAction, ignoring the MouseEvent but simulating the ActionEvent
         switchVersionAction(new ActionEvent());
     }
 
-
+    /**
+     * Sets up hover animations for a given arrow (scale up when mouse enters, scale down when mouse exits).
+     * This method provides a smooth animation for the user interface to enhance interactivity.
+     * 
+     * @param arrow The arrow to which hover animations will be applied.
+     */
     private void setupArrowHoverAnimation(Arc arrow) {
         // Create a hover scale animation, similar to the big arrows
         ScaleTransition scaleUp = new ScaleTransition(Duration.seconds(0.2), arrow);
@@ -1005,7 +1153,12 @@ public class Controller {
         arrow.setOnMouseExited(event -> scaleDown.play());
     }
 
-    // Interactive buttons logic
+    /**
+     * Sets up the hover interaction for a ToggleButton. The button scales up when the mouse enters and
+     * scales down when the mouse exits, providing a smooth interactive effect.
+     * 
+     * @param toggleButton The ToggleButton to which the hover interaction is applied.
+     */
     private void setupToggleButtonInteraction(ToggleButton toggleButton) {
         // Scale up when mouse enters
         ScaleTransition scaleUp = new ScaleTransition(Duration.seconds(0.2), toggleButton);
@@ -1039,6 +1192,12 @@ public class Controller {
 
     }
 
+    /**
+     * Sets up the hover interaction for a Button. The button scales up when the mouse enters and
+     * scales down when the mouse exits, creating a smooth transition effect for the user.
+     * 
+     * @param button The Button to which the hover interaction is applied.
+     */
     private void setupButtonInteraction(Button button) {
         // Scale up when mouse enters
         ScaleTransition scaleUp = new ScaleTransition(Duration.seconds(0.2), button);
@@ -1072,7 +1231,12 @@ public class Controller {
 
     }
 
-    // Interactive menu Pane
+    /**
+     * Sets up the hover interaction for a Pane. The pane scales up when the mouse enters and
+     * scales down when the mouse exits, offering a smooth, interactive transition effect.
+     * 
+     * @param menuObject The Pane to which the hover interaction is applied.
+     */
     private void setupMenuInteraction(Pane menuObject) {
         // Scale up when mouse enters
         ScaleTransition scaleUp = new ScaleTransition(Duration.seconds(0.2), menuObject);
@@ -1105,6 +1269,12 @@ public class Controller {
         });
     }
 
+    /**
+     * Sets up the hover interaction for a TitledPane. The TitledPane scales up when the mouse enters and
+     * scales down when the mouse exits, offering a visually appealing transition effect.
+     * 
+     * @param titledPane The TitledPane to which the hover interaction is applied.
+     */
     private void setupTitledPaneInteraction(TitledPane titledPane) {
         // Scale up when mouse enters
         ScaleTransition scaleUp = new ScaleTransition(Duration.seconds(0.2), titledPane);
@@ -1137,6 +1307,12 @@ public class Controller {
         });
     }
 
+    /**
+     * Sets up the hover interaction for a Circle (used as an arrow). The circle scales up when the mouse enters
+     * and scales down when the mouse exits, providing an interactive user interface element.
+     * 
+     * @param menuObject The Circle (arrow) to which the hover interaction is applied.
+     */
     private void setupMenuArrowInteraction(Circle menuObject) {
         // Scale up when mouse enters
         ScaleTransition scaleUp = new ScaleTransition(Duration.seconds(0.2), menuObject);
@@ -1169,8 +1345,13 @@ public class Controller {
         });
     }
 
-
-    // Logic when Buttons are clicked:
+    /**
+     * This method is triggered when the version switch button is clicked. It toggles the version 
+     * of the current game between 9-Men Morris and 12-Men Morris, resets the game logic, 
+     * and updates the UI to reflect the new game state.
+     * 
+     * @param event The ActionEvent triggered by the button click.
+     */
     @FXML
     void switchVersionAction(ActionEvent event) {
         // Toggle the version in the current game instance
@@ -1184,6 +1365,12 @@ public class Controller {
         updateBoardUI();
     }
 
+    /**
+     * This method simulates a series of moves in the game for testing purposes.
+     * It makes a series of moves on the game board to test the game flow.
+     * 
+     * @param event The ActionEvent triggered by the button click.
+     */
     @FXML
     void TestIndicatorAction(ActionEvent event) {
         //Here is a game simulation:
@@ -1212,12 +1399,23 @@ public class Controller {
         updateBoardUI();
     }
 
+    /**
+     * This method is triggered when the index visibility toggle button is clicked.
+     * It toggles the visibility of the index labels on the UI.
+     * 
+     * @param event The ActionEvent triggered by the button click.
+     */
     @FXML
     void showIndexAction(ActionEvent event) {
         toggleIndex();
     }
 
-    // Called when "New Game" is clicked
+    /**
+     * This method is triggered when the "New Game" button is clicked. It hides any win or draw popups,
+     * resets the game logic, and updates the board UI for a fresh start.
+     * 
+     * @param event The ActionEvent triggered by the "New Game" button click.
+     */
     @FXML
     void newGameClicked(ActionEvent event) {
         WinPopUpRed.setVisible(false);
@@ -1228,15 +1426,30 @@ public class Controller {
         updateBoardUI();
     }
 
+    /**
+     * Toggles the visibility of the index labels based on the current visibility state of the index23 label.
+     */
     private void toggleIndex() {
         Arrays.stream(indicies).forEach(text -> text.setVisible(!index23.isVisible()));
     }
 
     //SCALING
 
+    /**
+     * Sets the primary stage (window) of the application, used for resizing the window during zoom actions.
+     * 
+     * @param stage The primary stage to be set for the application.
+     */
     public void setPrimaryStage(Stage stage) {
         this.primaryStage = stage;
     }
+
+    /**
+     * This method is triggered when the zoom-in button is clicked. It scales up the UI elements 
+     * and increases the window size by a predefined scale factor.
+     * 
+     * @param event The ActionEvent triggered by the zoom-in button click.
+     */
     @FXML
     private void zoomIn(ActionEvent event) {
         // Scale the anchorMain
@@ -1252,7 +1465,12 @@ public class Controller {
         }
     }
 
-    // Method to zoom out
+    /**
+     * This method is triggered when the zoom-out button is clicked. It scales down the UI elements
+     * and decreases the window size by a predefined scale factor.
+     * 
+     * @param event The ActionEvent triggered by the zoom-out button click.
+     */
     @FXML
     private void zoomOut(ActionEvent event) {
         // Scale down the anchorMain
