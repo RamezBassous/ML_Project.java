@@ -1,8 +1,5 @@
 package group15.bot;
 
-import group15.Game;
-import group15.Player;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -15,11 +12,21 @@ import java.util.stream.Stream;
 
 import group15.*;
 
+/**
+ * A simple RandomBot implementation that uses a neural network for decision-making.
+ * The bot selects moves and placements based on evaluations made by the neural network.
+ */
 public class RandomBot implements Bot {
 
     private Random random = new Random();
     private List<EvaluationResult> evaluations;
 
+    /**
+     * Creates a copy of the current game state for evaluation.
+     * 
+     * @param game The current game state to copy.
+     * @return A new instance of the game state with the current game's attributes.
+     */
     private GameOri copyGame(Game game) {
         GameOri gameOri = new GameOri();
         //gameOri.boardPositions = Arrays.copyOf(game.boardPositions, game.boardPositions.length);
@@ -37,6 +44,13 @@ public class RandomBot implements Bot {
         return gameOri;
     }
 
+    /**
+     * Selects a position to place a piece during the placement phase.
+     * The bot evaluates possible placements using a neural network and selects the best one.
+     * 
+     * @param game The current game state.
+     * @return The position to place the piece.
+     */
     @Override
     public int placePiece(Game game) {
         // Define the nets directory
@@ -105,6 +119,14 @@ public class RandomBot implements Bot {
         // Choose a random empty position
         return emptyPositions.get(random.nextInt(emptyPositions.size()));
     }*/
+
+    /**
+     * Selects a piece to move during the game phase.
+     * The bot evaluates possible moves using a neural network and selects the best piece to move.
+     * 
+     * @param game The current game state.
+     * @return The position of the selected piece to move.
+     */
     @Override
     public int selectPiece(Game game) {
         // Define the nets directory
@@ -189,6 +211,14 @@ public class RandomBot implements Bot {
         return movablePieces.get(random.nextInt(movablePieces.size()));
     }*/
 
+    /**
+     * Determines the best move for a selected piece during the game phase.
+     * The bot evaluates possible target positions for the selected piece and selects the best one.
+     * 
+     * @param game The current game state.
+     * @param selectedPiece The position of the selected piece.
+     * @return The position to move the selected piece to.
+     */
     @Override
     public int determineMove(Game game, int selectedPiece) {
         // Define the nets directory
@@ -256,6 +286,14 @@ public class RandomBot implements Bot {
             // Choose a random valid move
             return validMoves.get(random.nextInt(validMoves.size()));
         }*/
+
+    /**
+     * Determines which opponent's piece to delete based on the evaluation of the current game state.
+     * The bot evaluates possible deletions and selects the best piece to remove.
+     * 
+     * @param game The current game state.
+     * @return The position of the opponent's piece to delete.
+     */
     @Override
     public int determinePieceToDelete(Game game) {
         // Define the nets directory

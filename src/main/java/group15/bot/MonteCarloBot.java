@@ -12,31 +12,52 @@ public class MonteCarloBot implements Bot {
 
 
     private static final int TIME_LIMIT_MS = 3000;
-
-
     private static final double EXPLORATION_CONSTANT = 1.41;
-
-
     private static final int MAX_ROLLOUT_DEPTH = 50;
 
+    /**
+     * Places a piece on the board using MCTS.
+     * 
+     * @param game the current game state
+     * @return the position to place the piece
+     */
     @Override
     public int placePiece(Game game) {
 
         return runMCTS(game, ActionType.PLACE, -1);
     }
 
+    /**
+     * Selects a piece to move using MCTS.
+     * 
+     * @param game the current game state
+     * @return the position of the selected piece
+     */
     @Override
     public int selectPiece(Game game) {
 
         return runMCTS(game, ActionType.SELECT, -1);
     }
 
+    /**
+     * Determines the move to make based on the selected piece.
+     * 
+     * @param game the current game state
+     * @param piecePosition the position of the selected piece
+     * @return the position to move the piece to
+     */
     @Override
     public int determineMove(Game game, int piecePosition) {
 
         return runMCTS(game, ActionType.MOVE, piecePosition);
     }
 
+    /**
+     * Determines which piece to delete using MCTS.
+     * 
+     * @param game the current game state
+     * @return the position of the piece to delete
+     */
     @Override
     public int determinePieceToDelete(Game game) {
 
@@ -44,6 +65,14 @@ public class MonteCarloBot implements Bot {
     }
 
 
+    /**
+     * Runs the MCTS algorithm for a given action type and game state.
+     * 
+     * @param game the current game state
+     * @param actionType the type of action to perform (place, select, move, delete)
+     * @param selectedPos the selected position (for select and move actions)
+     * @return the best move determined by MCTS
+     */
     private int runMCTS(Game game, ActionType actionType, int selectedPos) {
         long endTime = System.currentTimeMillis() + TIME_LIMIT_MS;
 
@@ -58,9 +87,7 @@ public class MonteCarloBot implements Bot {
                 leaf = leaf.expand();
             }
 
-
             double result = simulate(leaf);
-
 
             backpropagate(leaf, result);
         }
@@ -76,7 +103,12 @@ public class MonteCarloBot implements Bot {
         return bestChild.chosenMove;
     }
 
-
+    /**
+     * Selects the best node to expand based on the UCB formula.
+     * 
+     * @param node the current node to select from
+     * @return the best child node
+     */
     private MCTSNode select(MCTSNode node) {
         MCTSNode current = node;
         while (!current.children.isEmpty()) {
@@ -85,6 +117,12 @@ public class MonteCarloBot implements Bot {
         return current;
     }
 
+    /**
+     * Simulates a random game from the current node.
+     * 
+     * @param node the current node to simulate from
+     * @return the result of the simulation (1 for win, -1 for loss, 0 for draw)
+     */
     private double simulate(MCTSNode node) {
         Game rolloutGame = cloneGame(node.game);
         Player startPlayer = rolloutGame.getCurrentPlayer();
@@ -98,9 +136,7 @@ public class MonteCarloBot implements Bot {
                 break;
             }
 
-
             int chosenAction = pickRolloutAction(rolloutGame, actionType, possibleActions);
-
 
             makeRolloutMove(rolloutGame, actionType, chosenAction);
 
@@ -118,7 +154,12 @@ public class MonteCarloBot implements Bot {
         }
     }
 
-
+    /**
+     * Backpropagates the result of a simulation to update the node's statistics.
+     * 
+     * @param node the node to backpropagate from
+     * @param result the result of the simulation
+     */
     private void backpropagate(MCTSNode node, double result) {
         MCTSNode current = node;
         while (current != null) {
@@ -128,7 +169,12 @@ public class MonteCarloBot implements Bot {
         }
     }
 
-
+    /**
+     * Determines if the game is in a terminal state.
+     * 
+     * @param game the current game state
+     * @return true if the game is in a terminal state, false otherwise
+     */
     private boolean isTerminalState(Game game) {
 
         int totalPiecesNeeded = game.isIn12MenMorrisVersion() ? 24 : 18;
@@ -144,15 +190,36 @@ public class MonteCarloBot implements Bot {
         );
     }
 
+    /**
+     * Checks if the player has won the game.
+     * 
+     * @param game the current game state
+     * @param player the player to check
+     * @return true if the player has won, false otherwise
+     */
     private boolean didPlayerWin(Game game, Player p) {
         Player opp = p.opponent();
         return getPieceCount(game, opp) < 3 || !hasAnyValidMove(game, opp);
     }
 
+    /**
+     * Checks if the player has lost the game.
+     * 
+     * @param game the current game state
+     * @param player the player to check
+     * @return true if the player has lost, false otherwise
+     */
     private boolean didPlayerLose(Game game, Player p) {
         return getPieceCount(game, p) < 3 || !hasAnyValidMove(game, p);
     }
 
+    /**
+     * Determines if a player has any valid moves available.
+     * 
+     * @param game the current game state
+     * @param player the player to check
+     * @return true if the player has at least one valid move, false otherwise
+     */
     private boolean hasAnyValidMove(Game game, Player player) {
         for (int i = 0; i < 24; i++) {
             if (game.getBoardPositions()[i] == player) {
@@ -165,6 +232,13 @@ public class MonteCarloBot implements Bot {
         return false;
     }
 
+    /**
+     * Returns the number of pieces of a player on the board.
+     * 
+     * @param game the current game state
+     * @param player the player to count the pieces of
+     * @return the number of pieces the player has on the board
+     */
     private int getPieceCount(Game game, Player player) {
         int count = 0;
         for (Player pos : game.getBoardPositions()) {
@@ -173,7 +247,7 @@ public class MonteCarloBot implements Bot {
         return count;
     }
 
-
+    // MCTS Node class definition with essential methods (e.g., expand, getBestChild, etc.)
     private class MCTSNode {
         MCTSNode parent;
         List<MCTSNode> children = new ArrayList<>();
@@ -259,7 +333,15 @@ public class MonteCarloBot implements Bot {
         }
     }
 
-
+    /**
+    * Retrieves the list of possible actions for the AI to take, based on the current game phase
+    * and the provided action type.
+    * 
+    * @param actionType The type of action (PLACE, SELECT, MOVE, DELETE).
+    * @param game The current game state.
+    * @param selectedPos The position of the currently selected piece, if applicable.
+    * @return A list of possible actions that the AI can take.
+    */
     private List<Integer> getPossibleActions(ActionType actionType, Game game, int selectedPos) {
         List<Integer> actions = new ArrayList<>();
         switch (actionType) {
@@ -309,7 +391,14 @@ public class MonteCarloBot implements Bot {
         return actions;
     }
 
-
+    /**
+     * Applies the specified action to a copy of the game state.
+     * 
+     * @param childGame The copy of the game state to which the action will be applied.
+     * @param actionType The type of action to apply (PLACE, SELECT, MOVE, DELETE).
+     * @param move The move to be executed.
+     * @param selectedPos The position of the selected piece, if applicable.
+     */
     private void applyAction(Game childGame, ActionType actionType, int move, int selectedPos) {
         switch (actionType) {
             case PLACE:
@@ -329,6 +418,12 @@ public class MonteCarloBot implements Bot {
         }
     }
 
+    /**
+     * Determines the action type to be taken based on the current game phase.
+     * 
+     * @param g The current game state.
+     * @return The corresponding action type (PLACE, SELECT, MOVE, DELETE).
+     */
     private ActionType getActionType(Game g) {
         int phase = g.getPhase();
 
@@ -351,6 +446,14 @@ public class MonteCarloBot implements Bot {
         return ActionType.PLACE;
     }
 
+    /**
+     * Chooses an action randomly from a list of possible actions, with a bias toward the first action.
+     * 
+     * @param rolloutGame The current game state during the rollout.
+     * @param actionType The action type to be applied.
+     * @param possibleActions A list of possible actions.
+     * @return The chosen action (move position).
+     */
     private int pickRolloutAction(Game rolloutGame, ActionType actionType, List<Integer> possibleActions) {
 
         Random r = new Random();
@@ -360,7 +463,13 @@ public class MonteCarloBot implements Bot {
         return possibleActions.get(r.nextInt(possibleActions.size()));
     }
 
-
+    /**
+     * Makes a move on the provided game state based on the given action type.
+     * 
+     * @param g The current game state.
+     * @param at The action type to be applied.
+     * @param move The move to be executed.
+     */
     private void makeRolloutMove(Game g, ActionType at, int move) {
         switch (at) {
             case PLACE:
@@ -380,7 +489,12 @@ public class MonteCarloBot implements Bot {
         }
     }
 
-
+    /**
+     * Creates a deep copy of the provided game state.
+     * 
+     * @param original The original game state to be cloned.
+     * @return A new instance of the game with the same state as the original.
+     */
     private Game cloneGame(Game original) {
         Game copy = new Game();
         copy.setIn12MenMorrisVersion(original.isIn12MenMorrisVersion());
@@ -397,6 +511,13 @@ public class MonteCarloBot implements Bot {
         return copy;
     }
 
+    /**
+     * Evaluates the current board state and returns a score representing the advantage of the player.
+     * 
+     * @param game The current game state.
+     * @param player The player for whom the evaluation is performed.
+     * @return A score between -1.0 and 1.0 representing the advantage for the given player.
+     */
     private double evaluateBoardState(Game game, Player player) {
         Player opp = player.opponent();
 
@@ -418,6 +539,13 @@ public class MonteCarloBot implements Bot {
         return 2.0 * normalized - 1.0;
     }
 
+    /**
+     * Counts all possible valid moves for the given player.
+     * 
+     * @param game The current game state.
+     * @param p The player for whom the valid moves are counted.
+     * @return The total number of valid moves available for the given player.
+     */
     private int countAllPossibleMoves(Game game, Player p) {
         int count = 0;
 

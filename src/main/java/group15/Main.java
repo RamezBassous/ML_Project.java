@@ -6,8 +6,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * The Main class is the entry point for launching the application.
+ * It extends the JavaFX Application class and sets up the primary stage and scene.
+ */
 public class Main extends Application {
 
+    /**
+     * Initializes and shows the primary stage with the loaded FXML UI.
+     * 
+     * @param primaryStage The main window (stage) for the application.
+     * @throws Exception If there is an error loading the FXML file.
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUIMill.fxml"));
@@ -24,6 +34,11 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Main method that launches the JavaFX application.
+     * 
+     * @param args Command-line arguments (not used).
+     */
     public static void main(String[] args) {
         launch(args);
     }

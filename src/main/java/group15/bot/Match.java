@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Match class represents a match of the Nine Men's Morris game.
+ * It handles the game logic, action evaluation, and decision-making using neural networks.
+ */
 public class Match {
     private GameSituation gameCurrent; // Current game state
     private GameSituation gameNext; // Next game state after action
@@ -23,7 +27,13 @@ public class Match {
 
     private boolean bLogFlage = false;
 
-    // Constructor to initialize the game state and neural network
+    /**
+     * Constructor to initialize the game state and neural network.
+     *
+     * @param game Current game state
+     * @param myNet Neural network for the current player
+     * @param opponentNet Neural network for the opponent player
+     */
     public Match(GameSituation game, NeuralNetwork myNet , NeuralNetwork opponentNet) {
         this.gameCurrent = game; // Initialize current game state
         this.myNet = myNet; // Initialize neural network
@@ -36,7 +46,11 @@ public class Match {
         }
     }
 
-    // Log method to write messages to log.txt
+    /**
+     * Log method to write messages to log.txt.
+     *
+     * @param message The message to log
+     */
     private void log(String message) {
         try {
 
@@ -51,7 +65,12 @@ public class Match {
         }
     }
 
-    // Try all possible actions and evaluate the resulting game states
+    /**
+     * Try all possible actions and evaluate the resulting game states.
+     * Evaluates placement, movement, flying, and deletion actions based on the current phase.
+     *
+     * @param net The neural network used for evaluation
+     */
     public void tryEveryActions(NeuralNetwork net) {
         log("tryEveryActions " + " begin...");
         evaluationsPlaceBlue = new ArrayList<>();
@@ -149,7 +168,11 @@ public class Match {
         log("tryEveryActions " + " end...");
     }
 
-    // Perform the best action based on the highest evaluation
+    /**
+     * Perform the best action based on the highest evaluation.
+     * It finds the highest evaluation among placement, moving/flying, and deletion actions,
+     * and updates the game state accordingly.
+     */
     public void doBestAction() {
         double bestEvaluation = Double.NEGATIVE_INFINITY;
         GameSituation bestGameSituationNext = null;
@@ -213,9 +236,13 @@ public class Match {
         }
     }
 
-    // Play one full match
-// Play one full match
-// Play one full match
+    /**
+    * Play one full match.
+    * This method simulates a full game between the current player and the opponent.
+    * The game continues until there is a winner or a draw.
+    *
+    * @return The outcome of the game: 1 for current player win, 0 for opponent win, 0.5 for draw
+    */
     public double playOneMatch() {
         do {
             tryEveryActions(myNet); // Try all possible actions
@@ -265,9 +292,12 @@ public class Match {
         } while (true); // Continue until the game ends
     }
 
-
-
-    // Close the writer to release resources when done
+    /**
+     * Closes the BufferedWriter to release resources.
+     * Ensures proper resource cleanup when logging is complete.
+     * 
+     * @throws IOException if an error occurs while closing the writer.
+     */
     public void closeLogger() {
         try {
             if (writer != null) {

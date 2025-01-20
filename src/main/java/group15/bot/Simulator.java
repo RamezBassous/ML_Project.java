@@ -8,16 +8,36 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Simulator class is responsible for running a simulation of the game over multiple generations,
+ * where each generation consists of several matches between a network and its opponent. The simulator
+ * tracks the scores, saves networks, and identifies the best network based on performance.
+ */
 public class Simulator {
 
     private final GameSituation initialGame;
     private final NeuralNetwork myNet;
 
+    /**
+     * Constructs a Simulator with the given initial game situation and neural network.
+     *
+     * @param initialGame The initial game state for simulation.
+     * @param myNet       The neural network to be used in the simulation.
+     */
     public Simulator(GameSituation initialGame, NeuralNetwork myNet) {
         this.initialGame = initialGame;
         this.myNet = myNet;
     }
 
+    /**
+     * Runs the simulation for the specified number of generations and matches per generation.
+     * For each match, the simulator plays a game between the neural network and a new opponent network,
+     * calculates the score, and saves the network's performance to a file.
+     *
+     * @param totalGenerations The number of generations to simulate.
+     * @param matchesPerGeneration The number of matches to play in each generation.
+     * @throws IOException If an error occurs during file operations.
+     */
     public void runSimulation(int totalGenerations, int matchesPerGeneration) throws IOException {
         long totalStartTime = System.currentTimeMillis(); // Start time for the entire simulation
 
@@ -124,7 +144,12 @@ public class Simulator {
         System.out.println("Total time taken for all generations: " + totalTimeTaken + " ms");
     }
 
-    // Helper method to find the best network based on the highest score
+    /**
+     * Helper method to find the best network based on the highest score from a list of network scores.
+     *
+     * @param networkScores The list of network scores in the format "filename - Score: score".
+     * @return The file name of the best network.
+     */
     private String findBestNetwork(List<String> networkScores) {
         double maxScore = Double.NEGATIVE_INFINITY;
         String bestNetFileName = "";

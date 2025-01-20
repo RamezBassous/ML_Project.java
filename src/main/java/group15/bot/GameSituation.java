@@ -7,6 +7,11 @@ import java.util.Arrays;
 import java.util.List;
 import group15.GameOri;
 
+/**
+ * The GameSituation class represents the state of the game during different phases, including placing, moving,
+ * flying, and deleting pieces. It extends the `GameOri` class and includes additional logic for handling game actions,
+ * tracking deleted pieces, and logging game events.
+ */
 public class GameSituation extends GameOri {
 
     // Array to store inputs for the neural network.
@@ -19,12 +24,21 @@ public class GameSituation extends GameOri {
     public int deletedCountRed = 0;
 
     private BufferedWriter writer; // Writer to output logs to log.txt
-    // Constructor of the subclass, calls the parent class constructor
+
+    /**
+     * Constructor for the GameSituation class, calling the parent class constructor.
+     * Initializes the game situation state.
+     */
     public GameSituation() {
         super(); // Calls the parent class constructor
 
     }
-    // Log method to write messages to log.txt
+
+    /**
+     * Logs a message to a log file ("log.txt") for debugging or record-keeping purposes.
+     * 
+     * @param message the message to log
+     */
     private void log(String message) {
         try {
             // Initialize the BufferedWriter to write to log.txt in the current directory
@@ -42,7 +56,12 @@ public class GameSituation extends GameOri {
             e.printStackTrace();
         }
     }
-    // Copy Constructor
+
+    /**
+     * Copy constructor for the GameSituation class, creating a new instance from an existing `GameOri` instance.
+     * 
+     * @param gameSituation the GameOri instance to copy
+     */
     public GameSituation(GameOri gameSituation) {
         super(); // Calling the parent class constructor
         this.phase = gameSituation.phase;
@@ -50,14 +69,20 @@ public class GameSituation extends GameOri {
         this.selectedPiece = gameSituation.selectedPiece;
         this.moveCountBlue = gameSituation.moveCountBlue;
         this.moveCountRed = gameSituation.moveCountRed;
-/*        this.deletedCountBlue = gameSituation.deletedCountBlue;
-        this.deletedCountRed = gameSituation.deletedCountRed;*/
+     /* this.deletedCountBlue = gameSituation.deletedCountBlue;
+        this.deletedCountRed = gameSituation.deletedCountRed; */
         this.moveWithoutCapture = gameSituation.moveWithoutCapture;
         this.boardPositions = Arrays.copyOf(gameSituation.boardPositions, gameSituation.boardPositions.length);
         this.listener = gameSituation.listener;
 
     }
 
+    /**
+     * Returns a list of valid moves and flying positions for a given piece.
+     * 
+     * @param position the position of the piece
+     * @return a list of valid moves
+     */
     public List<Integer> getValidFlyAndMoves(int position){
         return super.getValidMoves(position);
     }
@@ -66,6 +91,12 @@ public class GameSituation extends GameOri {
         return super.formsMill(position,player);
     }*/
 
+    /**
+     * Executes a placement action where the current player places a piece on the board.
+     * 
+     * @param position the position where the piece should be placed
+     * @return true if the action was successful, false otherwise
+     */
     public boolean doActionPlace(int position) {
 
         if (position < 0 || position >= 24) {
@@ -113,6 +144,13 @@ public class GameSituation extends GameOri {
         return false;
     }
 
+    /**
+     * Executes a flying or moving action for the current player.
+     * 
+     * @param position the current position of the piece
+     * @param positionTo the target position to move or fly to
+     * @return true if the action was successful, false otherwise
+     */
     public boolean doActionFlyMove(int position,int positionTo) {
 
         // Moving or flying phase logic
@@ -191,6 +229,13 @@ public class GameSituation extends GameOri {
             return true;
         }
     }
+
+    /**
+     * Executes a deletion action where the current player removes an opponent's piece.
+     * 
+     * @param position the position of the opponent's piece to be deleted
+     * @return true if the action was successful, false otherwise
+     */
     public boolean doActionDelete(int position) {
 
         // Delete phase logic
@@ -246,6 +291,11 @@ public class GameSituation extends GameOri {
     }
 
 
+    /**
+     * Checks if the current game state satisfies any win/loss conditions.
+     * 
+     * @return true if a win/loss condition is met, false otherwise
+     */
     public boolean checkWinLossPlus() {
 
         if (this.phase != 1 && this.phase != 2) {
@@ -287,6 +337,11 @@ public class GameSituation extends GameOri {
         return false;
     }
 
+    /**
+     * Checks if the current game state satisfies any draw conditions.
+     * 
+     * @return true if a draw condition is met, false otherwise
+     */
     public boolean checkDrawConditionsPlus() {
 
         if (this.phase != 1 && this.phase != 2) {

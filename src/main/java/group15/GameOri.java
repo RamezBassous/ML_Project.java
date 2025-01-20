@@ -2,6 +2,11 @@ package group15;
 
 import java.util.*;
 
+/**
+ * Represents the main logic of the Nine/Twelve Men's Morris game, handling all phases and gameplay mechanics.
+ * The game has three main phases: Placing, Moving, and Flying. Players take turns placing, moving, and flying pieces
+ * according to the rules of the game.
+ */
 public class GameOri {
 
     public GameEventListener listener; // For letting the controller know who won
@@ -40,25 +45,37 @@ public class GameOri {
     public int moveWithoutCapture = 0;
     public boolean drawAgreed = false;
 
-    // Initialize the game, reset board positions
+    /**
+     * Initializes the game and sets up the game board. The game starts in the placing phase.
+     */
     public GameOri() {
         resetBoard();
         gameBoard = GameBoardFactory.get(false);
         phase = 0;  // Start in the placing phase
     }
 
-    // Method to set the listener
+    /**
+     * Sets the listener for the game to notify the controller of game events.
+     * 
+     * @param listener The listener to be set
+     */
     public void setGameEventListener(GameEventListener listener) {
         this.listener = listener;
     }
 
-    // Method to save current state for undo
+    /**
+     * Saves the current board state to the undo stack for potential undo action.
+     */
     public void saveStateForUndo() {
         undoStack.push(Arrays.copyOf(boardPositions, boardPositions.length));  // Deep copy of board state
         redoStack.clear();  // Clear redo stack since this is a new action
     }
 
-    // Undo last move
+    /**
+     * Undoes the last move by restoring the board state from the undo stack.
+     * 
+     * @return true if the undo was successful, false otherwise
+     */
     public boolean undo() {
         if (!undoStack.isEmpty()) {
             redoStack.push(Arrays.copyOf(boardPositions, boardPositions.length));  // Save current state to redo stack
@@ -68,7 +85,11 @@ public class GameOri {
         return false;
     }
 
-    // Redo last undone move
+    /**
+     * Redoes the last undone move by restoring the board state from the redo stack.
+     * 
+     * @return true if the redo was successful, false otherwise
+     */
     public boolean redo() {
         if (!redoStack.isEmpty()) {
             undoStack.push(Arrays.copyOf(boardPositions, boardPositions.length));  // Save current state to undo stack
@@ -78,7 +99,13 @@ public class GameOri {
         return false;
     }
 
-    // Get valid moves for a piece at a position (returns empty neighbors or all empty spots during flying phase)
+    /**
+     * Gets the list of valid moves for a piece at the given position.
+     * During the flying phase, the player can move to any empty position.
+     * 
+     * @param position The position of the piece for which valid moves are to be checked
+     * @return A list of valid move positions
+     */
     public List<Integer> getValidMoves(int position) {
         List<Integer> validMoves = new ArrayList<>();
 
@@ -101,8 +128,14 @@ public class GameOri {
         return validMoves;
     }
 
-    // Check if a move forms a mill (checks along the path for a mill)
-
+    /**
+     * Checks if a mill is formed by a player's piece at the specified position.
+     * A mill is formed when a player's three pieces are aligned in a specific path.
+     * 
+     * @param position The position of the piece to check
+     * @param player The player (1 for blue, 2 for red) whose mill formation is being checked
+     * @return true if a mill is formed, false otherwise
+     */
    public boolean formsMill(int position, int player) {
         // Iterate through each mill path that includes this position
         for (int[] path : gameBoard.getMillPaths()[position]) {
@@ -114,11 +147,20 @@ public class GameOri {
         return false; // No mill formed
     }
 
-    // Reset board to initial state
+    /**
+     * Resets the board to the initial state with no pieces placed.
+     */
     public void resetBoard() {
         Arrays.fill(boardPositions, 0);
     }
     
+    /**
+     * Makes a move at the specified position, handling all phases of the game: placing, moving, and flying.
+     * It checks if the move is valid, updates the board, and handles the phase transitions.
+     * 
+     * @param position The position where the move is made
+     * @return true if the move was successful, false otherwise
+     */
     public boolean makeMove(int position) {
         System.out.println("PHASE: " + phase);
         if (position < 0 || position >= 24) {
@@ -268,8 +310,12 @@ public class GameOri {
         return false;
     }
     
-    
-    // Helper method to get the number of pieces of a player on the board
+    /**
+     * Helper method to get the number of pieces of a player on the board.
+     *
+     * @param player The player to count pieces for (1 for blue, 2 for red).
+     * @return The number of pieces for the specified player.
+     */
     public int getPieceCount(int player) {
         int count = 0;
         for (int pos : boardPositions) {
@@ -280,6 +326,11 @@ public class GameOri {
         return count;
     }
 
+    /**
+     * Checks the win/loss conditions for the game.
+     *
+     * @return true if the game is ongoing, false if a winner has been determined.
+     */
     public boolean checkWinLoss() {
         int bluePieceCount = getPieceCount(1); // Blue player is 1
         int redPieceCount = getPieceCount(2);  // Red player is 2
@@ -309,6 +360,11 @@ public class GameOri {
         return blueHasValidMoves;
     }
 
+    /**
+     * Checks the draw conditions for the game.
+     *
+     * @return true if any of the draw conditions are met, otherwise false.
+     */
     public boolean checkDrawConditions() {
 
         // 1. Threefold Repetition
@@ -364,22 +420,33 @@ public class GameOri {
         return false;
     }
     
-    // Helper method to reset the counter for the 50-move rule when a mill is formed
+    /**
+     * Resets the counter for the 50-move rule when a mill is formed.
+     */
     public void resetMoveWithoutCapture() {
         moveWithoutCapture = 0;
     }
     
-    // Helper method to increment the counter for the 50-move rule when no mill is formed
+    /**
+     * Increments the counter for the 50-move rule when no mill is formed.
+     */
     public void incrementMoveWithoutCapture() {
         moveWithoutCapture++;
     }
     
-    // Helper method for players to agree on a draw
+    /**
+     * Helper method for players to agree on a draw.
+     */
     public void agreeToDraw() {
         drawAgreed = true;
     }
 
-    // Helper method to get valid moves for a player
+    /**
+     * Helper method to get valid moves for a player.
+     *
+     * @param player The player for whom to check valid moves.
+     * @return true if the player has valid moves, false otherwise.
+     */
     public boolean hasValidMoves(int player) {
         for (int i = 0; i < boardPositions.length; i++) {
             if (boardPositions[i] == player) {
@@ -393,11 +460,16 @@ public class GameOri {
     }
     
 
-    // Switch between players
+    /**
+     * Switches the current player between player 1 and player 2.
+     */
     public void switchPlayer() {
         currentPlayer = (currentPlayer == 1) ? 2 : 1;
     }
 
+    /**
+     * Resets the game, clearing the board and resetting game-specific variables.
+     */
     public void resetGame() {
         resetBoard();               // Reset all board positions
         moveCountBlue = 0;          // Reset blue move count
@@ -407,50 +479,101 @@ public class GameOri {
         // Optionally, reinitialize any game-specific logic or data
     }
 
-    // Getter for boardPositions
+    /**
+     * Getter for boardPositions.
+     *
+     * @return The current positions of the pieces on the board.
+     */
     public int[] getBoardPositions() {
         return boardPositions;
     }
 
-    // Setter for boardPositions
+    /**
+     * Setter for boardPositions.
+     *
+     * @param boardPositions The new positions of the pieces on the board.
+     */
     public void setBoardPositions(int[] boardPositions) {
         this.boardPositions = boardPositions;
     }
 
-    // Getter for currentPlayer
+    /**
+     * Getter for the current player.
+     *
+     * @return The current player (1 for blue, 2 for red).
+     */
     public int getCurrentPlayer() {
         return currentPlayer;
     }
 
-    // Setter for currentPlayer
+    /**
+     * Setter for the current player.
+     *
+     * @param currentPlayer The player to set as the current player (1 for blue, 2 for red).
+     */
     public void setCurrentPlayer(int currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 
+    /**
+     * Getter for the move count of the blue player.
+     *
+     * @return The number of moves made by the blue player.
+     */
     public int getMoveCountBlue() {
         return moveCountBlue;
     }
 
+    /**
+     * Setter for the move count of the blue player.
+     *
+     * @param moveCountBlue The number of moves made by the blue player.
+     */
     public void setMoveCountBlue(int moveCountBlue) {
         this.moveCountBlue = moveCountBlue;
     }
 
+    /**
+     * Getter for the move count of the red player.
+     *
+     * @return The number of moves made by the red player.
+     */
     public int getMoveCountRed() {
         return moveCountRed;
     }
 
+    /**
+     * Setter for the move count of the red player.
+     *
+     * @param moveCountRed The number of moves made by the red player.
+     */
     public void setMoveCountRed(int moveCountRed) {
         this.moveCountRed = moveCountRed;
     }
 
+    /**
+     * Getter for the current game phase.
+     *
+     * @return The current game phase (0 for placing, 1 for moving, etc.).
+ */
     public int getPhase() {
         return phase;
     }
 
+    /**
+     * Setter for the current game phase.
+     *
+     * @param phase The game phase to set (0 for placing, 1 for moving, etc.).
+     */
     public void setPhase(int phase) {
         this.phase = phase;
     }
 
+    /**
+     * Getter for the selected piece.
+     *
+     * @return The index of the selected piece.
+     */
     public int getSelectedPiece() {
         return selectedPiece;
     }

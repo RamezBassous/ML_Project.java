@@ -2,6 +2,11 @@ package group15.bot;
 
 import java.io.IOException;
 
+/**
+ * Trainer class is responsible for initializing the game situation and the neural network,
+ * and running the simulation for training the neural network. It uses the Simulator class 
+ * to perform the training over multiple generations and matches.
+ */
 public class Trainer {
 
     public static void main(String[] args) throws IOException {

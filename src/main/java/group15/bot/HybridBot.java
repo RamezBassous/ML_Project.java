@@ -92,6 +92,14 @@ public class HybridBot implements Bot {
     }
 
 
+    /**
+     * Checks if a given piece (by position) is a valid candidate for deletion.
+     * A valid piece to delete should be an opponent's piece, not part of a mill unless all pieces are in mills.
+     * 
+     * @param game the current game state
+     * @param candidate the position of the piece being considered for deletion
+     * @return true if the candidate is valid for deletion, false otherwise
+     */
     private boolean isValidDeleteChoice(Game game, int candidate) {
         if (candidate < 0 || candidate >= 24) {
             return false;
@@ -108,7 +116,14 @@ public class HybridBot implements Bot {
         return true;
     }
 
-
+    /**
+     * Finds any valid opponent's piece to delete if no other specific valid piece is found.
+     * This function checks for the first piece that is either not part of a mill or, if all opponent's pieces
+     * are in mills, selects any piece.
+     * 
+     * @param game the current game state
+     * @return the position of a valid piece to delete, or -1 if no valid pieces are found
+     */
     private int findAnyValidDelete(Game game) {
         Player opponent = game.getCurrentPlayer().opponent();
         boolean allInMills = game.allPiecesAreInMills(opponent);
