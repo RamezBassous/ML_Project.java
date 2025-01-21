@@ -112,9 +112,6 @@ public class EasyBot implements Bot {
       }
     }
 
-    if (bestPosition == -1) {
-      throw new IllegalStateException("No best position found");
-    }
     return bestPosition;
   }
 
@@ -190,9 +187,6 @@ public class EasyBot implements Bot {
       }
     }
 
-    if (bestPosition == -1) {
-      throw new IllegalStateException("No best position found");
-    }
     return bestPosition;
 
   }
@@ -268,9 +262,6 @@ public class EasyBot implements Bot {
       }
     }
 
-    if (bestPosition == -1) {
-      throw new IllegalStateException("No best position found"); // TODO: Bot does consider all moves that are invalid, but not the ones that are valid, therefore cannot find any valid moves
-    }
     return bestPosition;
 
   }
@@ -329,9 +320,6 @@ public class EasyBot implements Bot {
         maxEvaluation = result.getEvaluation(); // Update the maximum evaluation
         bestPosition = result.position1; // Update the best position
       }
-    }
-    if (bestPosition == -1) {
-      throw new IllegalStateException("No best position found");
     }
     return bestPosition;
 
