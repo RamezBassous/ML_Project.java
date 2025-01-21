@@ -186,22 +186,26 @@ public class Game {
         }
     }
 
+    public List<Integer> getValidMoves(Player player) {
+        if (phase == 0) {
+            return getEmptyPositions();
+        }
+        if (isInDeletePhase()) {
+            return getRemovableOpponentPositions(player);
+        }
+        else {
+            return selectedPiece == -1 ? getCurrentPlayerPiecesThatCanMove(player) :
+              join(getCurrentPlayerPiecesThatCanMove(player), getPossibleMovesForSelectedPiece());
+        }
+    }
+
     /**
      * Gets the valid moves for a given position on the board.
      * 
      * @return A list of valid move positions.
      */
     public List<Integer> getValidMoves() {
-        if (phase == 0) {
-            return getEmptyPositions();
-        }
-        if (isInDeletePhase()) {
-            return getRemovableOpponentPositions();
-        }
-        else {
-          return selectedPiece == -1 ? getCurrentPlayerPiecesThatCanMove() :
-            join(getCurrentPlayerPiecesThatCanMove(), getPossibleMovesForSelectedPiece());
-        }
+        return getValidMoves(currentPlayer);
     }
 
     private List<Integer> getPossibleMovesForSelectedPiece() {
@@ -225,27 +229,27 @@ public class Game {
         return result;
     }
 
-    private List<Integer> getCurrentPlayerPiecesThatCanMove() {
+    private List<Integer> getCurrentPlayerPiecesThatCanMove(Player player) {
         if (isInFlyingPhase()) {
-            return getCurrentPlayerPieces();
+            return getPlayerPieces(player);
         }
         List<Integer> currentPlayerPieces = new ArrayList<>();
         for (int i = 0; i < boardPositions.length; i++) {
-            if (boardPositions[i] == currentPlayer && hasEmptyNeighbor(i)) {
+            if (boardPositions[i] == player && hasEmptyNeighbor(i)) {
                 currentPlayerPieces.add(i);
             }
         }
         return currentPlayerPieces;
     }
 
-    private List<Integer> getCurrentPlayerPieces() {
-        List<Integer> currentPlayerPieces = new ArrayList<>();
+    private List<Integer> getPlayerPieces(Player player) {
+        List<Integer> result = new ArrayList<>();
         for (int i = 0; i < boardPositions.length; i++) {
-            if (boardPositions[i] == currentPlayer) {
-                currentPlayerPieces.add(i);
+            if (boardPositions[i] == player) {
+                result.add(i);
             }
         }
-        return currentPlayerPieces;
+        return result;
     }
 
     private boolean hasEmptyNeighbor(int position){
@@ -258,9 +262,9 @@ public class Game {
         return false;
     }
 
-    private List<Integer> getRemovableOpponentPositions() {
+    private List<Integer> getRemovableOpponentPositions(Player player) {
         List<Integer> result = new ArrayList<>();
-        Player opponent = currentPlayer.opponent();
+        Player opponent = player.opponent();
         boolean allAreInMills = allPiecesAreInMills(opponent);
         for (int i = 0; i < boardPositions.length; i++) {
             if (boardPositions[i] == opponent && (allAreInMills || !formsMill(i, opponent))) {
@@ -440,15 +444,8 @@ public class Game {
         }
 
         // Condition 2: A player cannot make any valid moves
-        boolean blueHasValidMoves = hasValidMoves(Player.BLUE); // Check if Blue can move
-        boolean redHasValidMoves = hasValidMoves(Player.RED);  // Check if Red can move
-
-        if (!blueHasValidMoves) {
-            loser = Player.BLUE;
-        } else if (!redHasValidMoves) {
-            loser = Player.RED;
-        }
-        if (loser != null) {
+        if (getValidMoves().isEmpty()) {
+            loser = currentPlayer;
             displayWinner();
             gameOver = true;
         }
@@ -545,7 +542,7 @@ public class Game {
     private boolean hasValidMoves(Player player) {
         for (int i = 0; i < boardPositions.length; i++) {
             if (boardPositions[i] == player) {
-                List<Integer> validMoves = getValidMoves();
+                List<Integer> validMoves = getValidMoves(player);
                 if (!validMoves.isEmpty()) {
                     return true;  // Player has at least one valid move
                 }

@@ -42,18 +42,24 @@ class HumanVsBotStrategy implements GameStrategy {
       return;
     }
     Bot currentBot = game.getCurrentBot();
+    int invalidConsecutiveMoves = 0;
     do {
       if (!(currentBot instanceof MeatBot)) {
         position = makeBotMove(game, currentBot);
         if (position == -1) {
           System.out.println(game.phase + ": " + game.currentPlayer + ": "
             + "BOT returned -1, he says there are no valid moves, bot lost");
-          game.setBotLostNoValidMoves();
+          invalidConsecutiveMoves++;
+        } else {
+          invalidConsecutiveMoves = 0;
         }
       }
       ClickOnPositionHandler.handle(game, position);
       currentBot = game.getCurrentBot();
-    } while (!(currentBot instanceof MeatBot) && !game.isOver());
+    } while (!(currentBot instanceof MeatBot) && !game.isOver() && invalidConsecutiveMoves < 1_000);
+    if (invalidConsecutiveMoves >= 1_000) {
+      game.setBotLostNoValidMoves();
+    }
   }
 
 }
@@ -66,15 +72,21 @@ class BotVsBotStrategy implements GameStrategy {
   }
 
   public void handleMouseClickEvent(int position) {
-    while (!game.isOver()) {
+    int invalidConsecutiveMoves = 0;
+    while (!game.isOver() && invalidConsecutiveMoves < 1_000) {
       Bot currentBot = game.getCurrentBot();
       position = makeBotMove(game, currentBot);
       if (position == -1) {
         System.out.println(game.phase + ": " + game.currentPlayer + ": "
           + "BOT returned -1, he says there are no valid moves, bot lost");
-        game.setBotLostNoValidMoves();
+        invalidConsecutiveMoves++;
+      } else {
+        invalidConsecutiveMoves = 0;
       }
       ClickOnPositionHandler.handle(game, position);
+    }
+    if (invalidConsecutiveMoves >= 1_000) {
+      game.setBotLostNoValidMoves();
     }
   }
 
