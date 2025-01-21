@@ -578,6 +578,7 @@ public class Game {
         phase = 0;                  // Reset phase to placing
         currentPlayer = Player.BLUE;          // Reset to player 1's turn
         gameOver = false;
+        loser = null;
         // Optionally, reinitialize any game-specific logic or data
     }
 

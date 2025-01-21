@@ -163,9 +163,7 @@ public class Controller {
         });
         currentGame = gameManager.getCurrentGame();
 
-        WinPopUpRed.setVisible(false);
-        WinPopUpBlue.setVisible(false);
-        DrawPopUp.setVisible(false);
+        hidePopups();
 
         setGameEventListeners();
 
@@ -813,13 +811,21 @@ public class Controller {
      */
     private void setupMenuArrows() {
         MenuBigLeftArrow.setOnMouseClicked(event -> {
+            hidePopups();
             gameManager.switchToPreviousGame();
             updateBoardUI();
         });
         MenuBigRightArrow.setOnMouseClicked(event -> {
+            hidePopups();
             gameManager.switchToNextGame();
             updateBoardUI();
         });
+    }
+
+    private void hidePopups() {
+        WinPopUpRed.setVisible(false);
+        WinPopUpBlue.setVisible(false);
+        DrawPopUp.setVisible(false);
     }
 
     /**
@@ -1150,9 +1156,13 @@ public class Controller {
         boolean newVersion = !currentGame.isIn12MenMorrisVersion();
         currentGame.setIn12MenMorrisVersion(newVersion);
 
-        WinPopUpRed.setVisible(false);
-        WinPopUpBlue.setVisible(false);
-        DrawPopUp.setVisible(false);
+        resetGameUI("SWITCH VERSION");
+    }
+
+    private void resetGameUI(String message) {
+        hidePopups();
+
+        System.out.println(message);
 
         // Reset the game but keep the version field intact
         currentGame.resetGame();
@@ -1214,12 +1224,7 @@ public class Controller {
      */
     @FXML
     void newGameClicked(ActionEvent event) {
-        WinPopUpRed.setVisible(false);
-        WinPopUpBlue.setVisible(false);
-        DrawPopUp.setVisible(false);
-
-        currentGame.resetGame();        // Reset the game logic
-        updateBoardUI();
+        resetGameUI("NEW GAME");
     }
 
     /**
