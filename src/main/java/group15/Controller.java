@@ -275,9 +275,9 @@ public class Controller {
             game.setGameEventListener(new GameEventListener() {
                 @Override
                 public void onGameWon(String winner) {
-                    if (winner.equals("Red")) {
+                    if (winner.equalsIgnoreCase("Red")) {
                         WinPopUpRed.setVisible(true);
-                    } else if (winner.equals("Blue")) {
+                    } else if (winner.equalsIgnoreCase("Blue")) {
                         WinPopUpBlue.setVisible(true);
                     }
                 }

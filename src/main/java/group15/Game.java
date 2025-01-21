@@ -429,9 +429,9 @@ public class Game {
 
         // Condition 1: A player has less than 3 pieces
         if (bluePieceCount < 3) {
-            loser = Player.RED;
-        } else if (redPieceCount < 3) {
             loser = Player.BLUE;
+        } else if (redPieceCount < 3) {
+            loser = Player.RED;
         }
         if (loser != null) {
             displayWinner();
