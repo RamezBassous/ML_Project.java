@@ -91,7 +91,7 @@ public class EasyBot implements Bot {
     List<EvaluationResult> evaluations = new ArrayList<>(); // Store evaluation results
 
     // Placement phase
-    for (int position = 0; position < 24; position++) {
+    for (int position : game.getValidMoves()) {
       GameSituation gameNext = new GameSituation(gameCurrent); // Copy the current game state
 
       if (gameNext.doActionPlace(position)) { // Try placing a piece at the current position
@@ -155,7 +155,7 @@ public class EasyBot implements Bot {
     GameOri gameCurrent = copyGame(game);
     List<EvaluationResult> evaluations = new ArrayList<>(); // Store evaluation results
 
-    for (int sourcePosition = 0; sourcePosition < 24; sourcePosition++) {
+    for (int sourcePosition : game.getValidMoves()) {
 
       if (gameCurrent.boardPositions[sourcePosition] == gameCurrent.currentPlayer) {
         for (int targetPosition = 0; targetPosition < 24; targetPosition++) {
@@ -241,7 +241,7 @@ public class EasyBot implements Bot {
     List<EvaluationResult> evaluations = new ArrayList<>(); // Store evaluation results
 
     if (gameCurrent.boardPositions[selectedPiece] == gameCurrent.currentPlayer) {
-      for (int targetPosition = 0; targetPosition < 24; targetPosition++) {
+      for (int targetPosition : game.getValidMoves()) {
 
         if (selectedPiece != targetPosition) {
           GameSituation gameNext = new GameSituation(gameCurrent); // Copy the current game state
@@ -306,7 +306,7 @@ public class EasyBot implements Bot {
     List<EvaluationResult> evaluations = new ArrayList<>(); // Store evaluation results
 
     // Placement phase
-    for (int position = 0; position < 24; position++) {
+    for (int position : game.getValidMoves()) {
       GameSituation gameNext = new GameSituation(gameCurrent); // Copy the current game state
 
       if (gameNext.doActionDelete(position)) { // Try placing a piece at the current position
