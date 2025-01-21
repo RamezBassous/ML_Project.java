@@ -2,6 +2,7 @@ package group.bot;
 
 import group15.Game;
 import group15.Player;
+import group15.bot.Bot;
 
 import java.util.List;
 

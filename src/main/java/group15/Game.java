@@ -2,10 +2,7 @@ package group15;
 import java.util.*;
 import java.util.function.Supplier;
 
-import group15.bot.Bot;
-import group15.bot.EasyBot;
-import group15.bot.HybridBot;
-import group15.bot.MeatBot;
+import group15.bot.*;
 
 /**
  * The Game class handles the core logic of the Nine/Twelve Men's Morris game, including managing the game board, 
@@ -36,10 +33,10 @@ public class Game {
     // Keeps track of the current player: 1 for blue, 2 for red
     public Player currentPlayer = Player.BLUE;
     public Player loser = null;
-//    public Bot red = new EasyBot(); // Choose player type for a new game (bot, type of bot, player) types if necessary
-//    public Bot blue = new HybridBot();
-    public Bot red = new MeatBot(Player.RED);
-    public Bot blue = new MeatBot(Player.BLUE);
+    public Bot red = new RandomBot(); // Choose player type for a new game (bot, type of bot, player) types if necessary
+    public Bot blue = new RandomBot();
+//    public Bot red = new MeatBot(Player.RED);
+//    public Bot blue = new MeatBot(Player.BLUE);
     // method that sets gameover to true bor bot
 
     // Track the selected piece during the moving phase
