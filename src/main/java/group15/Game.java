@@ -37,7 +37,7 @@ public class Game {
     public Player currentPlayer = Player.BLUE;
     public Player loser = null;
     public Bot red = new EasyBot(); // Choose player type for a new game (bot, type of bot, player) types if necessary
-    public Bot blue = new HybridBot();
+    public Bot blue = new EasyBot();
 //    public Bot red = new MeatBot(Player.RED);
 //    public Bot blue = new MeatBot(Player.BLUE);
     // method that sets gameover to true bor bot

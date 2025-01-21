@@ -1,8 +1,12 @@
 package group15.bot;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Random;
 
 // Base class NetBase
@@ -85,29 +89,27 @@ public abstract class NetBase {
      * @throws IOException If an I/O error occurs
      */
     public void loadNet(String directoryPath) throws IOException {
-        File file = new File(directoryPath);
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        String line;
+        List<String> lines = Files.readAllLines(Paths.get(directoryPath), StandardCharsets.UTF_8);
+        loadNetFromLines(lines);
+    }
 
+    public void loadNetFromLines(List<String> lines) {
         // Read weights from input to hidden layer
         for (int i = 0; i < weightsInputHidden.length; i++) {
-            line = br.readLine();
+            String line = lines.get(i);
             String[] values = line.split(","); // Assumes comma-separated values
             for (int j = 0; j < weightsInputHidden[i].length; j++) {
                 weightsInputHidden[i][j] = Double.parseDouble(values[j]);
             }
         }
-
         // Read weights from hidden to output layer
         for (int i = 0; i < weightsHiddenOutput.length; i++) {
-            line = br.readLine();
+            String line = lines.get(i + weightsInputHidden.length);
             String[] values = line.split(","); // Assumes comma-separated values
             for (int j = 0; j < weightsHiddenOutput[i].length; j++) {
                 weightsHiddenOutput[i][j] = Double.parseDouble(values[j]);
             }
         }
-
-        br.close();
     }
 
     /**
