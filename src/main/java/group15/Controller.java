@@ -830,7 +830,7 @@ public class Controller {
     private void updateBotBasedOnGameMode() { // Adding new bots will happen here (use currentBotMode=0 for easy 1 for mid and 2 for hard)
         if (currentGame.gameMode.equals("PLAYER VS BOT")) {
             if (currentGame.red instanceof MeatBot) {
-                currentGame.red = new MonteCarloBot();
+                currentGame.red = new EasyBot(); // Change bot here only when Human VS Bot
             }
         }
     }

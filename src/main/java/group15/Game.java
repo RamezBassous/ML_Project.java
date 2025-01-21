@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import group15.bot.Bot;
 import group15.bot.EasyBot;
+import group15.bot.HybridBot;
 import group15.bot.MeatBot;
 
 /**
@@ -34,10 +35,12 @@ public class Game {
 
     // Keeps track of the current player: 1 for blue, 2 for red
     public Player currentPlayer = Player.BLUE;
-//    public Bot red = new EasyBot();
-//    public Bot blue = new EasyBot();
-    public Bot red = new MeatBot(Player.RED);
-    public Bot blue = new MeatBot(Player.BLUE);
+    public Player loser = null;
+    public Bot red = new EasyBot(); // Choose player type for a new game (bot, type of bot, player) types if necessary
+    public Bot blue = new HybridBot();
+//    public Bot red = new MeatBot(Player.RED);
+//    public Bot blue = new MeatBot(Player.BLUE);
+    // method that sets gameover to true bor bot
 
     // Track the selected piece during the moving phase
     public int selectedPiece = -1;
@@ -416,6 +419,10 @@ public class Game {
      * Notifies the listener if a win/loss is detected.
      */
     private void checkWinLoss() {
+        if (loser != null) {
+            displayWinner();
+            return;
+        }
         if (phase <= 0) {
             return;
         }
@@ -425,13 +432,12 @@ public class Game {
 
         // Condition 1: A player has less than 3 pieces
         if (bluePieceCount < 3) {
-            System.out.println("Red wins! Blue has less than 3 pieces.");
-            if (listener != null) listener.onGameWon("Red"); // Notify the controller
-            gameOver = true;
-            return;
+            loser = Player.RED;
         } else if (redPieceCount < 3) {
-            System.out.println("Blue wins! Red has less than 3 pieces.");
-            if (listener != null) listener.onGameWon("Blue"); // Notify the controller
+            loser = Player.BLUE;
+        }
+        if (loser != null) {
+            displayWinner();
             gameOver = true;
             return;
         }
@@ -441,14 +447,20 @@ public class Game {
         boolean redHasValidMoves = hasValidMoves(Player.RED);  // Check if Red can move
 
         if (!blueHasValidMoves) {
-            System.out.println("Red wins! Blue cannot make any valid moves.");
-            if (listener != null) listener.onGameWon("Red"); // Notify the controller
-            gameOver = true;
+            loser = Player.BLUE;
         } else if (!redHasValidMoves) {
-            System.out.println("Blue wins! Red cannot make any valid moves.");
-            if (listener != null) listener.onGameWon("Blue"); // Notify the controller
+            loser = Player.RED;
+        }
+        if (loser != null) {
+            displayWinner();
             gameOver = true;
         }
+    }
+
+    private void displayWinner() {
+        System.out.println(loser.opponent().name() + " wins! " + loser.name() +
+          " has less than 3 pieces OR cannot make any valid moves");
+        if (listener != null) listener.onGameWon(loser.opponent().name()); // Notify the controller
     }
 
     /**
@@ -735,6 +747,11 @@ public class Game {
 
     public Bot getCurrentBot() {
         return currentPlayer == Player.BLUE ? blue : red;
+    }
+
+    public void setBotLostNoValidMoves() {
+        gameOver = true;
+        loser = currentPlayer;
     }
 
 }

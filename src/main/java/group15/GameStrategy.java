@@ -45,11 +45,17 @@ class HumanVsBotStrategy implements GameStrategy {
     do {
       if (!(currentBot instanceof MeatBot)) {
         position = makeBotMove(game, currentBot);
+        if (position == -1) {
+          System.out.println(game.phase + ": " + game.currentPlayer + ": "
+            + "BOT returned -1, he says there are no valid moves, bot lost");
+          game.setBotLostNoValidMoves();
+        }
       }
       ClickOnPositionHandler.handle(game, position);
       currentBot = game.getCurrentBot();
     } while (!(currentBot instanceof MeatBot) && !game.isOver());
   }
+
 }
 
 class BotVsBotStrategy implements GameStrategy {
@@ -64,9 +70,12 @@ class BotVsBotStrategy implements GameStrategy {
       Bot currentBot = game.getCurrentBot();
       position = makeBotMove(game, currentBot);
       if (position == -1) {
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println(game.phase + ": " + game.currentPlayer + ": "
+          + "BOT returned -1, he says there are no valid moves, bot lost");
+        game.setBotLostNoValidMoves();
       }
       ClickOnPositionHandler.handle(game, position);
     }
   }
+
 }
