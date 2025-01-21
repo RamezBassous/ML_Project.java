@@ -521,6 +521,7 @@ public class Controller {
         zone.setOnMouseClicked(event -> {
             currentGame.getStrategy().handleMouseClickEvent(position);
             currentGame.isOver();
+            showValidMoveIndicators();
             updateBoardUI();
         });
     }
@@ -528,10 +529,9 @@ public class Controller {
     /**
      * Displays indicators for valid move positions on the board.
      * Hides all existing indicators first, then shows indicators at valid move positions.
-     *
-     * @param validMoves A list of valid positions for a move.
      */
-    private void showValidMoveIndicators(List<Integer> validMoves) {
+    private void showValidMoveIndicators() {
+        List<Integer> validMoves = currentGame.getValidMoves();
         // Hide all indicators first
         indicators.forEach(indicator -> indicator.setVisible(false));
 
