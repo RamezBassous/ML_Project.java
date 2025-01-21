@@ -187,7 +187,9 @@ public class AlphaBetaBot implements Bot {
      * @return An array with the best score and corresponding move.
      */
     private int[] placePiece_maxValue(GameState state, int alpha, int beta, int depthLimit) {
+
         if (placePiece_iSterminal(state)) {
+
             if (state.currentPlayer == Player.RED) {
                 return new int[]{1000000000, -1};
             } else {
@@ -195,38 +197,42 @@ public class AlphaBetaBot implements Bot {
             }
         }
 
-        int v = Integer.MIN_VALUE;
-        int move = -1;
-        List<Integer> actions = state.actions();
-        actions.sort((a1, a2) -> {
-            int score1 = quickActionScore(state, a1, Player.RED);
-            int score2 = quickActionScore(state, a2, Player.RED);
 
-            return Integer.compare(score2, score1);
-        });
-        for (int a : actions) {
-            if (hasNeighbour(state, a)) {
-                if (depthLimit == 0) {
-                    v = boardScore(state);
-                    return new int[]{v, move};
+        int v = Integer.MIN_VALUE;
+        int bestMove = -1;
+
+
+        Player p = state.currentPlayer;
+        List<Integer> actions = state.actions();
+        if (actions.isEmpty()) {
+            return new int[]{Integer.MIN_VALUE, -1};
+        }
+
+        if (depthLimit == 0) {
+            v = boardScore(state);
+            return new int[]{v, bestMove};
+        }
+
+        for (int pos : actions) {
+            GameState nextState = state.newState(pos, p);
+
+            nextState.currentPlayer = (p == Player.RED) ? Player.BLUE : Player.RED;
+
+            int[] childResult = placePiece_minValue(nextState, alpha, beta, depthLimit - 1);
+            int childScore = childResult[0];
+
+            if (childScore > v) {
+                v = childScore;
+                bestMove = pos;
+                alpha = Math.max(alpha, v);
+                if (v >= beta) {
+
+                    break;
                 }
-                if (depthLimit > 0) {
-                    int[] v2AndMove = placePiece_minValue(state.newState(a, Player.RED), alpha, beta, depthLimit - 1);
-                    int v2 = v2AndMove[0];
-                    if (v2 > v) {
-                        v = v2;
-                        move = a;
-                        alpha = Math.max(alpha, v);
-                        if (v >= beta) {return new int[]{v, move};}
-                    }
-                }
-            } else {
-                v = boardScore(state);
-                return new int[]{v, move};
             }
         }
 
-        return new int[]{v, move};
+        return new int[]{v, bestMove};
     }
 
     /**
@@ -284,31 +290,38 @@ public class AlphaBetaBot implements Bot {
         }
 
         int v = Integer.MAX_VALUE;
-        int move = -1;
+        int bestMove = -1;
+
+        Player p = state.currentPlayer;
         List<Integer> actions = state.actions();
-        for (int a : actions) {
-            if (hasNeighbour(state, a)) {
-                if (depthLimit == 0) {
-                    v = boardScore(state);
-                    return new int[]{v, move};
+        if (actions.isEmpty()) {
+            return new int[]{Integer.MAX_VALUE, -1};
+        }
+
+        if (depthLimit == 0) {
+            v = boardScore(state);
+            return new int[]{v, bestMove};
+        }
+
+        for (int pos : actions) {
+            GameState nextState = state.newState(pos, p);
+            nextState.currentPlayer = (p == Player.RED) ? Player.BLUE : Player.RED;
+
+
+            int[] childResult = placePiece_maxValue(nextState, alpha, beta, depthLimit - 1);
+            int childScore = childResult[0];
+
+            if (childScore < v) {
+                v = childScore;
+                bestMove = pos;
+                beta = Math.min(beta, v);
+                if (v <= alpha) {
+                    break;
                 }
-                if (depthLimit > 0) {
-                    int[] v2AndMove = placePiece_maxValue(state.newState(a, Player.BLUE), alpha, beta, depthLimit - 1);
-                    int v2 = v2AndMove[0];
-                    if (v2 < v) {
-                        v = v2;
-                        move = a;
-                        beta = Math.min(beta, v);
-                        if (v <= alpha) {return new int[]{v, move};}
-                    }
-                }
-            } else {
-                v = boardScore(state);
-                return new int[]{v, move};
             }
         }
 
-        return new int[]{v, move};
+        return new int[]{v, bestMove};
     }
 
     /**
@@ -524,46 +537,45 @@ public class AlphaBetaBot implements Bot {
     * @return An array containing the best value and the corresponding move.
     */
     private int[] deletePiece_maxValue(GameState state, int alpha, int beta, int depthLimit) {
-        /*
-        if (placePiece_iSterminal(state)) {
-            if (state.currentPlayer == Player.RED) {
-                return new int[]{1000000000, -1};
-            } else {
-                return new int[]{-1000000000, -1};
-            }
-        }*/
+        Player p = state.currentPlayer;
+        // 可能要判断 if (isDeleteTerminal(state)) { ... }
 
         int v = Integer.MIN_VALUE;
-        int move = -1;
-        List<Integer> actions = state.deleteActions();
-        for (int a : actions) {
-            if (hasNeighbour(state, a)) {
-                if (depthLimit == 0) {
-                    v = boardScore(state);
-                    return new int[]{v, move};
-                }
-                if (depthLimit > 0) {
-                    int[] v2AndMove;
-                    if (depthLimit == deleteDepthLimit) {
-                        v2AndMove = deletePiece_minValue(state.newState(a, null), alpha, beta, depthLimit - 1);
-                    } else {
-                        v2AndMove = deletePiece_minValue(state.newState(a, Player.RED), alpha, beta, depthLimit - 1);
-                    }
-                    int v2 = v2AndMove[0];
-                    if (v2 > v) {
-                        v = v2;
-                        move = a;
-                        alpha = Math.max(alpha, v);
-                        if (v >= beta) {return new int[]{v, move};}
-                    }
-                }
-            } else {
-                v = boardScore(state);
-                return new int[]{v, move};
-            }
+        int bestMove = -1;
+
+        // 当前玩家能删除哪些位置
+        List<Integer> actions = state.deleteActionsFor(p);
+        // 你可自定义: e.g. state.deleteActions() 里再判断 currentPlayer
+        if (actions.isEmpty()) {
+            // 无可删 => 说明当前player无动作 => 视为输
+            return new int[]{Integer.MIN_VALUE, -1};
         }
 
-        return new int[]{v, move};
+        if (depthLimit == 0) {
+            // 估值
+            v = boardScore(state);
+            return new int[]{v, bestMove};
+        }
+
+        for (int pos : actions) {
+            // newState 可能传 (pos, null) or (pos, p) => 取决于你已有的写法
+            GameState next = state.newStateForDelete(pos, p);
+            // 下回合是 p.opponent()
+            next.currentPlayer = (p == Player.RED) ? Player.BLUE : Player.RED;
+
+            int[] child = deletePiece_minValue(next, alpha, beta, depthLimit - 1);
+            int childScore = child[0];
+
+            if (childScore > v) {
+                v = childScore;
+                bestMove = pos;
+                alpha = Math.max(alpha, v);
+                if (v >= beta) {
+                    break;
+                }
+            }
+        }
+        return new int[]{v, bestMove};
     }
 
     /**
@@ -576,46 +588,40 @@ public class AlphaBetaBot implements Bot {
     * @return An array containing the best value and the corresponding move.
     */
     private int[] deletePiece_minValue(GameState state, int alpha, int beta, int depthLimit) {
-        /*
-        if (placePiece_iSterminal(state)) {
-            if (state.currentPlayer == Player.RED) {
-                return new int[]{1000000000, -1};
-            } else {
-                return new int[]{-1000000000, -1};
-            }
-        }
-        */
+        Player p = state.currentPlayer;
 
         int v = Integer.MAX_VALUE;
-        int move = -1;
-        List<Integer> actions = state.actions();
-        for (int a : actions) {
-            if (hasNeighbour(state, a)) {
-                if (depthLimit == 0) {
-                    v = boardScore(state);
-                    return new int[]{v, move};
+        int bestMove = -1;
+
+        List<Integer> actions = state.deleteActionsFor(p);
+        if (actions.isEmpty()) {
+            return new int[]{Integer.MAX_VALUE, -1};
+        }
+
+        if (depthLimit == 0) {
+            v = boardScore(state);
+            return new int[]{v, bestMove};
+        }
+
+        for (int pos : actions) {
+            GameState next = state.newStateForDelete(pos, p);
+            next.currentPlayer = (p == Player.RED) ? Player.BLUE : Player.RED;
+
+            int[] child = deletePiece_maxValue(next, alpha, beta, depthLimit - 1);
+            int childScore = child[0];
+            if (childScore < v) {
+                v = childScore;
+                bestMove = pos;
+                beta = Math.min(beta, v);
+                if (v <= alpha) {
+                    break;
                 }
-                if (depthLimit > 0) {
-                    int[] v2AndMove = deletePiece_maxValue(state.newState(a, Player.BLUE), alpha, beta, depthLimit - 1);
-                    int v2 = v2AndMove[0];
-                    if (v2 < v) {
-                        v = v2;
-                        move = a;
-                        beta = Math.min(beta, v);
-                        if (v <= alpha) {return new int[]{v, move};}
-                    }
-                }
-            } else {
-                v = boardScore(state);
-                return new int[]{v, move};
             }
         }
 
-        return new int[]{v, move};
+        return new int[]{v, bestMove};
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    /// 
     
     /**
      * Performs a limited depth search for moving a piece in the game.
@@ -638,20 +644,17 @@ public class AlphaBetaBot implements Bot {
      * @return An array containing the best value and the corresponding moves.
      */
     private int[] movePiece_maxValue(GameState state, int alpha, int beta, int depthLimit) {
-        /*
-        if (placePiece_iSterminal(state)) {
-            if (state.currentPlayer == Player.RED) {
-                return new int[]{1000000000, -1, -1};
-            } else {
-                return new int[]{-1000000000, -1, -1};
-            }
-        }
-         */
-
         int v = Integer.MIN_VALUE;
-        int move1 = -1;
-        int move2 = -1;
-        List<int []> actions = state.selectActions(Player.RED);
+        int move1 = -1, move2 = -1;
+
+        Player current = state.currentPlayer;
+        List<int[]> actions = state.selectActions(current);
+
+        if (actions.isEmpty()) {
+            // No moves => losing state => return -1
+            return new int[]{Integer.MIN_VALUE, -1, -1};
+        }
+
         for (int[] a : actions) {
             int av = Integer.MIN_VALUE;
             if (depthLimit == 0) {

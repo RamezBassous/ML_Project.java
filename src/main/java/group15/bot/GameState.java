@@ -175,6 +175,59 @@ public class GameState {
         return false;
     }
 
+    public List<Integer> deleteActionsFor(Player p) {
+        // p.opponent() => the opponent
+        Player opp = (p == Player.RED) ? Player.BLUE : Player.RED;
+        boolean allInMills = allPiecesAreInMills(opp);
+
+        List<Integer> result = new ArrayList<>();
+        for (int pos = 0; pos < 24; pos++) {
+            if (boardPositions[pos] == opp) {
+                // If all opp pieces are in mills, can delete any piece
+                // otherwise can only delete if it's not in a mill
+                if (allInMills || !formsMill(pos, opp)) {
+                    result.add(pos);
+                }
+            }
+        }
+        return result;
+    }
+
+    public boolean allPiecesAreInMills(Player player) {
+        // For each position belonging to 'player', check if formsMill(...) is true
+        // If we find a piece not in a mill => return false
+        for (int pos = 0; pos < 24; pos++) {
+            if (boardPositions[pos] == player) {
+                if (!formsMill(pos, player)) {
+                    return false;
+                }
+            }
+        }
+        return true;  // if we never found a piece outside a mill => all in mills
+    }
+
+    /**
+     * Returns a new GameState after player p deletes the piece at 'pos'.
+     * We set boardPositions[pos] = null, and if we track piece counts we adjust them.
+     */
+    public GameState newStateForDelete(int pos, Player p) {
+        GameState result = new GameState(this);
+        // The piece at 'pos' must belong to p.opponent()
+        Player opp = (p == Player.RED) ? Player.BLUE : Player.RED;
+
+        if (result.boardPositions[pos] == opp) {
+            result.boardPositions[pos] = null;  // remove that piece
+
+            // If you track moveCountBlue/moveCountRed, decrement the correct side
+            if (opp == Player.BLUE) {
+                result.moveCountBlue--;
+            } else {
+                result.moveCountRed--;
+            }
+        }
+        return result;
+    }
+
     /** Check if we are still in the placing phase. */
     public boolean isPlacingPhase() {
         int required = gameBoard.getRequiredPieces(); // e.g., 9 or 12
