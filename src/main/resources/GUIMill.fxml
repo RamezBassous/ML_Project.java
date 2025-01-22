@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
@@ -1898,7 +1898,7 @@
                      <children>
                         <Pane layoutX="14.0" layoutY="82.0" prefHeight="41.0" prefWidth="221.0" style="-fx-background-color: #F1FAEE; -fx-background-radius: 25;">
                            <children>
-                              <Text fx:id="AllBotsPie" layoutX="38.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ALL BOTS PIE" wrappingWidth="151.00406646728516">
+                              <Text fx:id="AllBotsPie" layoutX="35.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" 9P WinRates" wrappingWidth="151.00406646728516">
                                  <font>
                                     <Font name="Courier New Bold" size="20.0" />
                                  </font>
@@ -1999,14 +1999,21 @@
                               </DropShadow>
                            </effect>
                         </PieChart>
-                        <LineChart fx:id="lineChart0" layoutX="15.0" layoutY="158.0" prefHeight="246.0" prefWidth="220.0" style="-fx-background-color: #F1FAEE; -fx-background-radius: 25;" visible="false">
+                        <BarChart fx:id="barChart" layoutX="15.0" layoutY="158.0" prefHeight="246.0" prefWidth="220.0" style="-fx-background-color: #F1FAEE; -fx-background-radius: 25; -fx-legend-visible: false;" visible="false">
                           <xAxis>
-                            <NumberAxis side="BOTTOM" />
+                            <CategoryAxis side="BOTTOM" />
                           </xAxis>
                           <yAxis>
                             <NumberAxis side="LEFT" />
                           </yAxis>
-                        </LineChart>
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.25999999046325684" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </BarChart>
                      </children>
                      <effect>
                         <DropShadow />
