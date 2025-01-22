@@ -1,14 +1,15 @@
 package group15;
 
-import group15.bot.AlphaBetaBot;
-import group15.bot.MonteCarloBot;
+import group15.bot.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyFrame;
-import group15.bot.MeatBot;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.ToggleButton;
@@ -25,9 +26,6 @@ import javafx.scene.shape.Arc;
 
 import java.util.Arrays;
 import java.util.List;
-
-import group15.bot.Bot;
-import group15.bot.EasyBot;
 
 
 /**
@@ -46,16 +44,22 @@ public class Controller {
     private AnchorPane anchorMain;
 
     @FXML
-    private Pane GameMenu, DrawPopUp, WinPopUpBlue, WinPopUpRed, bluePlayerWinsBox, redPlayerWinsBox, drawBox, turnIndicatorGlowBlue, turnIndicatorGlowRed;
+    private Pane GameMenu, BotPerformanceMenu, DrawPopUp, WinPopUpBlue, WinPopUpRed, bluePlayerWinsBox, redPlayerWinsBox, drawBox, turnIndicatorGlowBlue, turnIndicatorGlowRed;
 
     @FXML
-    private Circle MenuBigLeftArrow, MenuBigRightArrow, tinyCircle0, tinyCircle1;
+    private Circle MenuBigLeftArrow, MenuBigRightArrow, tinyCircle0, tinyCircle1, tinyCircle01;
 
     @FXML
-    private Arc MenuSmallLeftArrow0, MenuSmallLeftArrow1, MenuSmallRightArrow0, MenuSmallRightArrow1;
+    private Arc MenuSmallLeftArrow0, MenuSmallLeftArrow1, MenuSmallRightArrow0, MenuSmallRightArrow1, MenuSmallLeftArrow01, MenuSmallRightArrow01;
 
     @FXML
-    private Text gameNumText, pieceNumText, easyBotText, local2pText;
+    private Text gameNumText, pieceNumText, easyBotText, local2pText, AllBotsPie;
+
+    @FXML
+    private PieChart pieChart;
+
+    @FXML
+    private BarChart<String, Number> barChart;
 
     // BOARD OBJECTS IMPORTS (Player 1 - Blue Pieces)
     @FXML
@@ -133,6 +137,8 @@ public class Controller {
     private int currentGameModeIndex = 0; // Index to track the current mode
     private int currentBotMode = 0; // Tracks which bot mode is active (0 = first bot, 1 = second bot, 2 = third bot)
 
+    private int currentBotModePerformanceStats = 0;
+
 
     // Define scaling factors
     private static final double SCALE_FACTOR = 1.1;
@@ -145,6 +151,34 @@ public class Controller {
      */
     @FXML
     public void initialize() {
+        // Create a new series for the BarChart
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Bot Performance");
+
+        // Add three bars to the series
+        series.getData().add(new XYChart.Data<>("Random", 54));
+        series.getData().add(new XYChart.Data<>("Minimax", 96));
+        series.getData().add(new XYChart.Data<>("FNN", 66));
+
+        // Update the BarChart
+        barChart.getData().clear(); // Clear existing data
+        barChart.getData().add(series); // Add the new series
+
+        // Define the data for the PieChart
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("Random", 54),
+                new PieChart.Data("Minimax", 96),
+                new PieChart.Data("FNN", 66)
+        );
+
+        // Set the data to the PieChart
+        pieChart.setData(pieChartData);
+
+        // Remove lines pointing to labels
+        pieChart.setLabelLineLength(0);
+
+        // Make the legend visible below but not inside the pie area
+        pieChart.setLegendVisible(true);
 
         gameManager = new GameManager(3, new GameEventListener() {
             @Override
@@ -249,6 +283,7 @@ public class Controller {
 
         // Setup menu interactions
         setupMenuInteraction(GameMenu);
+        setupMenuInteraction(BotPerformanceMenu);
         setupMenuArrowInteraction(MenuBigLeftArrow);
         setupMenuArrowInteraction(MenuBigRightArrow);
 
@@ -836,7 +871,13 @@ public class Controller {
     private void updateBotBasedOnGameMode() { // Adding new bots will happen here (use currentBotMode=0 for easy 1 for mid and 2 for hard)
         if (currentGame.gameMode.equals("PLAYER VS BOT")) {
             if (currentGame.red instanceof MeatBot) {
-                currentGame.red = new EasyBot(); // Change bot here only when Human VS Bot
+                if(currentBotMode==0){
+                    currentGame.red = new RandomBot();
+                } else if (currentBotMode==1) {
+                    currentGame.red = new EasyBot();
+                } else if (currentBotMode==2) {
+                    currentGame.red = new AlphaBetaBot();
+                }
             }
         }
     }
@@ -882,6 +923,83 @@ public class Controller {
         updateBotBasedOnGameMode(); // Update the bot behavior if applicable
     }
 
+    private void updatePerformanceStatistic() {
+        switch (currentBotModePerformanceStats) {
+            case 0: // Pie Chart
+                // Define the data for the PieChart
+                ObservableList<PieChart.Data> pieChartData0 = FXCollections.observableArrayList(
+                        new PieChart.Data("Random", 54),
+                        new PieChart.Data("Minimax", 96),
+                        new PieChart.Data("FNN", 66)
+                );
+
+                // Set the data to the PieChart
+                pieChart.setData(pieChartData0);
+                pieChart.setVisible(true);
+                barChart.setVisible(false);
+
+                tinyCircle01.setLayoutX(105);
+                AllBotsPie.setText(" 9P WinRates");
+                break;
+            case 1: // Bar Chart
+                // Create a new series for the BarChart
+                XYChart.Series<String, Number> series = new XYChart.Series<>();
+                series.setName("Bot Performance");
+
+                // Add three bars to the series
+                series.getData().add(new XYChart.Data<>("Random", 54));
+                series.getData().add(new XYChart.Data<>("Minimax", 96));
+                series.getData().add(new XYChart.Data<>("FNN", 66));
+
+                // Update the BarChart
+                barChart.getData().clear(); // Clear existing data
+                barChart.getData().add(series); // Add the new series
+
+                pieChart.setVisible(false);
+                barChart.setVisible(true);
+
+                tinyCircle01.setLayoutX(120);
+                AllBotsPie.setText(" 9P WinRates");
+                break;
+            case 2: // chart
+                // Create a new series for the BarChart
+                XYChart.Series<String, Number> series0 = new XYChart.Series<>();
+                //series0.setName("Bot Performance");
+
+                // Add three bars to the series
+                series0.getData().add(new XYChart.Data<>("Random", 54));
+                series0.getData().add(new XYChart.Data<>("Minimax", 82));
+                series0.getData().add(new XYChart.Data<>("FNN", 64));
+
+                // Update the BarChart
+                barChart.getData().clear(); // Clear existing data
+                barChart.getData().add(series0); // Add the new series
+
+                pieChart.setVisible(false);
+                barChart.setVisible(true);
+                tinyCircle01.setLayoutX(135);
+                AllBotsPie.setText("12P WinRates");
+                break;
+            case 3: // chart
+                // Define the data for the PieChart
+                ObservableList<PieChart.Data> pieChartData1 = FXCollections.observableArrayList(
+                        new PieChart.Data("Random", 54),
+                        new PieChart.Data("Minimax", 82),
+                        new PieChart.Data("FNN", 64)
+                );
+
+                // Set the data to the PieChart
+                pieChart.setData(pieChartData1);
+
+                pieChart.setVisible(true);
+                barChart.setVisible(false);
+
+                tinyCircle01.setLayoutX(150);
+
+                AllBotsPie.setText(" 9P WinRates");
+                break;
+        }
+    }
     /**
      * Sets up the small arrow animations for cycling through the game modes. The left and right arrows
      * allow the user to cycle through the available game modes, and hover animations are added to the arrows.
@@ -905,11 +1023,23 @@ public class Controller {
         // Small right arrow 1 toggles version using the wrapper
         MenuSmallRightArrow1.setOnMouseClicked(this::handleMouseClickForSwitchVersion);
 
+        MenuSmallLeftArrow01.setOnMouseClicked(event -> {
+            currentBotModePerformanceStats = (currentBotModePerformanceStats - 1 + 4) % 4; // Circular increment for game modes
+            updatePerformanceStatistic();
+        });
+
+        MenuSmallRightArrow01.setOnMouseClicked(event -> {
+            currentBotModePerformanceStats = (currentBotModePerformanceStats + 1) % 4; // Circular increment for game modes
+            updatePerformanceStatistic();
+        });
+
         // Optional: You can also add animations similar to the big arrows, e.g., scaling up/down:
         setupArrowHoverAnimation(MenuSmallLeftArrow0);
         setupArrowHoverAnimation(MenuSmallRightArrow0);
         setupArrowHoverAnimation(MenuSmallLeftArrow1);
         setupArrowHoverAnimation(MenuSmallRightArrow1);
+        setupArrowHoverAnimation(MenuSmallLeftArrow01);
+        setupArrowHoverAnimation(MenuSmallRightArrow01);
     }
 
     /**
