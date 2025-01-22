@@ -93,5 +93,3 @@ mvn compiler:compile resources:resources javafx:run
 **If you get error** `Error: Command execution failed. Cannot run program "java"`, then in IDE Setting's
 `Build, Execution, Deployment -> Build Tools -> Maven -> Runner`:
 `[X] Delegate IDE build/run actions to Maven` and add to `Environment variables:`: `JAVA_HOME=...path to to your java home`
-
-**Note:** if you'd like to change the bot that plays in the human vs bot game-mode, go to 
