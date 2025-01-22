@@ -34,6 +34,48 @@ block them such that they cannot make any more moves.
 - During the "flying" phase, place your pieces to maximize your mobility and threaten mills in multiple locations.
 
 
+### Types of Agents:
+#### MeatBot
+- The Human Player
+
+#### RandomBot
+- Uses a **Random Number Generator**
+- **Placement phase:** Identifies empty positions Randomly selects one position to place the piece 
+- **Selection phase:** Identifies movable pieces Randomly selects one to move 
+- **Movement Phase:** Randomly chooses one of the valid moves for the selected piece 
+- **Deletion phase:** Randomly chooses one of the valid opponents pieces to remove
+
+#### EasyBot (Feedforward Neural Network)
+- **Core Functionality:** Implements a simple AI using a neural network to evaluate and make decisions in the game. 
+- **Placing Pieces:** Evaluates board positions to place pieces strategically. 
+- **Moving Pieces:** Selects the best moves for optimal game progression. 
+- **Deleting Opponent's Pieces:** Identifies the most impactful piece to remove. 
+- **Neural Network:** Trained model loaded from a file that evaluates game states to maximize chances of winning.
+- **Game Interaction:** Uses game state data and valid moves to simulate and evaluate outcomes.
+
+#### MonteCarloBot
+- Uses the **Monte Carlo Tree Search (MCTS)** algorithm
+- **Selection:** choosing the most promising node within the game tree 
+- **Expansion stage:** expand the game tree with new possible moves
+- **Simulation stage:** clone the games state and perform random rollouts 
+- **Backpropagation stage:** update the game tree with simulation outcomes
+
+
+#### AlphaBetaBot
+- **Alpha-Beta Pruning algorithm:**
+   - **Minimax Basics:** checks all possible moves and selects the one that maximizes the bot’s chances of winning and minimizes the opponent’s chances
+   - **Alpha-Beta Pruning:** “pruning” branches of the game tree that can’t possibly be better than the already explored options
+   - **Evaluation function:** evaluate the state of the board, such as the number of pieces, whether a mill can be formed, whether there is a chance to   prevent the opponent from forming a mill, etc
+
+#### HybridBot
+- **Combines rule-based decision-making (αβ Bot) with AI-based approaches (Monte-Carlo Bot)** to balance structured and adaptive gameplay strategies
+- **Placing Phase:** uses αβ Bot for precise, rule-based piece placement
+- **Moving & Flying Phase:** uses Monte-Carlo Bot for adaptive decision-making in selecting and moving pieces
+- **Deletion Phase:** prioritizes αβ Bot for reliable choices, with Monte-Carlo Bot as fallback for edge cases
+- **Key-Feature:** switches between rule-based and AI-driven strategies to optimize performance, in both predictable early-game scenarios and complex mid/late-game situations
+
+
+
 ## Building and Running
 **Note:** you need to have the following installed on your machine in order to run the game:
 1. java development kit (JDK) 21
@@ -51,3 +93,5 @@ mvn compiler:compile resources:resources javafx:run
 **If you get error** `Error: Command execution failed. Cannot run program "java"`, then in IDE Setting's
 `Build, Execution, Deployment -> Build Tools -> Maven -> Runner`:
 `[X] Delegate IDE build/run actions to Maven` and add to `Environment variables:`: `JAVA_HOME=...path to to your java home`
+
+**Note:** if you'd like to change the bot that plays in the human vs bot game-mode, go to 

@@ -115,23 +115,6 @@ public class EasyBot implements Bot {
     return bestPosition;
   }
 
-    /*@Override
-    public int placePiece(Game game) {
-        // Get list of empty positions
-        List<Integer> emptyPositions = new ArrayList<>();
-        Player[] boardPositions = game.getBoardPositions();
-        for (int i = 0; i < boardPositions.length; i++) {
-            if (boardPositions[i] == null) {
-                emptyPositions.add(i);
-            }
-        }
-        if (emptyPositions.isEmpty()) {
-            return -1; // No moves available
-        }
-        // Choose a random empty position
-        return emptyPositions.get(random.nextInt(emptyPositions.size()));
-    }*/
-
   /**
    * Selects the best piece to move based on a neural network evaluation.
    * This method evaluates all possible moves for the current player and selects the piece
@@ -191,29 +174,6 @@ public class EasyBot implements Bot {
 
   }
 
-    /*@Override
-    public int selectPiece(Game game) {
-        Player currentPlayer = game.getCurrentPlayer();
-        Player[] boardPositions = game.getBoardPositions();
-        List<Integer> movablePieces = new ArrayList<>();
-
-        for (int i = 0; i < boardPositions.length; i++) {
-            if (boardPositions[i] == currentPlayer) {
-                List<Integer> validMoves = game.getValidMoves(i);
-                if (!validMoves.isEmpty()) {
-                    movablePieces.add(i);
-                }
-            }
-        }
-
-        if (movablePieces.isEmpty()) {
-            return -1; // No movable pieces
-        }
-
-        // Select a random piece
-        return movablePieces.get(random.nextInt(movablePieces.size()));
-    }*/
-
   /**
    * Determines the best move for a selected piece based on a neural network evaluation.
    * This method evaluates all possible target positions for the given piece and selects
@@ -240,12 +200,10 @@ public class EasyBot implements Bot {
         if (selectedPiece != targetPosition) {
           GameSituation gameNext = new GameSituation(gameCurrent); // Copy the current game state
           if (gameNext.doActionFlyMove(selectedPiece, targetPosition)) { // Try moving or flying the piece
-            System.arraycopy(gameNext.boardPositions, 0, gameNext.inputForNet, 0, 24); // Copy board positions
+            System.arraycopy(gameNext.boardPositions, 0, gameNext.inputForNet, 0, gameNext.boardPositions.length); // Copy board positions
             gameNext.inputForNet[24] = gameCurrent.getCurrentPlayer(); // Set the current player
             double evaluation = myNet.forward(gameNext.inputForNet); // Evaluate the game state using the neural network
-
             evaluations.add(new EvaluationResult(gameNext, evaluation, gameCurrent.getPhase(), selectedPiece, targetPosition)); // Store the evaluation
-
           }
         }
 
@@ -261,21 +219,9 @@ public class EasyBot implements Bot {
         bestPosition = result.position2; // Update the best position
       }
     }
-
     return bestPosition;
-
   }
 
-/*    @Override
-    public int determineMove(Game game, int selectedPiece) {
-        List<Integer> validMoves = game.getValidMoves(selectedPiece);
-        if (validMoves.isEmpty()) {
-            return -1; // No valid moves
-        }
-
-        // Choose a random valid move
-        return validMoves.get(random.nextInt(validMoves.size()));
-    }*/
 
   /**
    * Determines the best piece to delete from the opponent's pieces based on a neural network evaluation.
@@ -323,33 +269,5 @@ public class EasyBot implements Bot {
     }
     return bestPosition;
 
-
-/*    @Override
-    public int determinePieceToDelete(Game game) {
-        List<Integer> deletablePositions = new ArrayList<>();
-        Player[] boardPositions = game.getBoardPositions();
-        Player opponent = game.getCurrentPlayer().opponent();
-
-        for (int i = 0; i < boardPositions.length; i++) {
-            if (boardPositions[i] == opponent && !game.formsMill(i, opponent)) {
-                deletablePositions.add(i);
-            }
-        }
-
-        // If all opponent's pieces are in mills, can delete any opponent's piece
-        if (deletablePositions.isEmpty()) {
-            for (int i = 0; i < boardPositions.length; i++) {
-                if (boardPositions[i] == opponent) {
-                    deletablePositions.add(i);
-                }
-            }
-        }
-        if (deletablePositions.isEmpty()) {
-            return -1; // No pieces to delete
-        }
-
-        // Choose a random deletable position
-        return deletablePositions.get(random.nextInt(deletablePositions.size()));
-    }*/
   }
 }
