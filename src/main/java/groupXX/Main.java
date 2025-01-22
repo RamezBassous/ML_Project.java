@@ -1,4 +1,4 @@
-package group15;
+package groupXX;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -27,7 +27,7 @@ public class Main extends Application {
         Controller controller = loader.getController();
         controller.setPrimaryStage(primaryStage);
 
-        primaryStage.setTitle("KEN15 Project 2-1");
+        primaryStage.setTitle("Project 2-1");
         Scene scene = new Scene(root, 1920, 1080); // Adjust the dimensions if needed
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);

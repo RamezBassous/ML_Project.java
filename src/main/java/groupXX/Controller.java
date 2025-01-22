@@ -1,8 +1,6 @@
-package group15;
+package groupXX;
 
-import group15.bot.*;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyFrame;
+import groupXX.bot.*;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.collections.FXCollections;

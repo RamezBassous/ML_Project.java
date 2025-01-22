@@ -1,4 +1,4 @@
-package group15;
+package groupXX;
 
 import javafx.animation.ScaleTransition;
 import javafx.scene.Node;

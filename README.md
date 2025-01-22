@@ -1,4 +1,4 @@
-# KEN15 - Project 2-1
+# Project 2-1
 
 ## Game Description
 Nine Men's Morris is a classic two-player strategy board game that involves moving pieces on the board to form

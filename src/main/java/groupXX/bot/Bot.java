@@ -1,6 +1,6 @@
-package group15.bot;
+package groupXX.bot;
 
-import group15.Game;
+import groupXX.Game;
 
 /**
  * Interface that defines the behavior of a Bot in the Nine/Twelve Men's Morris game.

@@ -1,4 +1,4 @@
-package group15.bot;
+package groupXX.bot;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-import group15.*;
+import groupXX.*;
 
 /**
  * The EasyBot class implements the Bot interface, providing a simple AI for our game.

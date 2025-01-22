@@ -58,7 +58,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>group15.Main</mainClass> <!-- Update to your correct package and class name -->
+                    <mainClass>groupXX.Main</mainClass> <!-- Update to your correct package and class name -->
                 </configuration>
             </plugin>
         </plugins>

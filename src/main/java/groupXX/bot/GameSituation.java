@@ -1,11 +1,11 @@
-package group15.bot;
+package groupXX.bot;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import group15.GameOri;
+import groupXX.GameOri;
 
 /**
  * The GameSituation class represents the state of the game during different phases, including placing, moving,

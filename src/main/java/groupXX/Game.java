@@ -1,8 +1,8 @@
-package group15;
+package groupXX;
 import java.util.*;
 import java.util.function.Supplier;
 
-import group15.bot.*;
+import groupXX.bot.*;
 
 /**
  * The Game class handles the core logic of the Nine/Twelve Men's Morris game, including managing the game board, 

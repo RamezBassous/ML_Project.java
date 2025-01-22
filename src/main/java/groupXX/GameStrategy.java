@@ -1,7 +1,7 @@
-package group15;
+package groupXX;
 
-import group15.bot.Bot;
-import group15.bot.MeatBot;
+import groupXX.bot.Bot;
+import groupXX.bot.MeatBot;
 
 public interface GameStrategy {
   void handleMouseClickEvent(int position);

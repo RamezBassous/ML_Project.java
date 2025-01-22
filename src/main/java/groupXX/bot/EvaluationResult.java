@@ -1,4 +1,4 @@
-package group15.bot;
+package groupXX.bot;
 
 /**
 * The EvaluationResult class represents the result of evaluating a game situation.

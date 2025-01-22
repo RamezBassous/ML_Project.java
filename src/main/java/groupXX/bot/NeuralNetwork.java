@@ -1,4 +1,4 @@
-package group15.bot;
+package groupXX.bot;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package group15;
+package groupXX;
 
 /**
  * The MillPaths class contains predefined mill paths for both Nine Men's Morris and Twelve Men's Morris boards.

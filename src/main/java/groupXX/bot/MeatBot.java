@@ -1,18 +1,10 @@
-package group15.bot;
+package groupXX.bot;
 
-import group15.Game;
-import group15.GameOri;
-import group15.Player;
+import groupXX.Game;
+import groupXX.GameOri;
+import groupXX.Player;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 public class MeatBot implements Bot {
 

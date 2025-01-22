@@ -1,4 +1,4 @@
-package group15;
+package groupXX;
 
 class ClickOnPositionHandler {
   static void handle(Game game, int position) {

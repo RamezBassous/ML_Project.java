@@ -1,8 +1,8 @@
-package group15.bot;
+package groupXX.bot;
 
 
-import group15.Game;
-import group15.Player;
+import groupXX.Game;
+import groupXX.Player;
 
 import java.util.ArrayList;
 import java.util.List;

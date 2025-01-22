@@ -1,4 +1,4 @@
-package group15;
+package groupXX;
 
 /**
  * Enum representing the two players in the game: BLUE and RED.

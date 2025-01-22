@@ -1,4 +1,4 @@
-package group15;
+package groupXX;
 
 /**
  * Interface for listening to game events such as game win or draw.
