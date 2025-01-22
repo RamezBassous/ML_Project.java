@@ -4,7 +4,9 @@ package group15.bot;
 import group15.Game;
 import group15.Player;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * AlphaBetaBot is an implementation of a bot for the Nine Men's Morris game using the Alpha-Beta pruning
@@ -24,7 +26,6 @@ public class AlphaBetaBot implements Bot {
         GameState state = new GameState(game);
 
         int maxDepth = 8;
-
         long endTime = System.currentTimeMillis() + 2000;
 
         int bestMove = -1;
@@ -32,21 +33,18 @@ public class AlphaBetaBot implements Bot {
 
         for (int depth = 1; depth <= maxDepth; depth++) {
             if (System.currentTimeMillis() > endTime) {
-
                 break;
             }
-
+            // alpha-beta search for placing
             int[] result = placePiece_limited_alphabeta_search(state, depth);
             int score = result[0];
             int move = result[1];
-
 
             if (score > bestScore) {
                 bestScore = score;
                 bestMove = move;
             }
         }
-
         return bestMove;
     }
 
@@ -58,31 +56,49 @@ public class AlphaBetaBot implements Bot {
      */
     @Override
     public int selectPiece(Game game) {
-        int[] result;
-        result = canThree(new GameState(game), 1);
-
-        if (move_to < 0 || move_to >= 24) {
-            System.out.println("[DEBUG] AlphaBetaBot got an invalid move_to: " + move_to);
-            // either return -1 or do fallback...
-        }
-
+        // 1) check canThree
+        int[] result = canThree(new GameState(game), 6);
+        // if canThree found a move
         if (result[0] != -1) {
             move_to = result[2];
-            // System.out.println(result[1] + " ---can---> " + result[2]);
-            return result[1];
+            return result[1]; // 'from'
         }
 
+        // 2) check crackThree
         result = crackThree(new GameState(game));
         if (result[0] != -1) {
             move_to = result[2];
-            // System.out.println(result[1] + " ---crack---> " + result[2]);
             return result[1];
         }
 
+        // 3) do alpha-beta for normal move
         GameState state = new GameState(game);
-        result = movePiece_limited_alphabeta_search(state, 8);
-        move_to = result[2];
-        return result[1];
+        int[] best = movePiece_limited_alphabeta_search(state, 10);
+        // best => [score, fromPos, toPos]
+        int fromPos = best[1];
+        move_to = best[2];
+
+        // ----- fallback for 'fromPos' -----
+        if (fromPos < 0 || fromPos >= 24) {
+            System.out.println("[AlphaBetaBot] fromPos=" + fromPos
+                    + " => fallback to random piece");
+            fromPos = pickRandomMoveSource(game);
+            move_to = pickRandomMoveTarget(game, fromPos);
+        }
+
+        // ----- fallback for 'move_to' -----
+        if (move_to < 0 || move_to >= 24) {
+            System.out.println("[AlphaBetaBot] move_to=" + move_to
+                    + " => fallback picking random target");
+            move_to = pickRandomMoveTarget(game, fromPos);
+
+            if (move_to < 0 || move_to >= 24) {
+                System.out.println("[DEBUG] AlphaBetaBot STILL got invalid move_to = "
+                        + move_to + ", giving up this turn...");
+            }
+        }
+
+        return fromPos;
     }
 
     /**
@@ -107,7 +123,7 @@ public class AlphaBetaBot implements Bot {
     public int determinePieceToDelete(Game game) {
         // 1) Use your existing alpha-beta search to get a candidate
         GameState state = new GameState(game);
-        int[] result = deletePiece_limited_alphabeta_search(state, 12);
+        int[] result = deletePiece_limited_alphabeta_search(state, 6);
         int candidate = result[1]; // suggested piece to delete
 
         // 2) Check if the candidate is valid under the rules
@@ -130,15 +146,11 @@ public class AlphaBetaBot implements Bot {
      * @return True if the deletion is valid, otherwise false.
      */
     private boolean isValidDeleteChoice(Game game, int candidate) {
-        if (candidate < 0 || candidate >= 24) {
-            return false;
-        }
-        Player opponent = game.getCurrentPlayer().opponent();
-        if (game.getBoardPositions()[candidate] != opponent) {
-            return false;
-        }
-        // If not all of opponent's pieces are in mills, can't delete a piece that's in a mill
-        if (!game.allPiecesAreInMills(opponent) && game.formsMill(candidate, opponent)) {
+        if (candidate < 0 || candidate >= 24) return false;
+        Player opp = game.getCurrentPlayer().opponent();
+        if (game.getBoardPositions()[candidate] != opp) return false;
+        // If not all opp pieces are in mills, can't delete a piece in a mill
+        if (!game.allPiecesAreInMills(opp) && game.formsMill(candidate, opp)) {
             return false;
         }
         return true;
@@ -163,7 +175,7 @@ public class AlphaBetaBot implements Bot {
                 }
             }
         }
-        return -1; // no valid piece found
+        return -1;
     }
 
     /**
@@ -331,7 +343,9 @@ public class AlphaBetaBot implements Bot {
     * @return true if the game state is terminal, false otherwise.
     */
     private boolean placePiece_iSterminal(GameState state) {
-        return state.moveCountBlue == state.gameBoard.getRequiredPieces() && state.moveCountRed == state.gameBoard.getRequiredPieces();
+        // e.g. both players have placed all required pieces
+        return (state.moveCountBlue == state.gameBoard.getRequiredPieces())
+                && (state.moveCountRed == state.gameBoard.getRequiredPieces());
     }
 
     /**
@@ -358,34 +372,27 @@ public class AlphaBetaBot implements Bot {
     * @param state The current state of the game.
     * @return The calculated heuristic score for the current board state.
     */
-    public int boardScore(GameState state) {
+    private int boardScore(GameState state) {
         double adjust_weight = 2.5;
-
         Player myPlayer  = state.currentPlayer;
-        Player oppPlayer = (myPlayer == Player.RED) ? Player.BLUE : Player.RED;
+        Player oppPlayer = myPlayer.opponent();
 
-        // 1) Retain your existing heuristic difference
         int basicScore = getHeuristicScore(state, myPlayer)
                 - (int)(adjust_weight * getHeuristicScore(state, oppPlayer));
 
-        // 2) Count piece difference
         int myCount  = countPieces(state, myPlayer);
         int oppCount = countPieces(state, oppPlayer);
         int pieceDiffScore = (myCount - oppCount) * 5;
 
-        // 3) Potential mills: positions where you have 2 pieces + 1 empty slot
-        int myPotentialMills  = countPotentialMills(state, myPlayer);
-        int oppPotentialMills = countPotentialMills(state, oppPlayer);
-        int potentialMillScore = (myPotentialMills - oppPotentialMills) * 3;
+        int myPotMills  = countPotentialMills(state, myPlayer);
+        int oppPotMills = countPotentialMills(state, oppPlayer);
+        int potentialMillScore = (myPotMills - oppPotMills) * 3;
 
-        // 4) Mobility (in moving/flying phase)
         int myMobility  = calcMobility(state, myPlayer);
         int oppMobility = calcMobility(state, oppPlayer);
         int mobilityScore = (myMobility - oppMobility) * 2;
 
-        // 5) Combine them
-        int totalScore = basicScore + pieceDiffScore + potentialMillScore + mobilityScore;
-        return totalScore;
+        return basicScore + pieceDiffScore + potentialMillScore + mobilityScore;
     }
 
     /**
@@ -538,34 +545,27 @@ public class AlphaBetaBot implements Bot {
     */
     private int[] deletePiece_maxValue(GameState state, int alpha, int beta, int depthLimit) {
         Player p = state.currentPlayer;
-        // 可能要判断 if (isDeleteTerminal(state)) { ... }
 
         int v = Integer.MIN_VALUE;
         int bestMove = -1;
 
-        // 当前玩家能删除哪些位置
         List<Integer> actions = state.deleteActionsFor(p);
-        // 你可自定义: e.g. state.deleteActions() 里再判断 currentPlayer
         if (actions.isEmpty()) {
-            // 无可删 => 说明当前player无动作 => 视为输
             return new int[]{Integer.MIN_VALUE, -1};
         }
 
         if (depthLimit == 0) {
-            // 估值
-            v = boardScore(state);
-            return new int[]{v, bestMove};
+            int sc = boardScore(state);
+            return new int[]{sc, bestMove};
         }
 
         for (int pos : actions) {
-            // newState 可能传 (pos, null) or (pos, p) => 取决于你已有的写法
             GameState next = state.newStateForDelete(pos, p);
-            // 下回合是 p.opponent()
-            next.currentPlayer = (p == Player.RED) ? Player.BLUE : Player.RED;
+            // switch player
+            next.currentPlayer = p.opponent();
 
             int[] child = deletePiece_minValue(next, alpha, beta, depthLimit - 1);
             int childScore = child[0];
-
             if (childScore > v) {
                 v = childScore;
                 bestMove = pos;
@@ -599,13 +599,13 @@ public class AlphaBetaBot implements Bot {
         }
 
         if (depthLimit == 0) {
-            v = boardScore(state);
-            return new int[]{v, bestMove};
+            int sc = boardScore(state);
+            return new int[]{sc, bestMove};
         }
 
         for (int pos : actions) {
             GameState next = state.newStateForDelete(pos, p);
-            next.currentPlayer = (p == Player.RED) ? Player.BLUE : Player.RED;
+            next.currentPlayer = p.opponent();
 
             int[] child = deletePiece_maxValue(next, alpha, beta, depthLimit - 1);
             int childScore = child[0];
@@ -618,7 +618,6 @@ public class AlphaBetaBot implements Bot {
                 }
             }
         }
-
         return new int[]{v, bestMove};
     }
 
@@ -643,42 +642,41 @@ public class AlphaBetaBot implements Bot {
      * @param depthLimit The current depth limit for the search.
      * @return An array containing the best value and the corresponding moves.
      */
+
     private int[] movePiece_maxValue(GameState state, int alpha, int beta, int depthLimit) {
         int v = Integer.MIN_VALUE;
-        int move1 = -1, move2 = -1;
+        int bestFrom = -1, bestTo = -1;
 
-        Player current = state.currentPlayer;
-        List<int[]> actions = state.selectActions(current);
+        Player p = state.currentPlayer;
+        List<int[]> actions = state.selectActions(p); // all (from,to) for p
 
         if (actions.isEmpty()) {
-            // No moves => losing state => return -1
             return new int[]{Integer.MIN_VALUE, -1, -1};
         }
 
+        if (depthLimit == 0) {
+            int eval = movePiece_boardScore(state);
+            return new int[]{eval, bestFrom, bestTo};
+        }
+
         for (int[] a : actions) {
-            int av = Integer.MIN_VALUE;
-            if (depthLimit == 0) {
-                v = movePiece_boardScore(state);
-                return new int[]{v, move1, move2};
-            }
-            if (depthLimit > 0) {
-                int[] v2AndMove;
-                v2AndMove = movePiece_minValue(state.newMoveState(a), alpha, beta, depthLimit - 1);
-                int v2 = v2AndMove[0];
-                if (v2>av) {
-                    av = v2;
-                }
-                if (v2 > v) {
-                    v = v2;
-                    move1 = a[0];
-                    move2 = a[1];
-                    alpha = Math.max(alpha, v);
-                    if (v >= beta) {return new int[]{v, move1, move2};}
+            // a[0]=from, a[1]=to
+            GameState nextState = state.newMoveState(a);
+            nextState.currentPlayer = p.opponent();
+
+            int[] child = movePiece_minValue(nextState, alpha, beta, depthLimit - 1);
+            int childScore = child[0];
+            if (childScore > v) {
+                v = childScore;
+                bestFrom = a[0];
+                bestTo = a[1];
+                alpha = Math.max(alpha, v);
+                if (v >= beta) {
+                    break;
                 }
             }
         }
-
-        return new int[]{v, move1, move2};
+        return new int[]{v, bestFrom, bestTo};
     }
 
     /**
@@ -702,28 +700,38 @@ public class AlphaBetaBot implements Bot {
          */
 
         int v = Integer.MAX_VALUE;
-        int move1 = -1;
-        int move2 = -1;
-        List<int []> actions = state.selectActions(Player.BLUE);
+        int bestFrom = -1;
+        int bestTo = -1;
+
+        Player p = state.currentPlayer;
+        List<int[]> actions = state.selectActions(p);
+
+        if (actions.isEmpty()) {
+            return new int[]{Integer.MAX_VALUE, -1, -1};
+        }
+
+        if (depthLimit == 0) {
+            int eval = movePiece_boardScore(state);
+            return new int[]{eval, bestFrom, bestTo};
+        }
+
         for (int[] a : actions) {
-            if (depthLimit == 0) {
-                v = movePiece_boardScore(state);
-                return new int[]{v, move1, move2};
-            }
-            if (depthLimit > 0) {
-                int[] v2AndMove = movePiece_maxValue(state.newMoveState(a), alpha, beta, depthLimit - 1);
-                int v2 = v2AndMove[0];
-                if (v2 < v) {
-                    v = v2;
-                    move1 = a[0];
-                    move2 = a[1];
-                    beta = Math.min(beta, v);
-                    if (v <= alpha) {return new int[]{v, move1, move2};}
+            GameState nextState = state.newMoveState(a);
+            nextState.currentPlayer = p.opponent();
+
+            int[] child = movePiece_maxValue(nextState, alpha, beta, depthLimit - 1);
+            int childScore = child[0];
+            if (childScore < v) {
+                v = childScore;
+                bestFrom = a[0];
+                bestTo = a[1];
+                beta = Math.min(beta, v);
+                if (v <= alpha) {
+                    break;
                 }
             }
         }
-
-        return new int[]{v, move1, move2};
+        return new int[]{v, bestFrom, bestTo};
     }
 
     /**
@@ -736,8 +744,10 @@ public class AlphaBetaBot implements Bot {
      */
     public int movePiece_boardScore(GameState state) {
         double adjust_weight = 2.5;
-        Player other_player = state.currentPlayer == Player.RED ? Player.BLUE : Player.RED;
-        return movePiece_getHeuristicScore(state, state.currentPlayer) - (int)(adjust_weight * movePiece_getHeuristicScore(state, other_player));
+        Player cur = state.currentPlayer;
+        Player opp = cur.opponent();
+        return movePiece_getHeuristicScore(state, cur) -
+                (int)(adjust_weight * movePiece_getHeuristicScore(state, opp));
     }
 
     /**
@@ -885,4 +895,83 @@ public class AlphaBetaBot implements Bot {
         }
         return new int[]{-1, -1, -1};
     }
+    private int pickRandomMoveSource(Game game) {
+        Player me = game.getCurrentPlayer();
+        List<Integer> myPieces = new ArrayList<>();
+
+        for (int i = 0; i < 24; i++) {
+
+            if (game.getBoardPositions()[i] == me) {
+
+                List<Integer> valid = getValidTargets(game, i);
+                if (!valid.isEmpty()) {
+
+                    myPieces.add(i);
+                }
+            }
+        }
+        if (myPieces.isEmpty()) {
+
+            return -1;
+        }
+
+        return myPieces.get(new Random().nextInt(myPieces.size()));
+    }
+
+    private int pickRandomMoveTarget(Game game, int from) {
+        if (from < 0 || from >= 24) {
+            return -1;
+        }
+
+        List<Integer> validTos = getValidTargets(game, from);
+        if (validTos.isEmpty()) {
+            return -1;
+        }
+        return validTos.get(new Random().nextInt(validTos.size()));
+    }
+
+    /**
+     *  Returns all target grids that can be moved/flyed to from position according to the game rules.
+     * If the player is in the "flying" phase => can jump to any grid
+     * Otherwise => can only move to adjacent grids
+     */
+    private List<Integer> getValidTargets(Game game, int position) {
+        List<Integer> result = new ArrayList<>();
+
+        Player me = game.getCurrentPlayer();
+
+
+        int countPieces = 0;
+        for (int i=0; i<24; i++) {
+            if (game.getBoardPositions()[i] == me) {
+                countPieces++;
+            }
+        }
+        boolean flying = (countPieces <= 3);
+
+
+        if (game.getBoardPositions()[position] != me) {
+            return result;
+        }
+
+
+        if (flying) {
+            for (int i = 0; i < 24; i++) {
+                if (game.getBoardPositions()[i] == null) {
+                    result.add(i);
+                }
+            }
+        } else {
+
+            for (Integer nei : game.getBoardGraph().getNeighbors(position)) {
+                if (game.getBoardPositions()[nei] == null) {
+                    result.add(nei);
+                }
+            }
+        }
+
+        return result;
+    }
+
+
 }
