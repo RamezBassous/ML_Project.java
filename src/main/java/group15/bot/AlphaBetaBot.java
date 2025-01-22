@@ -377,22 +377,76 @@ public class AlphaBetaBot implements Bot {
         Player myPlayer  = state.currentPlayer;
         Player oppPlayer = myPlayer.opponent();
 
+        boolean isPlacingPhase = state.isPlacingPhase();
+        int required = state.gameBoard.getRequiredPieces(); // 9 or 12
+        int totalMovesSoFar = state.moveCountBlue + state.moveCountRed;
+
         int basicScore = getHeuristicScore(state, myPlayer)
                 - (int)(adjust_weight * getHeuristicScore(state, oppPlayer));
+
 
         int myCount  = countPieces(state, myPlayer);
         int oppCount = countPieces(state, oppPlayer);
         int pieceDiffScore = (myCount - oppCount) * 5;
 
-        int myPotMills  = countPotentialMills(state, myPlayer);
-        int oppPotMills = countPotentialMills(state, oppPlayer);
-        int potentialMillScore = (myPotMills - oppPotMills) * 3;
+        int myPotentialMills  = countPotentialMills(state, myPlayer);
+        int oppPotentialMills = countPotentialMills(state, oppPlayer);
+        int potentialMillScore = (myPotentialMills - oppPotentialMills) * 3;
 
-        int myMobility  = calcMobility(state, myPlayer);
-        int oppMobility = calcMobility(state, oppPlayer);
-        int mobilityScore = (myMobility - oppMobility) * 2;
 
-        return basicScore + pieceDiffScore + potentialMillScore + mobilityScore;
+        int mobilityScore = 0;
+        if (!isPlacingPhase) {
+            int myMobility  = calcMobility(state, myPlayer);
+            int oppMobility = calcMobility(state, oppPlayer);
+            mobilityScore   = (myMobility - oppMobility) * 2;
+        }
+
+
+        int openingScore = 0;
+        if (isPlacingPhase) {
+
+            if (totalMovesSoFar < required * 1.0) {
+
+                openingScore += evaluateEarlyPlacement(state, myPlayer);
+            }
+        }
+
+
+        int defenseScore = 0;
+
+        if (oppPotentialMills > 2) {
+            defenseScore -= 15;
+        }
+
+
+        int totalScore = basicScore
+                + pieceDiffScore
+                + potentialMillScore
+                + mobilityScore
+                + openingScore
+                + defenseScore;
+
+        return totalScore;
+    }
+
+    private int evaluateEarlyPlacement(GameState state, Player myPlayer) {
+        int[] cornerPositions  = {0, 2, 6, 8, 15,17,21,23};
+        int[] centerPositions  = {4, 19}; // 示例
+
+        int score = 0;
+        // 角点加 3 分
+        for (int pos : cornerPositions) {
+            if (state.boardPositions[pos] == myPlayer) {
+                score += 3;
+            }
+        }
+        // 中心点加 5 分
+        for (int pos : centerPositions) {
+            if (state.boardPositions[pos] == myPlayer) {
+                score += 5;
+            }
+        }
+        return score;
     }
 
     /**
@@ -467,55 +521,98 @@ public class AlphaBetaBot implements Bot {
     * @param player The player whose heuristic score is being calculated.
     * @return The heuristic score for the given player in the current game state.
     */
+
     public int getHeuristicScore(GameState state, Player player) {
-        Player other_player = player == Player.RED ? Player.BLUE : Player.RED;
+        Player opp = player.opponent();
         int score = 0;
-        int [][] paths = get(state.gameBoard.isIn12MenVer());
+
+
+        int[][] paths = get(state.gameBoard.isIn12MenVer());
+
+
         for (int[] path : paths) {
-            if (state.boardPositions[path[0]] == player && state.boardPositions[path[1]] == player && state.boardPositions[path[2]] == player) {
+            Player pos0 = state.boardPositions[path[0]];
+            Player pos1 = state.boardPositions[path[1]];
+            Player pos2 = state.boardPositions[path[2]];
+
+
+            if (pos0 == player && pos1 == player && pos2 == player) {
+
                 score += 1000;
+                continue;
+
             }
 
-            if (state.boardPositions[path[0]] == player && state.boardPositions[path[1]] == player && state.boardPositions[path[2]] == null) {
-                score += 10;
-            }
-            if (state.boardPositions[path[0]] == player && state.boardPositions[path[1]] == null && state.boardPositions[path[2]] == player) {
-                score += 10;
-            }
-            if (state.boardPositions[path[0]] == null && state.boardPositions[path[1]] == player && state.boardPositions[path[2]] == player) {
-                score += 10;
+            int myCount = 0;
+            int emptyCount = 0;
+            if (pos0 == player) myCount++;
+            else if (pos0 == null) emptyCount++;
+            if (pos1 == player) myCount++;
+            else if (pos1 == null) emptyCount++;
+            if (pos2 == player) myCount++;
+            else if (pos2 == null) emptyCount++;
+
+            if (myCount == 2 && emptyCount == 1) {
+                score += 15;
             }
 
-            if (state.boardPositions[path[0]] == other_player && state.boardPositions[path[1]] == other_player && state.boardPositions[path[2]] == player) {
-                score += 20;
-            }
-            if (state.boardPositions[path[0]] == other_player && state.boardPositions[path[1]] == player && state.boardPositions[path[2]] == other_player) {
-                score += 20;
-            }
-            if (state.boardPositions[path[0]] == player && state.boardPositions[path[1]] == other_player && state.boardPositions[path[2]] == other_player) {
-                score += 20;
+
+            int oppCount = 0;
+            int emptyCountOpp = 0;
+            if (pos0 == opp) oppCount++;
+            else if (pos0 == null) emptyCountOpp++;
+            if (pos1 == opp) oppCount++;
+            else if (pos1 == null) emptyCountOpp++;
+            if (pos2 == opp) oppCount++;
+            else if (pos2 == null) emptyCountOpp++;
+
+
+            if (oppCount == 2 && emptyCountOpp == 1) {
+
+                score += 5;
             }
 
-            if (state.boardPositions[path[0]] == player && state.boardPositions[path[1]] == player && state.boardPositions[path[2]] == other_player) {
+
+            // (player,player,opp)
+            if (pos0 == player && pos1 == player && pos2 == opp) {
                 score -= 2;
             }
-            if (state.boardPositions[path[0]] == player && state.boardPositions[path[1]] == other_player && state.boardPositions[path[2]] == player) {
+            // (player,opp,player)
+            if (pos0 == player && pos1 == opp && pos2 == player) {
                 score -= 2;
             }
-            if (state.boardPositions[path[0]] == other_player && state.boardPositions[path[1]] == player && state.boardPositions[path[2]] == player) {
+            // (opp,player,player)
+            if (pos0 == opp && pos1 == player && pos2 == player) {
                 score -= 2;
             }
 
-            if (state.boardPositions[path[0]] == other_player && state.boardPositions[path[1]] == other_player && state.boardPositions[path[2]] == null) {
+            // (opp,opp,player)
+            if (pos0 == opp && pos1 == opp && pos2 == player) {
+                score += 20;
+            }
+            // (opp,player,opp)
+            if (pos0 == opp && pos1 == player && pos2 == opp) {
+                score += 20;
+            }
+            // (player,opp,opp)
+            if (pos0 == player && pos1 == opp && pos2 == opp) {
+                score += 20;
+            }
+
+            // (opp,opp,null)
+            if (pos0 == opp && pos1 == opp && pos2 == null) {
                 score -= 10;
             }
-            if (state.boardPositions[path[0]] == other_player && state.boardPositions[path[1]] == null && state.boardPositions[path[2]] == other_player) {
+            // (opp,null,opp)
+            if (pos0 == opp && pos1 == null && pos2 == opp) {
                 score -= 10;
             }
-            if (state.boardPositions[path[0]] == null && state.boardPositions[path[1]] == other_player && state.boardPositions[path[2]] == other_player) {
+            // (null,opp,opp)
+            if (pos0 == null && pos1 == opp && pos2 == opp) {
                 score -= 10;
             }
         }
+
         return score;
     }
 
